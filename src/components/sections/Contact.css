@@ -1,0 +1,38 @@
+.contact {
+  padding: 100px 40px;
+  text-align: center;
+}
+
+.contact-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px;
+}
+
+.contact-heading {
+  font-size: clamp(32px, 4vw, 52px);
+  font-weight: 800;
+  color: #1a1a1a;
+  letter-spacing: -1px;
+}
+
+.contact-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 36px;
+  background-color: #1a1a1a;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+  border-radius: 50px;
+  transition: background-color 0.2s, transform 0.15s;
+}
+
+.contact-btn:hover {
+  background-color: #333;
+  transform: translateY(-1px);
+}
