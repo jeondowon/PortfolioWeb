@@ -49,7 +49,7 @@
 .experience-empty {
   margin-top: 48px;
   font-size: 14px;
-  color: #333;
+  color: #999;
 }
 
 .experience-timeline {
@@ -110,7 +110,7 @@
 
 .experience-item-subtitle {
   font-size: 13px;
-  color: #555;
+  color: #999;
 }
 
 @media (max-width: 768px) {

@@ -34,14 +34,44 @@ export const ABOUT = {
 export const EXPERIENCE_DATA = {
   work: [],
   teams: [
-    { date: "2023.09 — Present", title: "CRA", subtitle: "한동대학교 전산 동아리", isActive: true },
-    { date: "2024.03 — 2025.11", title: "대한민국 해군 제2함대 지휘통신대대", subtitle: "전산병 복무 · 병장 만기전역", isActive: false },
-    { date: "2023.03 — 2023.08", title: "CHERK", subtitle: "한동대학교 영화 학회", isActive: false },
-    { date: "2023.09 — Present", title: "sk8erz", subtitle: "한동대학교 스케이트보드 크루", isActive: true },
+    {
+      date: "2023.09 — Present",
+      title: "CRA",
+      subtitle: "Handong Global University Computer Science Club",
+      isActive: true,
+    },
+    {
+      date: "2024.03 — 2025.11",
+      title: "Republic of Korea Navy 2nd Fleet Command Signal Battalion",
+      subtitle: "Served as Computer/Network Administrator",
+      isActive: false,
+    },
+    {
+      date: "2023.03 — 2023.08",
+      title: "CHERK",
+      subtitle: "Handong Global University Film Society",
+      isActive: false,
+    },
+    {
+      date: "2023.09 — Present",
+      title: "sk8erz",
+      subtitle: "Handong Global University Skateboard Crew",
+      isActive: true,
+    },
   ],
   achievements: [
-    { date: "2026", title: "Google AI Agent Challenge", subtitle: "본선 진출", isActive: false },
-    { date: "2023", title: "한동대학교 1학년 소프트웨어 공모전", subtitle: "장려상", isActive: false },
+    {
+      date: "2026",
+      title: "Google AI Agent Challenge",
+      subtitle: "Advanced to Final Round",
+      isActive: false,
+    },
+    {
+      date: "2023",
+      title: "Handong Global University Freshman Software Competition",
+      subtitle: "Encouragement Award",
+      isActive: false,
+    },
   ],
 };
 
