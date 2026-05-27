@@ -1,4 +1,4 @@
-.experience {
+.experiences {
   padding: 80px 0;
   background: #000;
   min-height: 100vh;
@@ -7,27 +7,27 @@
   justify-content: flex-start;
 }
 
-.experience-inner {
+.experiences-inner {
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 40px;
 }
 
-.experience-title {
+.experiences-title {
   font-size: 32px;
   font-weight: 800;
   color: #fff;
 }
 
-.experience-tabs {
+.experiences-tabs {
   display: flex;
   gap: 24px;
   border-bottom: 1px solid #222;
   margin-top: 40px;
 }
 
-.experience-tab {
+.experiences-tab {
   font-size: 14px;
   font-weight: 500;
   color: #555;
@@ -37,28 +37,28 @@
   transition: color 0.15s;
 }
 
-.experience-tab:hover {
+.experiences-tab:hover {
   color: #bbb;
 }
 
-.experience-tab--active {
+.experiences-tab--active {
   color: #fff;
   border-bottom-color: #fff;
 }
 
-.experience-empty {
+.experiences-empty {
   margin-top: 48px;
   font-size: 14px;
   color: #999;
 }
 
-.experience-timeline {
+.experiences-timeline {
   position: relative;
   padding-left: 24px;
   margin-top: 40px;
 }
 
-.experience-timeline::before {
+.experiences-timeline::before {
   content: "";
   position: absolute;
   left: 7px;
@@ -68,16 +68,16 @@
   background: #2a2a2a;
 }
 
-.experience-item {
+.experiences-item {
   position: relative;
   padding-bottom: 28px;
 }
 
-.experience-item:last-child {
+.experiences-item:last-child {
   padding-bottom: 0;
 }
 
-.experience-dot {
+.experiences-dot {
   position: absolute;
   left: -21px;
   top: 4px;
@@ -87,38 +87,38 @@
   background: #444;
 }
 
-.experience-dot--active {
+.experiences-dot--active {
   background: #fff;
 }
 
-.experience-item-content {
+.experiences-item-content {
   display: flex;
   flex-direction: column;
   gap: 4px;
 }
 
-.experience-date {
+.experiences-date {
   font-size: 12px;
   color: #555;
 }
 
-.experience-item-title {
+.experiences-item-title {
   font-size: 15px;
   font-weight: 500;
   color: #fff;
 }
 
-.experience-item-subtitle {
+.experiences-item-subtitle {
   font-size: 13px;
   color: #999;
 }
 
 @media (max-width: 768px) {
-  .experience-inner {
+  .experiences-inner {
     padding: 0 20px;
   }
 
-  .experience-tabs {
+  .experiences-tabs {
     gap: 16px;
   }
 }

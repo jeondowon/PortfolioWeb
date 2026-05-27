@@ -7,7 +7,7 @@ import About from "./components/sections/About";
 import Banner from "./components/sections/Banner";
 import Projects from "./components/sections/Projects";
 import Skills from "./components/sections/Skills";
-import Experience from "./components/sections/Experience";
+import Experiences from "./components/sections/Experiences";
 import Contact from "./components/sections/Contact";
 import "./styles/global.css";
 
@@ -58,7 +58,7 @@ export default function App() {
       <Banner />
       <Projects ref={projectsRef} />
       <Skills ref={skillsRef} />
-      <Experience ref={experienceRef} />
+      <Experiences ref={experienceRef} />
       <Contact ref={contactRef} />
       <Footer />
     </>

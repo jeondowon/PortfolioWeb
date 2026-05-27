@@ -55,7 +55,7 @@ const About = forwardRef(function About({ lang = "en" }, ref) {
             <div className="about-content">
               <p className="about-bio">
                 {content.bio.split('\n').map((line, i, arr) =>
-                  i < arr.length - 1 ? <>{renderBioLine(line)}<br key={i} /></> : renderBioLine(line)
+                  i < arr.length - 1 ? <span key={i}>{renderBioLine(line)}<br /></span> : renderBioLine(line)
                 )}
               </p>
 

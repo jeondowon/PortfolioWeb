@@ -97,8 +97,8 @@ export default function Navbar({
             </a>
           </li>
           <li>
-            <a href="#experience" onClick={(e) => handleClick(e, onExperience)}>
-              Experience
+            <a href="#experiences" onClick={(e) => handleClick(e, onExperience)}>
+              Experiences
             </a>
           </li>
           <li>
