@@ -116,21 +116,25 @@ export const SKILLS = [
   {
     id: "languages",
     title: "Languages",
+    description: "From low-level C/C++ to scripting in Python — I pick the right language for the problem and dig in until I really understand it.",
     items: ["C/C++", "Java", "JavaScript", "Python"],
   },
   {
     id: "frameworks",
     title: "Frameworks & Libraries",
+    description: "Comfortable across the stack — React on the web, React Native & Flutter on mobile, Spring Boot on the server. I focus on shipping things end-to-end.",
     items: ["React", "React Native", "Flutter", "Spring Boot"],
   },
   {
     id: "tools",
     title: "Tools",
+    description: "Daily drivers for building, designing, and shipping — version control, a fast dev loop, and the design surface in between.",
     items: ["Git", "Vite", "Figma"],
   },
   {
     id: "spoken",
     title: "Spoken",
+    description: "Bilingual in Korean and English. Six years at an international school in Manila made me equally comfortable working, presenting, and writing in both.",
     items: ["Korean (Native)", "English (Proficient · TOEIC 970)"],
   },
 ];

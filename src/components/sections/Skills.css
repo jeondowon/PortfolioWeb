@@ -27,35 +27,113 @@
   gap: 20px;
 }
 
+/* flip card */
 .skill-card {
+  aspect-ratio: 2 / 3;
+  perspective: 1000px;
+  cursor: pointer;
+}
+
+.skill-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.skill-card--flipped .skill-card-inner {
+  transform: rotateY(180deg);
+}
+
+.skill-card-front,
+.skill-card-back {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
   border: 1px solid #e8e8e8;
   border-radius: 12px;
   padding: 28px 24px;
-  aspect-ratio: 1 / 1;
+  display: flex;
+  flex-direction: column;
 }
 
-.skill-name {
+.skill-card-back {
+  transform: rotateY(180deg);
+}
+
+.skill-card-title {
   font-size: 17px;
   font-weight: 700;
   color: #1a1a1a;
-  margin-bottom: 12px;
+  margin-bottom: 20px;
 }
 
+/* front */
 .skill-list {
   list-style: none;
   padding: 0;
   margin: 0;
   display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
+  flex-direction: column;
+  gap: 10px;
+  flex: 1;
 }
 
 .skill-list li {
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 500;
   color: #444;
-  background: #f2f2f2;
-  border-radius: 6px;
-  padding: 4px 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #e8e8e8;
 }
 
+.skill-list li::before {
+  content: '';
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #1a1a1a;
+  flex-shrink: 0;
+}
+
+/* back */
+.skill-card-desc {
+  font-size: 13px;
+  color: #555;
+  line-height: 1.7;
+  flex: 1;
+}
+
+/* hint */
+.skill-card-hint {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 1.2px;
+  color: #bbb;
+  margin-top: auto;
+  padding-top: 16px;
+}
+
+@media (max-width: 900px) {
+  .skills-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .skills-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .skills-inner {
+    padding: 0 24px;
+  }
+}
