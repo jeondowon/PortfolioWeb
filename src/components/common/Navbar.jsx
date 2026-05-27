@@ -55,6 +55,7 @@ function LangDropdown({ lang, onLangChange }) {
 export default function Navbar({
   onHome,
   onAbout,
+  onExperience,
   onProjects,
   onSkills,
   onContact,
@@ -68,7 +69,7 @@ export default function Navbar({
   };
 
   return (
-    <nav className={`navbar ${dark ? '' : 'navbar--light'}`}>
+    <nav className={`navbar ${dark ? "" : "navbar--light"}`}>
       <div className="navbar-identity">
         <span className="navbar-identity__name">Dowon Jeon</span>
         <span className="navbar-identity__sub">AI·Computer Science</span>
@@ -93,6 +94,11 @@ export default function Navbar({
           <li>
             <a href="#skills" onClick={(e) => handleClick(e, onSkills)}>
               Skills
+            </a>
+          </li>
+          <li>
+            <a href="#experience" onClick={(e) => handleClick(e, onExperience)}>
+              Experience
             </a>
           </li>
           <li>

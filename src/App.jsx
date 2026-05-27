@@ -44,6 +44,7 @@ export default function App() {
       <Navbar
         onHome={() => window.scrollTo({ top: 0, behavior: "smooth" })}
         onAbout={() => scrollTo(aboutRef)}
+        onExperience={() => scrollTo(experienceRef)}
         onProjects={() => scrollTo(projectsRef)}
         onSkills={() => scrollTo(skillsRef)}
         onContact={() => scrollTo(contactRef)}
