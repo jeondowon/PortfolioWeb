@@ -36,7 +36,7 @@ export const EXPERIENCE_DATA = {
   teams: [
     {
       date: "2023.09 — Present",
-      title: "CRA",
+      title: "CRA (Computer Research Association)",
       subtitle: "Handong Global University Computer Science Club",
       isActive: true,
     },
@@ -139,7 +139,7 @@ export const SOCIAL = {
   email: "dowon.9102@gmail.com",
   phone: "010-5956-0629",
   phoneDisplay: "+82 10-5956-0629",
-  instagram: "https://instagram.com",
-  youtube: "https://youtube.com",
-  github: "https://github.com/dowon-9102",
+  instagram: "https://www.instagram.com/jeondowon/",
+  linkedin: "https://www.linkedin.com/in/jeondowon/",
+  github: "https://github.com/jeondowon",
 };

@@ -1,6 +1,5 @@
 import { useRef, useState, useEffect } from "react";
 import Navbar from "./components/common/Navbar";
-import Footer from "./components/common/Footer";
 import Cover from "./components/sections/Cover";
 import Hero from "./components/sections/Hero";
 import About from "./components/sections/About";
@@ -60,7 +59,6 @@ export default function App() {
       <Skills ref={skillsRef} />
       <Experiences ref={experienceRef} />
       <Contact ref={contactRef} />
-      <Footer />
     </>
   );
 }
