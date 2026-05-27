@@ -1,6 +1,9 @@
 .contact {
+  min-height: 100vh;
   padding: 100px 40px;
   text-align: center;
+  display: flex;
+  align-items: center;
 }
 
 .contact-inner {
