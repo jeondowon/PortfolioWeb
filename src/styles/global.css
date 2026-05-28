@@ -39,3 +39,11 @@ img {
 ul {
   list-style: none;
 }
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+* {
+  scrollbar-width: none;
+}
