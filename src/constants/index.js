@@ -79,35 +79,50 @@ export const PROJECTS = [
   {
     id: 1,
     title: "Check Team Mate",
-    category: "Mobile App",
+    category: ["App"],
     description:
-      "Helps you connect with university group projects more efficiently. Create a team and find collaborators easily!",
-    github: "https://github.com/dowon-9102",
+      "A to-do app built for teamwork: assign tasks to teammates, monitor progress, and keep group projects on track. Built with React Native, Firebase.",
+    github: "https://github.com/jeondowon/CheckTeamMate",
+    image: "/images/CheckTeamMate.png",
     available: true,
   },
   {
     id: 2,
     title: "Portfolio Website",
-    category: "Web",
+    category: ["Web"],
     description:
-      "Personal portfolio website that shows the history of Dowon Jeon's work and experiences.",
-    github: "https://github.com/dowon-9102",
+      "A personal portfolio showcasing projects, skills, and experiences. \nDesigned and built byself, via Figma, React, Vite.",
+    github: "https://github.com/jeondowon/PortfolioWeb",
+    image: "/images/portfolio.png",
     available: true,
   },
   {
     id: 3,
-    title: "Waiting for the update...",
-    category: "",
-    description: "I'm working on it",
+    title: "Candle",
+    category: ["App", "Web", "Fintech"],
+    description:
+      "A stock prediction challenge app for investors — go on a winning streak, earn points, and compete for prizes. The only cost to play is watching an ad. Available on both Web and Mobile.",
     github: null,
-    available: false,
+    image: "/images/Candle.png",
+    available: true,
   },
-  {
+  /*{
     id: 4,
-    title: "Waiting for the update...",
-    category: "",
+    title: "SpotLine",
+    category: ["Web", "AI"],
+    description:
+      "A Vision AI-powered SaaS dashboard for physical retail. Analyze CCTV footage, discover marketing strategies, and chat with SpotLine AI. Finalist at Google AI Agent Challenge.",
+    github: "https://github.com/jeondowon/SpotLine-frontend",
+    image: "/images/SpotLine.png",
+    available: true,
+  },*/
+  {
+    id: 5,
+    title: "",
+    category: [],
     description: "I'm working on it",
     github: null,
+    image: null,
     available: false,
   },
 ];
@@ -116,25 +131,29 @@ export const SKILLS = [
   {
     id: "languages",
     title: "Languages",
-    description: "From low-level C/C++ to scripting in Python — I pick the right language for the problem and dig in until I really understand it.",
+    description:
+      "From low-level C/C++ to scripting in Python — I pick the right language for the problem and dig in until I really understand it.",
     items: ["C/C++", "Java", "JavaScript", "Python"],
   },
   {
     id: "frameworks",
     title: "Frameworks & Libraries",
-    description: "Comfortable across the stack — React on the web, React Native & Flutter on mobile, Spring Boot on the server. I focus on shipping things end-to-end.",
+    description:
+      "Comfortable across the stack — React on the web, React Native & Flutter on mobile, Spring Boot on the server. I focus on shipping things end-to-end.",
     items: ["React", "React Native", "Flutter", "Spring Boot"],
   },
   {
     id: "tools",
     title: "Tools",
-    description: "Daily drivers for building, designing, and shipping — version control, a fast dev loop, and the design surface in between.",
+    description:
+      "Daily drivers for building, designing, and shipping — version control, a fast dev loop, and the design surface in between.",
     items: ["Git", "Vite", "Figma"],
   },
   {
     id: "spoken",
     title: "Spoken",
-    description: "Bilingual in Korean and English. Six years at an international school in Manila made me equally comfortable working, presenting, and writing in both.",
+    description:
+      "Bilingual in Korean and English. Six years at an international school in Manila made me equally comfortable working, presenting, and writing in both.",
     items: ["Korean (Native)", "English (Proficient · TOEIC 970)"],
   },
 ];

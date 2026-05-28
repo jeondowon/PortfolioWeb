@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import { Link } from "react-router-dom";
 import "./Navbar.css";
 
 const LANGS = [
@@ -56,9 +57,9 @@ export default function Navbar({
   onHome,
   onAbout,
   onExperience,
-  onProjects,
   onSkills,
   onContact,
+  onProjects,
   lang,
   onLangChange,
   dark,
@@ -87,9 +88,11 @@ export default function Navbar({
             </a>
           </li>
           <li>
-            <a href="#projects" onClick={(e) => handleClick(e, onProjects)}>
-              Projects
-            </a>
+            {onProjects ? (
+              <a href="#" onClick={(e) => handleClick(e, onProjects)}>Projects</a>
+            ) : (
+              <Link to="/projects">Projects</Link>
+            )}
           </li>
           <li>
             <a href="#skills" onClick={(e) => handleClick(e, onSkills)}>

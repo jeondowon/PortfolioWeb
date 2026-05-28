@@ -4,7 +4,6 @@ import Cover from "./components/sections/Cover";
 import Hero from "./components/sections/Hero";
 import About from "./components/sections/About";
 import Banner from "./components/sections/Banner";
-import Projects from "./components/sections/Projects";
 import Skills from "./components/sections/Skills";
 import Experiences from "./components/sections/Experiences";
 import Contact from "./components/sections/Contact";
@@ -12,7 +11,6 @@ import "./styles/global.css";
 
 export default function App() {
   const aboutRef = useRef(null);
-  const projectsRef = useRef(null);
   const skillsRef = useRef(null);
   const contactRef = useRef(null);
   const experienceRef = useRef(null);
@@ -44,7 +42,6 @@ export default function App() {
         onHome={() => window.scrollTo({ top: 0, behavior: "smooth" })}
         onAbout={() => scrollTo(aboutRef)}
         onExperience={() => scrollTo(experienceRef)}
-        onProjects={() => scrollTo(projectsRef)}
         onSkills={() => scrollTo(skillsRef)}
         onContact={() => scrollTo(contactRef)}
         lang={lang}
@@ -55,7 +52,6 @@ export default function App() {
       <Hero />
       <About ref={aboutRef} lang={lang} />
       <Banner />
-      <Projects ref={projectsRef} />
       <Skills ref={skillsRef} />
       <Experiences ref={experienceRef} />
       <Contact ref={contactRef} />

@@ -42,9 +42,9 @@ const LINKS = [
   },
 ];
 
-const Contact = forwardRef(function Contact(_, ref) {
+const Contact = forwardRef(function Contact({ dark }, ref) {
   return (
-    <section className="contact" id="contact" ref={ref}>
+    <section className={`contact${dark ? " contact--dark" : ""}`} id="contact" ref={ref}>
       <div className="contact-inner">
         <h2 className="contact-heading">Contact</h2>
         <div className="contact-center">

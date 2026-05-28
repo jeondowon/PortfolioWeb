@@ -130,6 +130,61 @@
   padding: 24px 0;
 }
 
+/* Dark mode */
+.contact--dark {
+  background-color: #111;
+}
+
+.contact--dark .contact-heading {
+  color: #fff;
+}
+
+.contact--dark .contact-subheading {
+  color: #fff;
+}
+
+.contact--dark .contact-sub {
+  color: #999;
+}
+
+.contact--dark .contact-btn {
+  background-color: #fff;
+  color: #111;
+}
+
+.contact--dark .contact-btn:hover {
+  background-color: #e0e0e0;
+}
+
+.contact--dark .contact-right {
+  border-top-color: rgba(255, 255, 255, 0.1);
+}
+
+.contact--dark .contact-row {
+  border-bottom-color: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+.contact--dark .contact-row-icon {
+  color: #666;
+}
+
+.contact--dark .contact-row-label {
+  color: #666;
+}
+
+.contact--dark .contact-row-value {
+  color: #fff;
+}
+
+.contact--dark .contact-row-arrow {
+  color: #666;
+}
+
+.contact--dark .contact-credit {
+  color: #666;
+}
+
 @media (max-width: 768px) {
   .contact-inner {
     padding: 0 24px;
