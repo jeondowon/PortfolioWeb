@@ -1,6 +1,7 @@
 .about {
-  padding: 0 0 40px;
+  padding: 0;
   scroll-margin-top: 310px;
+  position: relative;
 }
 
 .about-inner {
@@ -151,7 +152,9 @@
   max-width: 0;
   opacity: 0;
   white-space: nowrap;
-  transition: max-width 0.4s ease, opacity 0.3s ease;
+  transition:
+    max-width 0.4s ease,
+    opacity 0.3s ease;
 }
 
 .dj-wrap:hover .dj-expand {
@@ -162,6 +165,24 @@
 .about-image-block {
   flex-shrink: 0;
   width: 280px;
+}
+
+.about-scroll {
+  position: absolute;
+  bottom: 15px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: none;
+  border: none;
+  color: #1a1a1a;
+  cursor: pointer;
+  opacity: 0.4;
+  transition: opacity 0.2s;
+  animation: float 2s ease-in-out infinite;
+}
+
+.about-scroll:hover {
+  opacity: 0.8;
 }
 
 .about-photo {

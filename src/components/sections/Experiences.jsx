@@ -8,7 +8,7 @@ const TABS = [
   { key: "achievements", label: "Achievements" },
 ];
 
-const Experiences = forwardRef(function Experiences(_, ref) {
+const Experiences = forwardRef(function Experiences({ onScrollDown }, ref) {
   const [activeTab, setActiveTab] = useState("teams");
   const items = EXPERIENCE_DATA[activeTab];
 
@@ -54,6 +54,11 @@ const Experiences = forwardRef(function Experiences(_, ref) {
           </div>
         )}
       </div>
+      <button className="experiences-scroll" onClick={onScrollDown} aria-label="Scroll down">
+        <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+          <polyline points="6 9 12 15 18 9" />
+        </svg>
+      </button>
     </section>
   );
 });

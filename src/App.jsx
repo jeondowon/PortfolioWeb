@@ -10,6 +10,7 @@ import Contact from "./components/sections/Contact";
 import "./styles/global.css";
 
 export default function App() {
+  const heroRef = useRef(null);
   const aboutRef = useRef(null);
   const skillsRef = useRef(null);
   const contactRef = useRef(null);
@@ -40,7 +41,7 @@ export default function App() {
     <>
       <Navbar
         onHome={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-        onAbout={() => scrollTo(aboutRef)}
+        onAbout={() => scrollTo(heroRef)}
         onExperience={() => scrollTo(experienceRef)}
         onSkills={() => scrollTo(skillsRef)}
         onContact={() => scrollTo(contactRef)}
@@ -49,11 +50,11 @@ export default function App() {
         dark={onCover || onExperience}
       />
       <Cover onScrollDown={() => scrollTo(aboutRef, { behavior: "smooth" })} />
-      <Hero />
-      <About ref={aboutRef} lang={lang} />
+      <div ref={heroRef}><Hero /></div>
+      <About ref={aboutRef} lang={lang} onScrollDown={() => scrollTo(skillsRef)} />
       <Banner />
-      <Skills ref={skillsRef} />
-      <Experiences ref={experienceRef} />
+      <Skills ref={skillsRef} onScrollDown={() => scrollTo(experienceRef)} />
+      <Experiences ref={experienceRef} onScrollDown={() => scrollTo(contactRef)} />
       <Contact ref={contactRef} />
     </>
   );

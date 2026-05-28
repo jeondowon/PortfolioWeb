@@ -1,11 +1,11 @@
 .hero {
-  padding-top: 64px;
+  padding-top: 32px;
 }
 
 .hero-inner {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 80px 40px 60px;
+  padding: 40px 40px 60px;
   display: flex;
   align-items: flex-end;
   justify-content: space-between;

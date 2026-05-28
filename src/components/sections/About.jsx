@@ -42,7 +42,7 @@ function renderDesc(text) {
   );
 }
 
-const About = forwardRef(function About({ lang = "en" }, ref) {
+const About = forwardRef(function About({ lang = "en", onScrollDown }, ref) {
   const content = ABOUT[lang];
 
   return (
@@ -85,6 +85,11 @@ const About = forwardRef(function About({ lang = "en" }, ref) {
           </div>
         </div>
       </div>
+      <button className="about-scroll" onClick={onScrollDown} aria-label="Scroll down">
+        <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+          <polyline points="6 9 12 15 18 9" />
+        </svg>
+      </button>
     </section>
   );
 });

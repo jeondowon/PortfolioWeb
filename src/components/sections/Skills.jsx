@@ -3,7 +3,7 @@ import { TbRefresh } from "react-icons/tb";
 import { SKILLS } from "../../constants";
 import "./Skills.css";
 
-const Skills = forwardRef(function Skills(_, ref) {
+const Skills = forwardRef(function Skills({ onScrollDown }, ref) {
   const [flipped, setFlipped] = useState({});
 
   const toggle = (id) => setFlipped((prev) => ({ ...prev, [id]: !prev[id] }));
@@ -43,6 +43,11 @@ const Skills = forwardRef(function Skills(_, ref) {
           ))}
         </div>
       </div>
+      <button className="skills-scroll" onClick={onScrollDown} aria-label="Scroll down">
+        <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+          <polyline points="6 9 12 15 18 9" />
+        </svg>
+      </button>
     </section>
   );
 });
