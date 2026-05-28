@@ -93,7 +93,7 @@ export const PROJECTS = [
     description:
       "A personal portfolio showcasing projects, skills, and experiences. \nDesigned and built byself, via Figma, React, Vite.",
     github: "https://github.com/jeondowon/PortfolioWeb",
-    image: "/images/portfolio.png",
+    image: "/images/PortfolioWeb.png",
     available: true,
   },
   {
@@ -106,7 +106,7 @@ export const PROJECTS = [
     image: "/images/Candle.png",
     available: true,
   },
-  /*{
+  {
     id: 4,
     title: "SpotLine",
     category: ["Web", "AI"],
@@ -115,16 +115,46 @@ export const PROJECTS = [
     github: "https://github.com/jeondowon/SpotLine-frontend",
     image: "/images/SpotLine.png",
     available: true,
-  },*/
+  },
   {
     id: 5,
+    title: "FA Alumni Network Web",
+    category: ["Web"],
+    description:
+      "An alumni networking platform for Faith Academy Manila — connect with graduates worldwide, ask for a coffee chat, seek advice, and stay in touch with your community.",
+    github: "https://github.com/jeondowon/FAReunion",
+    image: "/images/FAReunion.png",
+    available: true,
+  },
+  {
+    id: 6,
+    title: "Vinyl Room",
+    category: ["Web"],
+    description:
+      "A 3D vinyl turntable experience built with Three.js — search and play music via YouTube, watch the record spin, and enjoy your playlist in a virtual vinyl room.",
+    github: null,
+    image: "/images/VinylRoom.png",
+    available: true,
+  },
+  {
+    id: 7,
+    title: "CRA Website",
+    category: ["Web"],
+    description:
+      "Maintained and enhanced the official CRA website — redesigned and improved key pages. Check out the wide range of projects built by CRA.",
+    github: null,
+    image: "/images/CRA.png",
+    available: true,
+  },
+  /*{
+    id: 10,
     title: "",
     category: [],
     description: "I'm working on it",
     github: null,
     image: null,
     available: false,
-  },
+  },*/
 ];
 
 export const SKILLS = [
