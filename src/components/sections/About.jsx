@@ -106,7 +106,9 @@ const About = forwardRef(function About({ lang = "en", onScrollDown }, ref) {
                       <div className="education-quote-block">
                         <p className="education-school">{edu.school}</p>
                         <p className="education-major">
-                          {renderDesc(edu.description, lang, () => setModalOpen(true))}
+                          {renderDesc(edu.description, lang, () => {
+                            if (window.matchMedia("(hover: none)").matches) setModalOpen(true);
+                          })}
                         </p>
                       </div>
                       <p className="education-year">{edu.year}</p>
@@ -132,7 +134,7 @@ const About = forwardRef(function About({ lang = "en", onScrollDown }, ref) {
         <div className={`abbr-modal-overlay${closing ? " abbr-modal-overlay--closing" : ""}`} onClick={handleClose}>
           <div className="abbr-modal" onClick={(e) => e.stopPropagation()}>
             <p className="abbr-modal-content">{ABBR_TOOLTIP[lang]}</p>
-            <button className="abbr-modal-close" onClick={handleClose}>닫기</button>
+            <button className="abbr-modal-close" onClick={handleClose}>{lang === "ko" ? "닫기" : "Close"}</button>
           </div>
         </div>
       )}

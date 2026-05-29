@@ -9,8 +9,8 @@ const TEXT = {
     hint: ["Try clicking the background", "Maybe it would do something good"],
   },
   ko: {
-    heading: ["생각을 현실로,", "아이디어와 그 너머를 향한 개발자"],
-    hint: ["배경을 클릭해보세요?", "무언가 좋은 일이 생길지도 몰라요."],
+    heading: ["생각을 현실로,", "아이디어와 그 너머를", "바라보는 개발자"],
+    hint: ["배경을 클릭해보세요", "무언가 좋은 일이 생길지도 몰라요."],
   },
 };
 
