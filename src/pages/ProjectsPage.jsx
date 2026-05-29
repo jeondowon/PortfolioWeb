@@ -74,15 +74,23 @@ export default function ProjectsPage() {
           <div className="projects-header">
             <h2 className="projects-title">Projects</h2>
             <div className="projects-filter">
-              {TAGS.map((tag) => (
-                <button
-                  key={tag}
-                  className={`filter-tag ${activeTag === tag ? "filter-tag--active" : ""}`}
-                  onClick={() => setActiveTag(tag)}
-                >
-                  {tag}
-                </button>
-              ))}
+              <button
+                className={`filter-tag ${activeTag === "All" ? "filter-tag--active" : ""}`}
+                onClick={() => setActiveTag("All")}
+              >
+                All
+              </button>
+              <div className="filter-scroll">
+                {TAGS.filter((tag) => tag !== "All").map((tag) => (
+                  <button
+                    key={tag}
+                    className={`filter-tag ${activeTag === tag ? "filter-tag--active" : ""}`}
+                    onClick={() => setActiveTag(tag)}
+                  >
+                    {tag}
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
 

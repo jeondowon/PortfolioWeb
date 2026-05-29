@@ -6,7 +6,18 @@
 .projects-filter {
   display: flex;
   gap: 8px;
-  flex-wrap: wrap;
+  align-items: center;
+}
+
+.filter-scroll {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.filter-scroll::-webkit-scrollbar {
+  display: none;
 }
 
 .filter-tag {
@@ -56,6 +67,12 @@
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 20px;
+}
+
+@media (max-width: 600px) {
+  .projects-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 .project-card {

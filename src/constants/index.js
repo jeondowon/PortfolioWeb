@@ -2,7 +2,12 @@ export const NAVBAR_H = 64;
 
 export const ABOUT = {
   en: {
-    bio: "I'm a developer who believes every great software always starts from abstract imaginations. \nI explore broadly — web, app, and beyond — chasing ideas worth building and turning them into real things. \nKeep dreaming. Develop imagination. Make it real. That's DJ, drops masterpieces.",
+    bio: {
+      desktop:
+        "I'm a developer who believes every great software always starts from abstract imaginations. \nI explore broadly — web, app, and beyond — chasing ideas worth building and turning them into real things. \nKeep dreaming. Develop imaginations, and make it real. That's DJ, drops masterpieces.",
+      mobile:
+        "I'm a developer who believes every great software always starts from abstract imaginations. \nI explore broadly — web, app, and beyond — chasing ideas worth building and turning them into real things. \nKeep dreaming. Develop imaginations, and make it real. \nThat's DJ, drops masterpieces.",
+    },
     education: [
       {
         school: "Handong Global University",
@@ -17,7 +22,12 @@ export const ABOUT = {
     ],
   },
   ko: {
-    bio: "저는 모든 최고의 소프트웨어가 언제나 추상적 상상으로부터 시작한다고 믿는 개발자입니다. 웹, 앱, 그 너머까지 폭넓게 탐구하며, \n가치 있는 아이디어를 쫓아 현실로 만들어 냅니다. 꿈을 품고, 상상을 구체화하여 이에 실체를 부여합니다.\nDJ로서, 걸작을 만들어 세상에 들려주겠습니다.",
+    bio: {
+      desktop:
+        "저는 모든 좋은 소프트웨어가 언제나 추상적 상상으로부터 시작한다고 믿는 개발자입니다. 웹, 앱, 그 너머까지 폭넓게 탐구하며, \n가치 있는 아이디어를 쫓아 현실로 만들어 냅니다. 꿈을 품고, 상상을 구체화하여 이에 실체를 부여합니다.\nDJ로서, 걸작을 만들어 세상에 들려주겠습니다.",
+      mobile:
+        "저는 모든 좋은 소프트웨어가 언제나 추상적 상상으로부터 시작한다고 믿는 개발자입니다. 웹, 앱, 그 너머까지 폭넓게 탐구하며, 가치 있는 아이디어를 쫓아 현실로 만들어 냅니다. \n꿈을 품고, 상상을 구체화하여 이에 실체를 부여합니다.\nDJ로서, 걸작을 만들어 세상에 들려주겠습니다.",
+    },
     education: [
       {
         school: "한동대학교",

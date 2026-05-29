@@ -86,16 +86,24 @@ const About = forwardRef(function About({ lang = "en", onScrollDown }, ref) {
           <div className="about-body">
             <div className="about-content">
               <p className="about-bio">
-                {content.bio.split("\n").map((line, i, arr) =>
-                  i < arr.length - 1 ? (
-                    <span key={i}>
-                      {renderBioLine(line, lang)}
-                      <br />
-                    </span>
-                  ) : (
-                    renderBioLine(line, lang)
-                  ),
-                )}
+                <span className="about-bio--desktop">
+                  {content.bio.desktop.split("\n").map((line, i, arr) =>
+                    i < arr.length - 1 ? (
+                      <span key={i}>{renderBioLine(line, lang)}<br /></span>
+                    ) : (
+                      renderBioLine(line, lang)
+                    )
+                  )}
+                </span>
+<span className="about-bio--mobile">
+                  {content.bio.mobile.split("\n").map((line, i, arr) =>
+                    i < arr.length - 1 ? (
+                      <span key={i}>{renderBioLine(line, lang)}<br /></span>
+                    ) : (
+                      renderBioLine(line, lang)
+                    )
+                  )}
+                </span>
               </p>
 
               <div className="about-education">

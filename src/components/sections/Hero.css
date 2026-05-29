@@ -46,7 +46,7 @@
   margin-right: 40px;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 900px) {
   .hero-inner {
     flex-direction: column;
     align-items: flex-start;
