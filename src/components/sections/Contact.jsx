@@ -46,7 +46,7 @@ const TEXT = {
   en: {
     subheading: ["Let's Develop,", "Build together."],
     sub: "Always open to new ideas, collaborations, and conversations.\nDrop a line — I'll get back to you.",
-    btn: "Download Resume ↗",
+    btn: "Download Resume ↗︎",
   },
   ko: {
     subheading: ["함께 개발하고,", "함께 만들어가고 싶습니다."],
@@ -102,7 +102,7 @@ const Contact = forwardRef(function Contact({ lang = "en", dark }, ref) {
                   <Icon className="contact-row-icon" />
                   <span className="contact-row-label">{label}</span>
                   <span className="contact-row-value">{display}</span>
-                  <span className="contact-row-arrow">↗</span>
+                  <span className="contact-row-arrow">{'↗︎'}</span>
                 </a>
               ))}
             </div>

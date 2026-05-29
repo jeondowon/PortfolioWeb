@@ -51,7 +51,7 @@ export const EXPERIENCE_DATA = {
       title: "CRA (Computer Research Association)",
       subtitle: {
         en: "Handong Global University Computer Science Club",
-        ko: "한동대학교 컴퓨터공학 동아리",
+        ko: "한동대학교 전산 동아리",
       },
       isActive: true,
     },
