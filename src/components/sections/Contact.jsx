@@ -6,7 +6,7 @@ import {
   FaLinkedin,
   FaInstagram,
 } from "react-icons/fa";
-import { SOCIAL } from "../../constants";
+import { SOCIAL, RESUME_AVAILABLE } from "../../constants";
 import "./Contact.css";
 
 const LINKS = [
@@ -81,9 +81,13 @@ const Contact = forwardRef(function Contact({ lang = "en", dark }, ref) {
                   </span>
                 ))}
               </p>
-              <a href="/resume.pdf" download className="contact-btn">
+              <button
+                className={`contact-btn${!RESUME_AVAILABLE ? " contact-btn--disabled" : ""}`}
+                disabled={!RESUME_AVAILABLE}
+                onClick={RESUME_AVAILABLE ? () => window.open("/resume.pdf") : undefined}
+              >
                 {t.btn}
-              </a>
+              </button>
             </div>
 
             <div className="contact-right">

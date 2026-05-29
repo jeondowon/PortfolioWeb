@@ -240,6 +240,8 @@ export const SKILLS = [
   },
 ];
 
+export const RESUME_AVAILABLE = false;
+
 export const SOCIAL = {
   email: "dowon.9102@gmail.com",
   phone: "010-5956-0629",

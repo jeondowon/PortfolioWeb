@@ -78,6 +78,16 @@
   transform: translateY(-1px);
 }
 
+.contact-btn--disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.contact-btn--disabled:hover {
+  background-color: #1a1a1a;
+  transform: none;
+}
+
 .contact-right {
   display: flex;
   flex-direction: column;
@@ -155,6 +165,10 @@
 
 .contact--dark .contact-btn:hover {
   background-color: #e0e0e0;
+}
+
+.contact--dark .contact-btn--disabled:hover {
+  background-color: #fff;
 }
 
 .contact--dark .contact-right {
