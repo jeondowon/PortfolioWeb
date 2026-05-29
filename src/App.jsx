@@ -7,6 +7,7 @@ import Banner from "./components/sections/Banner";
 import Skills from "./components/sections/Skills";
 import Experiences from "./components/sections/Experiences";
 import Contact from "./components/sections/Contact";
+import { useLang } from "./contexts/LangContext";
 import "./styles/global.css";
 
 export default function App() {
@@ -15,7 +16,7 @@ export default function App() {
   const skillsRef = useRef(null);
   const contactRef = useRef(null);
   const experienceRef = useRef(null);
-  const [lang, setLang] = useState("en");
+  const { lang, setLang } = useLang();
   const [onCover, setOnCover] = useState(true);
   const [onExperience, setOnExperience] = useState(false);
 
@@ -49,13 +50,13 @@ export default function App() {
         onLangChange={setLang}
         dark={onCover || onExperience}
       />
-      <Cover onScrollDown={() => scrollTo(aboutRef, { behavior: "smooth" })} />
-      <div ref={heroRef}><Hero /></div>
+      <Cover lang={lang} onScrollDown={() => scrollTo(aboutRef, { behavior: "smooth" })} />
+      <div ref={heroRef}><Hero lang={lang} /></div>
       <About ref={aboutRef} lang={lang} onScrollDown={() => scrollTo(skillsRef)} />
       <Banner />
-      <Skills ref={skillsRef} onScrollDown={() => scrollTo(experienceRef)} />
-      <Experiences ref={experienceRef} onScrollDown={() => scrollTo(contactRef)} />
-      <Contact ref={contactRef} />
+      <Skills ref={skillsRef} lang={lang} onScrollDown={() => scrollTo(experienceRef)} />
+      <Experiences ref={experienceRef} lang={lang} onScrollDown={() => scrollTo(contactRef)} />
+      <Contact ref={contactRef} lang={lang} />
     </>
   );
 }

@@ -8,9 +8,10 @@ const TABS = [
   { key: "achievements", label: "Achievements" },
 ];
 
-const Experiences = forwardRef(function Experiences({ onScrollDown }, ref) {
+const Experiences = forwardRef(function Experiences({ lang = "en", onScrollDown }, ref) {
   const [activeTab, setActiveTab] = useState("teams");
   const items = EXPERIENCE_DATA[activeTab];
+  const t = (field) => (typeof field === "string" ? field : field[lang]);
 
   return (
     <section className="experiences" id="experiences" ref={ref}>
@@ -44,9 +45,9 @@ const Experiences = forwardRef(function Experiences({ onScrollDown }, ref) {
                 />
                 <div className="experiences-item-content">
                   <span className="experiences-date">{item.date}</span>
-                  <span className="experiences-item-title">{item.title}</span>
+                  <span className="experiences-item-title">{t(item.title)}</span>
                   <span className="experiences-item-subtitle">
-                    {item.subtitle}
+                    {t(item.subtitle)}
                   </span>
                 </div>
               </div>

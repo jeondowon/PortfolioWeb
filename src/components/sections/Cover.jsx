@@ -2,7 +2,18 @@ import { useState, useRef, useCallback } from "react";
 import bgm from "../../assets/audio/bgm.mp3";
 import "./Cover.css";
 
-export default function Cover({ onScrollDown }) {
+const TEXT = {
+  en: {
+    heading: ["Developer for", "ideas and beyond.", "Currently in Korea."],
+    hint: ["Try clicking the background", "Maybe it would do something good"],
+  },
+  ko: {
+    heading: ["생각을 현실로,", "아이디어와 그 너머를 향한 개발자"],
+    hint: ["배경을 클릭해보고 싶지 않으신가요?", "무언가 좋은 일이 생길지도 몰라요."],
+  },
+};
+
+export default function Cover({ lang = "en", onScrollDown }) {
   const audioRef = useRef(null);
   const fadeTimerRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -54,15 +65,18 @@ export default function Cover({ onScrollDown }) {
     [isPlaying, fadeTo],
   );
 
+  const t = TEXT[lang];
+
   return (
     <section className="cover" onClick={handleClick}>
       <div className="cover-center">
         <h1 className="cover-heading">
-          Developer for
-          <br />
-          ideas and beyond.
-          <br />
-          Currently in Korea.
+          {t.heading.map((line, i) => (
+            <span key={i}>
+              {line}
+              {i < t.heading.length - 1 && <br />}
+            </span>
+          ))}
         </h1>
       </div>
       {feedbackIcon && (
@@ -76,9 +90,9 @@ export default function Cover({ onScrollDown }) {
         </div>
       )}
       <p className="cover-hint">
-        Try clicking the background
+        {t.hint[0]}
         <br />
-        Maybe it would do something good
+        {t.hint[1]}
       </p>
       <button
         className="cover-scroll"

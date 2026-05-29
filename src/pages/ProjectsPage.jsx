@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import Navbar from "../components/common/Navbar";
 import Contact from "../components/sections/Contact";
 import { PROJECTS } from "../constants";
+import { useLang } from "../contexts/LangContext";
 import "./ProjectsPage.css";
 
 function getAllTags() {
@@ -13,6 +14,7 @@ function getAllTags() {
 const TAGS = getAllTags();
 
 export default function ProjectsPage() {
+  const { lang, setLang } = useLang();
   const [activeTag, setActiveTag] = useState("All");
   const [onContact, setOnContact] = useState(false);
   const contactRef = useRef(null);
@@ -64,8 +66,8 @@ export default function ProjectsPage() {
         onProjects={() => {
           window.scrollTo({ top: 0, behavior: "smooth" });
         }}
-        lang="en"
-        onLangChange={() => {}}
+        lang={lang}
+        onLangChange={setLang}
         dark={onContact}
       />
       <section className="projects projects-page">
@@ -132,12 +134,12 @@ export default function ProjectsPage() {
                             </span>
                           ))}
                         </div>
-                        <p className="project-desc">{project.description}</p>
+                        <p className="project-desc">{project.description[lang]}</p>
                       </>
                     ) : (
                       <>
                         <h3 className="project-name">{project.title}</h3>
-                        <p className="project-desc">{project.description}</p>
+                        <p className="project-desc">{project.description[lang]}</p>
                         <div className="project-footer">
                           <span className="project-dash">—</span>
                           <span className="project-in-progress">
@@ -153,7 +155,7 @@ export default function ProjectsPage() {
           </div>
         </div>
       </section>
-      <Contact ref={contactRef} dark />
+      <Contact ref={contactRef} lang={lang} dark />
     </>
   );
 }

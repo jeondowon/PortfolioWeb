@@ -3,7 +3,7 @@ import { TbRefresh } from "react-icons/tb";
 import { SKILLS } from "../../constants";
 import "./Skills.css";
 
-const Skills = forwardRef(function Skills({ onScrollDown }, ref) {
+const Skills = forwardRef(function Skills({ lang = "en", onScrollDown }, ref) {
   const [flipped, setFlipped] = useState({});
 
   const toggle = (id) => setFlipped((prev) => ({ ...prev, [id]: !prev[id] }));
@@ -33,7 +33,7 @@ const Skills = forwardRef(function Skills({ onScrollDown }, ref) {
                 </div>
                 <div className="skill-card-back">
                   <h3 className="skill-card-title">{skill.title}</h3>
-                  <p className="skill-card-desc">{skill.description}</p>
+                  <p className="skill-card-desc">{skill.description[lang]}</p>
                   <span className="skill-card-hint">
                     <TbRefresh size={13} /> Click to flip
                   </span>

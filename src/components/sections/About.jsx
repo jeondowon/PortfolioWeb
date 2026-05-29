@@ -2,42 +2,63 @@ import { forwardRef } from "react";
 import { ABOUT } from "../../constants";
 import "./About.css";
 
-const ABBR = 'AI·CSEE (ABEEK)';
-const ABBR_TOOLTIP = (
-  <>
-    <strong>CSEE</strong> — Computer Science &amp; Electrical Engineering
-    <br />
-    <strong>ABEEK</strong> — Accreditation Board for Engineering Education of Korea
-    <br />
-    <span className="abbr-tooltip-sub">Engineering education accreditation · Practice-ready competency program</span>
-  </>
-);
+const ABBR = {
+  en: "AI·CSEE (ABEEK)",
+  ko: "AI·컴퓨터공학심화 (공학인증)",
+};
 
-function renderBioLine(line) {
-  const idx = line.indexOf('DJ');
+const ABBR_TOOLTIP = {
+  en: (
+    <>
+      <strong>CSEE</strong> — Computer Science &amp; Electrical Engineering
+      <br />
+      <strong>ABEEK</strong> — Accreditation Board for Engineering Education of
+      Korea
+      <br />
+      <span className="abbr-tooltip-sub">
+        Engineering education accreditation · Practice-ready competency program
+      </span>
+    </>
+  ),
+  ko: (
+    <span className="abbr-tooltip-sub">
+      한국공학교육인증원 커리큘럼을 적용한
+      <br />
+      공학교육인증 · 실무 역량 중심 교육과정을 경험하였습니다.
+    </span>
+  ),
+};
+
+function renderBioLine(line, lang) {
+  const idx = line.indexOf("DJ");
   if (idx === -1) return line;
+  const jeonSuffix = lang === "ko" ? "eon으" : "eon";
   return (
     <>
       {line.slice(0, idx)}
       <span className="dj-wrap">
-        <strong>D</strong><span className="dj-expand">{"owon "}</span><strong>J</strong><span className="dj-expand">eon</span>
+        <strong>D</strong>
+        <span className="dj-expand">{"owon "}</span>
+        <strong>J</strong>
+        <span className="dj-expand">{jeonSuffix}</span>
       </span>
       {line.slice(idx + 2)}
     </>
   );
 }
 
-function renderDesc(text) {
-  const idx = text.indexOf(ABBR);
+function renderDesc(text, lang) {
+  const abbr = ABBR[lang];
+  const idx = text.indexOf(abbr);
   if (idx === -1) return text;
   return (
     <>
       {text.slice(0, idx)}
       <span className="abbr-tooltip-wrap">
-        <strong>{ABBR}</strong>
-        <span className="abbr-tooltip-box">{ABBR_TOOLTIP}</span>
+        <strong>{abbr}</strong>
+        <span className="abbr-tooltip-box">{ABBR_TOOLTIP[lang]}</span>
       </span>
-      {text.slice(idx + ABBR.length)}
+      {text.slice(idx + abbr.length)}
     </>
   );
 }
@@ -54,8 +75,15 @@ const About = forwardRef(function About({ lang = "en", onScrollDown }, ref) {
           <div className="about-body">
             <div className="about-content">
               <p className="about-bio">
-                {content.bio.split('\n').map((line, i, arr) =>
-                  i < arr.length - 1 ? <span key={i}>{renderBioLine(line)}<br /></span> : renderBioLine(line)
+                {content.bio.split("\n").map((line, i, arr) =>
+                  i < arr.length - 1 ? (
+                    <span key={i}>
+                      {renderBioLine(line, lang)}
+                      <br />
+                    </span>
+                  ) : (
+                    renderBioLine(line, lang)
+                  ),
                 )}
               </p>
 
@@ -66,7 +94,9 @@ const About = forwardRef(function About({ lang = "en", onScrollDown }, ref) {
                     <li key={i} className="education-item">
                       <div className="education-quote-block">
                         <p className="education-school">{edu.school}</p>
-                        <p className="education-major">{renderDesc(edu.description)}</p>
+                        <p className="education-major">
+                          {renderDesc(edu.description, lang)}
+                        </p>
                       </div>
                       <p className="education-year">{edu.year}</p>
                     </li>
@@ -85,8 +115,21 @@ const About = forwardRef(function About({ lang = "en", onScrollDown }, ref) {
           </div>
         </div>
       </div>
-      <button className="about-scroll" onClick={onScrollDown} aria-label="Scroll down">
-        <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <button
+        className="about-scroll"
+        onClick={onScrollDown}
+        aria-label="Scroll down"
+      >
+        <svg
+          width="60"
+          height="60"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
           <polyline points="6 9 12 15 18 9" />
         </svg>
       </button>
