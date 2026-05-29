@@ -9,6 +9,7 @@
 html {
   scroll-behavior: smooth;
   background-color: #ffffff;
+  overscroll-behavior: none;
 }
 
 body {

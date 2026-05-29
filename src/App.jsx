@@ -38,6 +38,23 @@ export default function App() {
     ref.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
+  useEffect(() => {
+    const hash = window.location.hash;
+    if (!hash) return;
+    const refMap = {
+      "#about": heroRef,
+      "#skills": skillsRef,
+      "#experiences": experienceRef,
+      "#contact": contactRef,
+    };
+    const ref = refMap[hash];
+    if (ref) {
+      setTimeout(() => {
+        ref.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+      }, 100);
+    }
+  }, []);
+
   return (
     <>
       <Navbar
