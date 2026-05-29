@@ -1,3 +1,5 @@
+<img width="2172" height="724" alt="PortfolioWeb" src="https://github.com/user-attachments/assets/1d8f7307-c8ed-45e3-a8a7-72df144dbaf8" />
+
 # Portfolio Website
 
 [English](#english) | [한국어](#한국어)
