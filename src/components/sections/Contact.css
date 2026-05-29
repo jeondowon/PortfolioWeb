@@ -109,6 +109,7 @@
   font-weight: 600;
   letter-spacing: 1.5px;
   color: #aaa;
+  white-space: nowrap;
 }
 
 .contact-row-value {
@@ -193,5 +194,12 @@
   .contact-body {
     grid-template-columns: 1fr;
     gap: 48px;
+  }
+}
+
+@media (max-width: 480px) {
+  .contact-row {
+    grid-template-columns: 20px 90px 1fr 14px;
+    gap: 10px;
   }
 }

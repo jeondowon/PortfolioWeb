@@ -20,20 +20,9 @@
   color: #fff;
 }
 
-.cover-sub {
-  font-size: 15px;
-  font-weight: 400;
-  color: #777;
-  letter-spacing: 0.02em;
-}
-
-@keyframes float {
-  0%,
-  100% {
-    transform: translateX(-50%) translateY(0);
-  }
-  50% {
-    transform: translateX(-50%) translateY(-10px);
+@media (max-width: 768px) {
+  .cover-hint {
+    max-width: calc(50% - 48px);
   }
 }
 
@@ -45,14 +34,14 @@
   font-weight: 300;
   color: #838383;
   line-height: 1.6;
-  letter-spacing: 0.03em;
+  letter-spacing: 0.36px;
   pointer-events: none;
   margin: 0;
 }
 
 .cover-scroll {
   position: absolute;
-  bottom: 10px;
+  bottom: 2px;
   left: 50%;
   transform: translateX(-50%);
   background: none;

@@ -10,6 +10,7 @@ html {
   scroll-behavior: smooth;
   background-color: #ffffff;
   overscroll-behavior: none;
+  overflow-x: hidden;
 }
 
 body {
@@ -47,4 +48,14 @@ ul {
 
 * {
   scrollbar-width: none;
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateX(-50%) translateY(0);
+  }
+  50% {
+    transform: translateX(-50%) translateY(-10px);
+  }
 }

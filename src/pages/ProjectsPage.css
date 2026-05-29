@@ -17,7 +17,7 @@
   color: #1a1a1a;
   font-size: 13px;
   font-weight: 600;
-  letter-spacing: 0.03em;
+  letter-spacing: 0.39px;
   cursor: pointer;
 }
 
@@ -118,7 +118,7 @@
 .project-preview-placeholder span {
   font-size: 11px;
   font-weight: 600;
-  letter-spacing: 0.1em;
+  letter-spacing: 1.1px;
   color: #444;
 }
 
@@ -134,7 +134,7 @@
 .project-coming-soon-area span {
   font-size: 11px;
   font-weight: 600;
-  letter-spacing: 0.1em;
+  letter-spacing: 1.1px;
   color: rgba(255, 255, 255, 0.5);
 }
 
@@ -155,7 +155,7 @@
   color: #050505;
   font-size: 9px;
   font-weight: 600;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.45px;
   padding: 2px 7px;
   border-radius: 4px;
   white-space: nowrap;
@@ -207,6 +207,6 @@
 .project-in-progress {
   font-size: 10px;
   font-weight: 600;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.8px;
   color: rgba(255, 255, 255, 0.4);
 }

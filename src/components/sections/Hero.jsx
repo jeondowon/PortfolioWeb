@@ -18,7 +18,7 @@ export default function Hero({ lang = "en" }) {
       <div className="hero-inner">
         <div className="hero-title-block">
           <h1 className="hero-heading">
-            AI · Computer Science &<br />
+            <span style={{ whiteSpace: "nowrap" }}>AI · Computer Science &</span><br />
             Engineering
           </h1>
         </div>

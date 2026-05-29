@@ -1,5 +1,6 @@
 import { forwardRef, useState } from "react";
 import { EXPERIENCE_DATA } from "../../constants";
+import ScrollButton from "../common/ScrollButton";
 import "./Experiences.css";
 
 const TABS = [
@@ -55,11 +56,7 @@ const Experiences = forwardRef(function Experiences({ lang = "en", onScrollDown 
           </div>
         )}
       </div>
-      <button className="experiences-scroll" onClick={onScrollDown} aria-label="Scroll down">
-        <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-          <polyline points="6 9 12 15 18 9" />
-        </svg>
-      </button>
+      <ScrollButton className="experiences-scroll" onClick={onScrollDown} />
     </section>
   );
 });

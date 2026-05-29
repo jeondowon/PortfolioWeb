@@ -7,7 +7,7 @@ const LANGS = [
   { value: "ko", label: "Korean" },
 ];
 
-function LangDropdown({ lang, onLangChange }) {
+function LangDropdown({ lang, onLangChange, onClose }) {
   const [open, setOpen] = useState(false);
   const ref = useRef(null);
 
@@ -42,6 +42,7 @@ function LangDropdown({ lang, onLangChange }) {
               onClick={() => {
                 onLangChange(l.value);
                 setOpen(false);
+                onClose?.();
               }}
             >
               {l.label}
@@ -64,9 +65,12 @@ export default function Navbar({
   onLangChange,
   dark,
 }) {
+  const [menuOpen, setMenuOpen] = useState(false);
+
   const handleClick = (e, callback) => {
     e.preventDefault();
     callback();
+    setMenuOpen(false);
   };
 
   return (
@@ -75,17 +79,14 @@ export default function Navbar({
         <span className="navbar-identity__name">Dowon Jeon</span>
         <span className="navbar-identity__sub">AI·Computer Science</span>
       </div>
+
       <div className="navbar-inner">
         <ul className="navbar-links">
           <li>
-            <a href="#" onClick={(e) => handleClick(e, onHome)}>
-              Home
-            </a>
+            <a href="#" onClick={(e) => handleClick(e, onHome)}>Home</a>
           </li>
           <li>
-            <a href="#about" onClick={(e) => handleClick(e, onAbout)}>
-              About
-            </a>
+            <a href="#about" onClick={(e) => handleClick(e, onAbout)}>About</a>
           </li>
           <li>
             {onProjects ? (
@@ -95,22 +96,60 @@ export default function Navbar({
             )}
           </li>
           <li>
-            <a href="#skills" onClick={(e) => handleClick(e, onSkills)}>
-              Skills
-            </a>
+            <a href="#skills" onClick={(e) => handleClick(e, onSkills)}>Skills</a>
           </li>
           <li>
-            <a href="#experiences" onClick={(e) => handleClick(e, onExperience)}>
-              Experiences
-            </a>
+            <a href="#experiences" onClick={(e) => handleClick(e, onExperience)}>Experiences</a>
           </li>
           <li>
-            <a href="#contact" onClick={(e) => handleClick(e, onContact)}>
-              Contact
-            </a>
+            <a href="#contact" onClick={(e) => handleClick(e, onContact)}>Contact</a>
           </li>
           <li>
             <LangDropdown lang={lang} onLangChange={onLangChange} />
+          </li>
+        </ul>
+      </div>
+
+      <button
+        className={`navbar-hamburger ${menuOpen ? "navbar-hamburger--open" : ""}`}
+        onClick={() => setMenuOpen((v) => !v)}
+        aria-label="Toggle menu"
+      >
+        <span className="navbar-hamburger__bar" />
+        <span className="navbar-hamburger__bar" />
+        <span className="navbar-hamburger__bar" />
+      </button>
+
+      <div className={`navbar-mobile-menu ${menuOpen ? "navbar-mobile-menu--open" : ""}`}>
+        <ul className="navbar-mobile-links">
+          <li>
+            <a href="#" onClick={(e) => handleClick(e, onHome)}>Home</a>
+          </li>
+          <li>
+            <a href="#about" onClick={(e) => handleClick(e, onAbout)}>About</a>
+          </li>
+          <li>
+            {onProjects ? (
+              <a href="#" onClick={(e) => handleClick(e, onProjects)}>Projects</a>
+            ) : (
+              <Link to="/projects" onClick={() => setMenuOpen(false)}>Projects</Link>
+            )}
+          </li>
+          <li>
+            <a href="#skills" onClick={(e) => handleClick(e, onSkills)}>Skills</a>
+          </li>
+          <li>
+            <a href="#experiences" onClick={(e) => handleClick(e, onExperience)}>Experiences</a>
+          </li>
+          <li>
+            <a href="#contact" onClick={(e) => handleClick(e, onContact)}>Contact</a>
+          </li>
+          <li className="navbar-mobile-lang">
+            <LangDropdown
+              lang={lang}
+              onLangChange={onLangChange}
+              onClose={() => setMenuOpen(false)}
+            />
           </li>
         </ul>
       </div>

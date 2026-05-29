@@ -1,3 +1,5 @@
+export const NAVBAR_H = 64;
+
 export const ABOUT = {
   en: {
     bio: "I'm a developer who believes every great software always starts from abstract imaginations. \nI explore broadly — web, app, and beyond — chasing ideas worth building and turning them into real things. \nKeep dreaming. Develop imagination. Make it real. That's DJ, drops masterpieces.",
@@ -194,7 +196,7 @@ export const SKILLS = [
     id: "languages",
     title: "Languages",
     description: {
-      en: "From low-level C/C++ to scripting in Python — I pick the right language for the problem and dig in until I really understand it.",
+      en: "From low-level C/C++ to scripting in Python — I pick the right language for the problem and dig in until I really understand and solve it.",
       ko: "C/C++부터 Python 스크립팅까지 문제에 맞는 언어를 선택하고 깊이 파고듭니다.",
     },
     items: ["C/C++", "Java", "JavaScript", "Python"],

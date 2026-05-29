@@ -30,15 +30,13 @@
 
 /* flip card */
 .skill-card {
-  aspect-ratio: 2 / 3;
   perspective: 1000px;
   cursor: pointer;
 }
 
 .skill-card-inner {
-  position: relative;
+  display: grid;
   width: 100%;
-  height: 100%;
   transform-style: preserve-3d;
   transition: transform 0.55s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -49,8 +47,7 @@
 
 .skill-card-front,
 .skill-card-back {
-  position: absolute;
-  inset: 0;
+  grid-area: 1 / 1;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
   border: 1px solid #e8e8e8;
@@ -125,7 +122,7 @@
 
 .skills-scroll {
   position: absolute;
-  bottom: 10px;
+  bottom: 2px;
   left: 50%;
   transform: translateX(-50%);
   background: none;
@@ -150,9 +147,15 @@
 @media (max-width: 480px) {
   .skills-grid {
     grid-template-columns: 1fr;
+    gap: 12px;
   }
 
   .skills-inner {
-    padding: 0 24px;
+    padding: 0 16px;
+  }
+
+  .skill-card-front,
+  .skill-card-back {
+    padding: 20px 20px;
   }
 }

@@ -1,5 +1,6 @@
-import { forwardRef } from "react";
+import { forwardRef, useState } from "react";
 import { ABOUT } from "../../constants";
+import ScrollButton from "../common/ScrollButton";
 import "./About.css";
 
 const ABBR = {
@@ -47,7 +48,7 @@ function renderBioLine(line, lang) {
   );
 }
 
-function renderDesc(text, lang) {
+function renderDesc(text, lang, onAbbrClick) {
   const abbr = ABBR[lang];
   const idx = text.indexOf(abbr);
   if (idx === -1) return text;
@@ -55,7 +56,7 @@ function renderDesc(text, lang) {
     <>
       {text.slice(0, idx)}
       <span className="abbr-tooltip-wrap">
-        <strong>{abbr}</strong>
+        <strong onClick={onAbbrClick}>{abbr}</strong>
         <span className="abbr-tooltip-box">{ABBR_TOOLTIP[lang]}</span>
       </span>
       {text.slice(idx + abbr.length)}
@@ -65,6 +66,16 @@ function renderDesc(text, lang) {
 
 const About = forwardRef(function About({ lang = "en", onScrollDown }, ref) {
   const content = ABOUT[lang];
+  const [modalOpen, setModalOpen] = useState(false);
+  const [closing, setClosing] = useState(false);
+
+  function handleClose() {
+    setClosing(true);
+    setTimeout(() => {
+      setModalOpen(false);
+      setClosing(false);
+    }, 200);
+  }
 
   return (
     <section className="about" id="about" ref={ref}>
@@ -95,7 +106,7 @@ const About = forwardRef(function About({ lang = "en", onScrollDown }, ref) {
                       <div className="education-quote-block">
                         <p className="education-school">{edu.school}</p>
                         <p className="education-major">
-                          {renderDesc(edu.description, lang)}
+                          {renderDesc(edu.description, lang, () => setModalOpen(true))}
                         </p>
                       </div>
                       <p className="education-year">{edu.year}</p>
@@ -115,24 +126,16 @@ const About = forwardRef(function About({ lang = "en", onScrollDown }, ref) {
           </div>
         </div>
       </div>
-      <button
-        className="about-scroll"
-        onClick={onScrollDown}
-        aria-label="Scroll down"
-      >
-        <svg
-          width="60"
-          height="60"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <polyline points="6 9 12 15 18 9" />
-        </svg>
-      </button>
+      <ScrollButton className="about-scroll" onClick={onScrollDown} />
+
+      {modalOpen && (
+        <div className={`abbr-modal-overlay${closing ? " abbr-modal-overlay--closing" : ""}`} onClick={handleClose}>
+          <div className="abbr-modal" onClick={(e) => e.stopPropagation()}>
+            <p className="abbr-modal-content">{ABBR_TOOLTIP[lang]}</p>
+            <button className="abbr-modal-close" onClick={handleClose}>닫기</button>
+          </div>
+        </div>
+      )}
     </section>
   );
 });

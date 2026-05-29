@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import Navbar from "../components/common/Navbar";
 import Contact from "../components/sections/Contact";
-import { PROJECTS } from "../constants";
+import { PROJECTS, NAVBAR_H } from "../constants";
 import { useLang } from "../contexts/LangContext";
 import "./ProjectsPage.css";
 
@@ -28,7 +28,6 @@ export default function ProjectsPage() {
   }, []);
 
   useEffect(() => {
-    const NAVBAR_H = 64;
     const handleScroll = () => {
       const el = contactRef.current;
       if (el) {

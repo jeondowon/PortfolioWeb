@@ -8,6 +8,7 @@ import Skills from "./components/sections/Skills";
 import Experiences from "./components/sections/Experiences";
 import Contact from "./components/sections/Contact";
 import { useLang } from "./contexts/LangContext";
+import { NAVBAR_H } from "./constants";
 import "./styles/global.css";
 
 export default function App() {
@@ -21,9 +22,10 @@ export default function App() {
   const [onExperience, setOnExperience] = useState(false);
 
   useEffect(() => {
-    const NAVBAR_H = 64;
     const handleScroll = () => {
-      setOnCover(window.scrollY < window.innerHeight);
+      if (heroRef.current) {
+        setOnCover(heroRef.current.getBoundingClientRect().top > NAVBAR_H);
+      }
       const el = experienceRef.current;
       if (el) {
         const { top, bottom } = el.getBoundingClientRect();

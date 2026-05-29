@@ -13,13 +13,13 @@ const LINKS = [
   {
     icon: FaEnvelope,
     label: "EMAIL",
-    display: "dowon.9102@gmail.com",
+    display: SOCIAL.email,
     href: `mailto:${SOCIAL.email}`,
   },
   {
     icon: FaPhone,
     label: "PHONE",
-    display: "+82 10-5956-0629",
+    display: SOCIAL.phoneDisplay,
     href: `tel:${SOCIAL.phone}`,
   },
   {
