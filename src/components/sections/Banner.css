@@ -1,5 +1,5 @@
 .banner {
-  background-color: #000;
+  background-color: #0a0a0a;
   overflow: hidden;
   position: relative;
   height: calc(clamp(36px, 4.5vw, 60px) + 64px);

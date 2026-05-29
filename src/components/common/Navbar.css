@@ -5,12 +5,12 @@
   right: 0;
   height: 64px;
   z-index: 100;
-  background-color: #000;
+  background-color: #0a0a0a;
   transition: background-color 0.3s ease;
 }
 
 .navbar--light {
-  background-color: #fff;
+  background-color: #fdfcfa;
 }
 
 .navbar--light .navbar-links a {
@@ -239,14 +239,14 @@
   top: 64px;
   left: 0;
   right: 0;
-  background: #000;
+  background: #0a0a0a;
   max-height: 0;
   overflow: hidden;
   transition: max-height 0.3s ease;
 }
 
 .navbar--light .navbar-mobile-menu {
-  background: #fff;
+  background: #fdfcfa;
   border-bottom: 1px solid #e8e8e8;
 }
 

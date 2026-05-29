@@ -1,6 +1,6 @@
 .projects.projects-page {
   padding-top: 80px;
-  background-color: #fff;
+  background-color: #fdfcfa;
 }
 
 .projects-filter {
@@ -24,7 +24,7 @@
   padding: 7px 16px;
   border: 1px solid #1a1a1a;
   border-radius: 4px;
-  background: #fff;
+  background: #fdfcfa;
   color: #1a1a1a;
   font-size: 13px;
   font-weight: 600;
@@ -78,7 +78,7 @@
 .project-card {
   border-radius: 16px;
   overflow: hidden;
-  background-color: #ffffff;
+  background-color: #fdfcfa;
   display: flex;
   flex-direction: column;
   border: #e8e8e8 1px solid;
