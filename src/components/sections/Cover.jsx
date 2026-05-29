@@ -51,12 +51,13 @@ export default function Cover({ lang = "en", onScrollDown }) {
       setClickPos({ x: e.clientX, y: e.clientY });
 
       if (isPlaying) {
-        fadeTo(0, () => audioRef.current.pause());
+        audioRef.current.pause();
+        fadeTo(0);
         setIsPlaying(false);
         setFeedbackIcon("pause");
       } else {
         audioRef.current.volume = 0;
-        audioRef.current.play();
+        audioRef.current.play().catch(() => {});
         fadeTo(1);
         setIsPlaying(true);
         setFeedbackIcon("play");
@@ -87,7 +88,7 @@ export default function Cover({ lang = "en", onScrollDown }) {
           style={{ left: clickPos.x, top: clickPos.y }}
           onAnimationEnd={() => setFeedbackIcon(null)}
         >
-          {feedbackIcon === "play" ? "▶" : "⏸"}
+          {feedbackIcon === "play" ? "▶︎" : "⏸︎"}
         </div>
       )}
       <p className="cover-hint">
