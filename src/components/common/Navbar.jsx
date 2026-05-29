@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { Link } from "react-router-dom";
 import "./Navbar.css";
 
@@ -54,6 +55,86 @@ function LangDropdown({ lang, onLangChange, onClose }) {
   );
 }
 
+function RainLink({ dark, coverEndRef, children }) {
+  const ref = useRef(null);
+  const [animPhase, setAnimPhase] = useState("idle");
+  const [dropX, setDropX] = useState(0);
+  const timers = useRef([]);
+
+  useEffect(() => {
+    const update = () => {
+      const rect = ref.current?.getBoundingClientRect();
+      if (rect?.width > 0) setDropX(rect.left + rect.width / 2);
+    };
+    update();
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
+  }, []);
+
+  useEffect(() => {
+    if (!dark) {
+      setAnimPhase("idle");
+      return;
+    }
+    const runCycle = () => {
+      timers.current.forEach(clearTimeout);
+      setAnimPhase("underline");
+      timers.current = [
+        setTimeout(() => setAnimPhase("erasing"), 700),
+        setTimeout(() => setAnimPhase("falling"), 1400),
+        setTimeout(() => setAnimPhase("splash"), 2800),
+        setTimeout(() => setAnimPhase("idle"), 3300),
+      ];
+    };
+    runCycle();
+    const interval = setInterval(runCycle, 5000);
+    return () => {
+      clearInterval(interval);
+      timers.current.forEach(clearTimeout);
+    };
+  }, [dark]);
+
+  return (
+    <span className="projects-anim" ref={ref}>
+      {children}
+      {(animPhase === "underline" || animPhase === "erasing") && (
+        <>
+          <span className={`rain-underline rain-underline--left rain-underline--${animPhase === "underline" ? "draw" : "erase"}`} />
+          <span className={`rain-underline rain-underline--right rain-underline--${animPhase === "underline" ? "draw" : "erase"}`} />
+        </>
+      )}
+      {animPhase === "falling" &&
+        createPortal(
+          <span
+            className="rain-drop"
+            style={{
+              left: dropX,
+              "--rain-end": `${(coverEndRef?.current?.getBoundingClientRect().top ?? window.innerHeight) - 20}px`,
+            }}
+          />,
+          document.body
+        )}
+      {animPhase === "splash" &&
+        createPortal(
+          <span
+            className="rain-splash-container"
+            style={{
+              left: dropX,
+              "--splash-y": `${(coverEndRef?.current?.getBoundingClientRect().top ?? window.innerHeight) - 4}px`,
+            }}
+          >
+            <span className="rain-splash rain-splash--1" />
+            <span className="rain-splash rain-splash--2" />
+            <span className="rain-splash rain-splash--3" />
+            <span className="rain-splash rain-splash--4" />
+            <span className="rain-splash rain-splash--5" />
+          </span>,
+          document.body
+        )}
+    </span>
+  );
+}
+
 export default function Navbar({
   onHome,
   onAbout,
@@ -64,6 +145,8 @@ export default function Navbar({
   lang,
   onLangChange,
   dark,
+  rain,
+  coverEndRef,
 }) {
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -83,26 +166,43 @@ export default function Navbar({
       <div className="navbar-inner">
         <ul className="navbar-links">
           <li>
-            <a href="#" onClick={(e) => handleClick(e, onHome)}>Home</a>
+            <a href="#" onClick={(e) => handleClick(e, onHome)}>
+              Home
+            </a>
           </li>
           <li>
-            <a href="#about" onClick={(e) => handleClick(e, onAbout)}>About</a>
+            <a href="#about" onClick={(e) => handleClick(e, onAbout)}>
+              About
+            </a>
           </li>
           <li>
-            {onProjects ? (
-              <a href="#" onClick={(e) => handleClick(e, onProjects)}>Projects</a>
-            ) : (
-              <Link to="/projects">Projects</Link>
-            )}
+            <RainLink dark={rain} coverEndRef={coverEndRef}>
+              {onProjects ? (
+                <a href="#" onClick={(e) => handleClick(e, onProjects)}>
+                  Projects
+                </a>
+              ) : (
+                <Link to="/projects">Projects</Link>
+              )}
+            </RainLink>
           </li>
           <li>
-            <a href="#skills" onClick={(e) => handleClick(e, onSkills)}>Skills</a>
+            <a href="#skills" onClick={(e) => handleClick(e, onSkills)}>
+              Skills
+            </a>
           </li>
           <li>
-            <a href="#experiences" onClick={(e) => handleClick(e, onExperience)}>Experiences</a>
+            <a
+              href="#experiences"
+              onClick={(e) => handleClick(e, onExperience)}
+            >
+              Experiences
+            </a>
           </li>
           <li>
-            <a href="#contact" onClick={(e) => handleClick(e, onContact)}>Contact</a>
+            <a href="#contact" onClick={(e) => handleClick(e, onContact)}>
+              Contact
+            </a>
           </li>
           <li>
             <LangDropdown lang={lang} onLangChange={onLangChange} />
@@ -120,29 +220,48 @@ export default function Navbar({
         <span className="navbar-hamburger__bar" />
       </button>
 
-      <div className={`navbar-mobile-menu ${menuOpen ? "navbar-mobile-menu--open" : ""}`}>
+      <div
+        className={`navbar-mobile-menu ${menuOpen ? "navbar-mobile-menu--open" : ""}`}
+      >
         <ul className="navbar-mobile-links">
           <li>
-            <a href="#" onClick={(e) => handleClick(e, onHome)}>Home</a>
+            <a href="#" onClick={(e) => handleClick(e, onHome)}>
+              Home
+            </a>
           </li>
           <li>
-            <a href="#about" onClick={(e) => handleClick(e, onAbout)}>About</a>
+            <a href="#about" onClick={(e) => handleClick(e, onAbout)}>
+              About
+            </a>
           </li>
           <li>
             {onProjects ? (
-              <a href="#" onClick={(e) => handleClick(e, onProjects)}>Projects</a>
+              <a href="#" onClick={(e) => handleClick(e, onProjects)}>
+                Projects
+              </a>
             ) : (
-              <Link to="/projects" onClick={() => setMenuOpen(false)}>Projects</Link>
+              <Link to="/projects" onClick={() => setMenuOpen(false)}>
+                Projects
+              </Link>
             )}
           </li>
           <li>
-            <a href="#skills" onClick={(e) => handleClick(e, onSkills)}>Skills</a>
+            <a href="#skills" onClick={(e) => handleClick(e, onSkills)}>
+              Skills
+            </a>
           </li>
           <li>
-            <a href="#experiences" onClick={(e) => handleClick(e, onExperience)}>Experiences</a>
+            <a
+              href="#experiences"
+              onClick={(e) => handleClick(e, onExperience)}
+            >
+              Experiences
+            </a>
           </li>
           <li>
-            <a href="#contact" onClick={(e) => handleClick(e, onContact)}>Contact</a>
+            <a href="#contact" onClick={(e) => handleClick(e, onContact)}>
+              Contact
+            </a>
           </li>
           <li className="navbar-mobile-lang">
             <LangDropdown

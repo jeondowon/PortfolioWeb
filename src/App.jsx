@@ -68,6 +68,8 @@ export default function App() {
         lang={lang}
         onLangChange={setLang}
         dark={onCover || onExperience}
+        rain={onCover}
+        coverEndRef={heroRef}
       />
       <Cover lang={lang} onScrollDown={() => scrollTo(aboutRef, { behavior: "smooth" })} />
       <div ref={heroRef}><Hero lang={lang} /></div>
