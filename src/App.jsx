@@ -71,12 +71,29 @@ export default function App() {
         rain={onCover}
         coverEndRef={heroRef}
       />
-      <Cover lang={lang} onScrollDown={() => scrollTo(aboutRef, { behavior: "smooth" })} />
-      <div ref={heroRef}><Hero lang={lang} /></div>
-      <About ref={aboutRef} lang={lang} onScrollDown={() => scrollTo(skillsRef)} />
+      <Cover
+        lang={lang}
+        onScrollDown={() => scrollTo(aboutRef, { behavior: "smooth" })}
+      />
+      <div ref={heroRef}>
+        <Hero lang={lang} />
+      </div>
+      <About
+        ref={aboutRef}
+        lang={lang}
+        onScrollDown={() => scrollTo(skillsRef)}
+      />
       <Banner />
-      <Skills ref={skillsRef} lang={lang} onScrollDown={() => scrollTo(experienceRef)} />
-      <Experiences ref={experienceRef} lang={lang} onScrollDown={() => scrollTo(contactRef)} />
+      <Skills
+        ref={skillsRef}
+        lang={lang}
+        onScrollDown={() => scrollTo(experienceRef)}
+      />
+      <Experiences
+        ref={experienceRef}
+        lang={lang}
+        onScrollDown={() => scrollTo(contactRef)}
+      />
       <Contact ref={contactRef} lang={lang} />
     </>
   );
