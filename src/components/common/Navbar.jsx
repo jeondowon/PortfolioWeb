@@ -59,7 +59,19 @@ function RainLink({ dark, coverEndRef, children }) {
   const ref = useRef(null);
   const [animPhase, setAnimPhase] = useState("idle");
   const [dropX, setDropX] = useState(0);
+  const [isDesktop, setIsDesktop] = useState(() =>
+    typeof window === "undefined" ? true : window.matchMedia("(min-width: 769px)").matches
+  );
   const timers = useRef([]);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(min-width: 769px)");
+    const update = () => setIsDesktop(mediaQuery.matches);
+
+    update();
+    mediaQuery.addEventListener("change", update);
+    return () => mediaQuery.removeEventListener("change", update);
+  }, []);
 
   useEffect(() => {
     const update = () => {
@@ -72,8 +84,9 @@ function RainLink({ dark, coverEndRef, children }) {
   }, []);
 
   useEffect(() => {
-    if (!dark) {
+    if (!dark || !isDesktop) {
       setAnimPhase("idle");
+      timers.current.forEach(clearTimeout);
       return;
     }
     const runCycle = () => {
@@ -92,7 +105,7 @@ function RainLink({ dark, coverEndRef, children }) {
       clearInterval(interval);
       timers.current.forEach(clearTimeout);
     };
-  }, [dark]);
+  }, [dark, isDesktop]);
 
   return (
     <span className="projects-anim" ref={ref}>
