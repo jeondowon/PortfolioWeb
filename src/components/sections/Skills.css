@@ -151,6 +151,12 @@
   }
 }
 
+@media (max-width: 820px) {
+  .skill-card {
+    aspect-ratio: 1 / 1;
+  }
+}
+
 @media (max-width: 480px) {
   .skills-grid {
     grid-template-columns: 1fr;

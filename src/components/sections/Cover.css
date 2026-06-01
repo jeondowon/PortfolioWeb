@@ -21,9 +21,21 @@
   white-space: nowrap;
 }
 
+.cover-hint__touch {
+  display: none;
+}
+
 @media (max-width: 768px) {
   .cover-hint {
     max-width: calc(50% - 48px);
+  }
+
+  .cover-hint__click {
+    display: none;
+  }
+
+  .cover-hint__touch {
+    display: inline;
   }
 }
 

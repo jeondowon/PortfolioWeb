@@ -7,10 +7,12 @@ const TEXT = {
   en: {
     heading: ["Developer for", "ideas and beyond.", "Currently in Korea."],
     hint: ["Try clicking the background", "Maybe it would do something good"],
+    hintTouch: "Try touching the background",
   },
   ko: {
     heading: ["생각을 현실로,", "아이디어와 그 너머를", "바라보는 개발자"],
     hint: ["배경을 클릭해보세요", "무언가 좋은 일이 생길지도 몰라요."],
+    hintTouch: "배경을 터치해보세요",
   },
 };
 
@@ -92,7 +94,8 @@ export default function Cover({ lang = "en", onScrollDown }) {
         </div>
       )}
       <p className="cover-hint">
-        {t.hint[0]}
+        <span className="cover-hint__click">{t.hint[0]}</span>
+        <span className="cover-hint__touch">{t.hintTouch}</span>
         <br />
         {t.hint[1]}
       </p>
