@@ -240,6 +240,8 @@ export const SKILLS = [
   },
 ];
 
+export const LAB_ITEMS = [];
+
 export const RESUME_AVAILABLE = false;
 
 export const SOCIAL = {

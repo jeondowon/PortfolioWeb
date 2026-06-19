@@ -169,6 +169,7 @@ export default function Navbar({
   onSkills,
   onContact,
   onProjects,
+  onLab,
   lang,
   onLangChange,
   dark,
@@ -265,6 +266,15 @@ export default function Navbar({
             </RainLink>
           </li>
           <li>
+            {onLab ? (
+              <a href="#" onClick={(e) => handleClick(e, onLab)}>
+                Laboratory
+              </a>
+            ) : (
+              <Link to="/lab">Laboratory</Link>
+            )}
+          </li>
+          <li>
             <a href="#skills" onClick={(e) => handleClick(e, onSkills)}>
               Skills
             </a>
@@ -333,6 +343,17 @@ export default function Navbar({
                 </Link>
               )}
             </RainLink>
+          </li>
+          <li>
+            {onLab ? (
+              <a href="#" onClick={(e) => handleClick(e, onLab)}>
+                Laboratory
+              </a>
+            ) : (
+              <Link to="/lab" onClick={() => setMenuOpen(false)}>
+                Laboratory
+              </Link>
+            )}
           </li>
           <li>
             <a href="#skills" onClick={(e) => handleClick(e, onSkills)}>
