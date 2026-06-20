@@ -52,21 +52,30 @@
     window.addEventListener('resize', resize);
 
     const particles = [];
-    const G = 9000;
-    const SCATTER_R = 20;
+    const G = 20000000;
+    const SCATTER_R = 35;
     const MAX = 400;
 
     function spawn(x, y, n = 10) {
       for (let i = 0; i < n && particles.length < MAX; i++) {
-        const angle = Math.random() * Math.PI * 2;
-        const speed = 80 + Math.random() * 240;
+        const dx = well.x - x;
+        const dy = well.y - y;
+        const d = Math.max(Math.sqrt(dx * dx + dy * dy), 50);
+
+        // 접선 방향 속도로 발사 → 궤도 생성
+        const orbV = Math.sqrt(G / d);
+        const speed = orbV * (0.65 + Math.random() * 0.7);
+        const dir = Math.random() < 0.5 ? 1 : -1;
+        const tx = -dy / d;
+        const ty = dx / d;
+
         particles.push({
-          x, y,
-          vx: Math.cos(angle) * speed,
-          vy: Math.sin(angle) * speed,
-          life: 0.85 + Math.random() * 0.15,
-          decay: 0.003 + Math.random() * 0.005,
-          r: 1.2 + Math.random() * 1.4,
+          x, y, px: x, py: y,
+          vx: tx * speed * dir,
+          vy: ty * speed * dir,
+          life: 1.0,
+          decay: 0.001 + Math.random() * 0.002,
+          r: 1.0 + Math.random() * 1.0,
         });
       }
     }
@@ -85,18 +94,24 @@
         const d = Math.sqrt(dx * dx + dy * dy) || 1;
 
         if (d < SCATTER_R) {
-          p.vx -= (dx / d) * 360;
-          p.vy -= (dy / d) * 360;
-          p.life -= 0.12;
+          p.vx -= (dx / d) * 900;
+          p.vy -= (dy / d) * 900;
+          p.life -= 0.18;
         } else {
           const f = G / (d * d);
           p.vx += (dx / d) * f * dt;
           p.vy += (dy / d) * f * dt;
+          // 감속으로 궤도가 서서히 안쪽으로 나선형이 됨
+          const damp = Math.pow(0.86, dt);
+          p.vx *= damp;
+          p.vy *= damp;
         }
 
         const spd = Math.sqrt(p.vx * p.vx + p.vy * p.vy);
-        if (spd > 820) { p.vx = p.vx / spd * 820; p.vy = p.vy / spd * 820; }
+        if (spd > 1500) { p.vx = p.vx / spd * 1500; p.vy = p.vy / spd * 1500; }
 
+        p.px = p.x;
+        p.py = p.y;
         p.x += p.vx * dt;
         p.y += p.vy * dt;
         p.life -= p.decay;
@@ -108,22 +123,27 @@
     }
 
     function draw() {
+      // 매 프레임 완전히 지워서 well 잔상 제거
       ctx.globalAlpha = 1;
-      ctx.fillStyle = 'rgba(10,10,10,0.2)';
+      ctx.fillStyle = '#0a0a0a';
       ctx.fillRect(0, 0, W, H);
 
+      // 파티클: 이전 위치 → 현재 위치 선으로 트레일 표현
+      ctx.lineCap = 'round';
       for (const p of particles) {
-        ctx.globalAlpha = p.life * 0.9;
-        ctx.fillStyle = '#fff';
+        ctx.globalAlpha = p.life * 0.8;
+        ctx.strokeStyle = '#fff';
+        ctx.lineWidth = p.r * 1.4;
         ctx.beginPath();
-        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fill();
+        ctx.moveTo(p.px, p.py);
+        ctx.lineTo(p.x, p.y);
+        ctx.stroke();
       }
 
       ctx.globalAlpha = 1;
 
       const g = ctx.createRadialGradient(well.x, well.y, 0, well.x, well.y, 38);
-      g.addColorStop(0, 'rgba(255,255,255,0.16)');
+      g.addColorStop(0, 'rgba(255,255,255,0.12)');
       g.addColorStop(1, 'rgba(255,255,255,0)');
       ctx.fillStyle = g;
       ctx.beginPath();
