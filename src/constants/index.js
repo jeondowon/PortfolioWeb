@@ -241,18 +241,126 @@ export const SKILLS = [
 ];
 
 export const LAB_ITEMS = [
-  { id:'exp01', exp:'EXP-001', url:'gravity-well.lab',  title:'Gravity Well',     date:'2025.04', tags:['canvas','physics'],  blurb:'Fling particles into the field and watch them spiral, collapse and scatter under a draggable point of attraction.' },
-  { id:'exp02', exp:'EXP-002', url:'ttt-neue.lab',      title:'Tic-Tac-Toe Neue', date:'2025.05', tags:['game','minimax'],    blurb:'Three in a row, stripped to ink and paper. The bot never loses—your job is to force the draw.' },
-  { id:'exp03', exp:'EXP-003', url:'chroma-mixer.lab',  title:'Chroma Mixer',     date:'2025.06', tags:['color','ui'],        blurb:'Pull three sliders and blend light like pigment. A small lab for learning how additive color actually behaves.' },
-  { id:'exp04', exp:'EXP-004', url:'maze-01.lab',       title:'Maze 01',          date:'2025.07', tags:['game','algorithm'],  blurb:'Generate a perfect maze with one keystroke, then let a solver flood through it in real time.' },
-  { id:'exp05', exp:'EXP-005', url:'wave-field.lab',    title:'Wave Field',       date:'2025.08', tags:['svg','motion'],      blurb:'A grid of dots breathing through layered sine waves. Move the cursor to push ripples across the surface.' },
-  { id:'exp06', exp:'EXP-006', url:'snake-mono.lab',    title:'Snake.mono',       date:'2025.09', tags:['game','canvas'],     blurb:'The arcade classic rebuilt in under eighty lines, in nothing but black, white and one blinking pixel.' },
-  { id:'exp07', exp:'EXP-007', url:'cursor-ghosts.lab', title:'Cursor Ghosts',    date:'2025.10', tags:['pointer','motion'],  blurb:'A chain of delayed followers trailing your pointer, each one a softer echo of the last.' },
-  { id:'exp08', exp:'EXP-008', url:'memory-grid.lab',   title:'Memory Grid',      date:'2025.11', tags:['game','dom'],        blurb:'Flip tiles, hold the pattern in your head and clear the board before the timer runs dry.' },
-  { id:'exp09', exp:'EXP-009', url:'pendulum-lab.lab',  title:'Pendulum Lab',     date:'2026.01', tags:['physics','sim'],     blurb:'Tune gravity, length and damping, release the bob and trace the long slow decay of its arc.' },
-  { id:'exp10', exp:'EXP-010', url:'type-storm.lab',    title:'Type Storm',       date:'2026.02', tags:['type','motion'],     blurb:'Words that shatter into letters and drift back into place as your cursor sweeps across the line.' },
-  { id:'exp11', exp:'EXP-011', url:'brick-breaker.lab', title:'Brick Breaker',    date:'2026.03', tags:['game','canvas'],     blurb:'One paddle, one ball, an endless wall of bricks. A study in the smallest possible action loop.' },
-  { id:'exp12', exp:'EXP-012', url:'orbit-clock.lab',   title:'Orbit Clock',      date:'2026.04', tags:['time','svg'],        blurb:'The hour, minute and second told as three concentric rings sweeping silently around a shared center.' },
+  {
+    id: "exp01",
+    exp: "EXP-001",
+    url: "/lab/001",
+    title: "Gravity Well",
+    date: "2025.04",
+    tags: ["canvas", "physics"],
+    blurb:
+      "Fling particles into the field and watch them spiral, collapse and scatter under a draggable point of attraction.",
+  },
+  {
+    id: "exp02",
+    exp: "EXP-002",
+    url: "/lab/002",
+    title: "Tic-Tac-Toe Neue",
+    date: "2025.05",
+    tags: ["game", "minimax"],
+    blurb:
+      "Three in a row, stripped to ink and paper. The bot never loses—your job is to force the draw.",
+  },
+  {
+    id: "exp03",
+    exp: "EXP-003",
+    url: "/lab/003",
+    title: "Chroma Mixer",
+    date: "2025.06",
+    tags: ["color", "ui"],
+    blurb:
+      "Pull three sliders and blend light like pigment. A small lab for learning how additive color actually behaves.",
+  },
+  {
+    id: "exp04",
+    exp: "EXP-004",
+    url: "/lab/004",
+    title: "Maze 01",
+    date: "2025.07",
+    tags: ["game", "algorithm"],
+    blurb:
+      "Generate a perfect maze with one keystroke, then let a solver flood through it in real time.",
+  },
+  {
+    id: "exp05",
+    exp: "EXP-005",
+    url: "/lab/005",
+    title: "Wave Field",
+    date: "2025.08",
+    tags: ["svg", "motion"],
+    blurb:
+      "A grid of dots breathing through layered sine waves. Move the cursor to push ripples across the surface.",
+  },
+  {
+    id: "exp06",
+    exp: "EXP-006",
+    url: "/lab/006",
+    title: "Snake.mono",
+    date: "2025.09",
+    tags: ["game", "canvas"],
+    blurb:
+      "The arcade classic rebuilt in under eighty lines, in nothing but black, white and one blinking pixel.",
+  },
+  {
+    id: "exp07",
+    exp: "EXP-007",
+    url: "/lab/007",
+    title: "Cursor Ghosts",
+    date: "2025.10",
+    tags: ["pointer", "motion"],
+    blurb:
+      "A chain of delayed followers trailing your pointer, each one a softer echo of the last.",
+  },
+  {
+    id: "exp08",
+    exp: "EXP-008",
+    url: "/lab/008",
+    title: "Memory Grid",
+    date: "2025.11",
+    tags: ["game", "dom"],
+    blurb:
+      "Flip tiles, hold the pattern in your head and clear the board before the timer runs dry.",
+  },
+  {
+    id: "exp09",
+    exp: "EXP-009",
+    url: "/lab/009",
+    title: "Pendulum Lab",
+    date: "2026.01",
+    tags: ["physics", "sim"],
+    blurb:
+      "Tune gravity, length and damping, release the bob and trace the long slow decay of its arc.",
+  },
+  {
+    id: "exp10",
+    exp: "EXP-010",
+    url: "/lab/010",
+    title: "Type Storm",
+    date: "2026.02",
+    tags: ["type", "motion"],
+    blurb:
+      "Words that shatter into letters and drift back into place as your cursor sweeps across the line.",
+  },
+  {
+    id: "exp11",
+    exp: "EXP-011",
+    url: "/lab/011",
+    title: "Brick Breaker",
+    date: "2026.03",
+    tags: ["game", "canvas"],
+    blurb:
+      "One paddle, one ball, an endless wall of bricks. A study in the smallest possible action loop.",
+  },
+  {
+    id: "exp12",
+    exp: "EXP-012",
+    url: "/lab/012",
+    title: "Orbit Clock",
+    date: "2026.04",
+    tags: ["time", "svg"],
+    blurb:
+      "The hour, minute and second told as three concentric rings sweeping silently around a shared center.",
+  },
 ];
 
 export const RESUME_AVAILABLE = false;
