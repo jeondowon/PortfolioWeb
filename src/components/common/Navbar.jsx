@@ -165,8 +165,7 @@ function RainLink({ dark, coverEndRef, children, mobile = false, active = true }
 export default function Navbar({
   onHome,
   onAbout,
-  onExperience,
-  onSkills,
+
   onContact,
   onProjects,
   onLab,
@@ -275,19 +274,6 @@ export default function Navbar({
             )}
           </li>
           <li>
-            <a href="#skills" onClick={(e) => handleClick(e, onSkills)}>
-              Skills
-            </a>
-          </li>
-          <li>
-            <a
-              href="#experiences"
-              onClick={(e) => handleClick(e, onExperience)}
-            >
-              Experiences
-            </a>
-          </li>
-          <li>
             <a href="#contact" onClick={(e) => handleClick(e, onContact)}>
               Contact
             </a>
@@ -354,19 +340,6 @@ export default function Navbar({
                 Laboratory
               </Link>
             )}
-          </li>
-          <li>
-            <a href="#skills" onClick={(e) => handleClick(e, onSkills)}>
-              Skills
-            </a>
-          </li>
-          <li>
-            <a
-              href="#experiences"
-              onClick={(e) => handleClick(e, onExperience)}
-            >
-              Experiences
-            </a>
           </li>
           <li>
             <a href="#contact" onClick={(e) => handleClick(e, onContact)}>
