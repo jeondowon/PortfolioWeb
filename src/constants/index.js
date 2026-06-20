@@ -248,6 +248,7 @@ export const LAB_ITEMS = [
     title: "Gravity Well",
     date: "2025.04",
     tags: ["canvas", "physics"],
+    thumbnail: "/lab/thumbnails/exp01.png",
     blurb:
       "Fling particles into the field and watch them spiral, collapse and scatter under a draggable point of attraction.",
   },

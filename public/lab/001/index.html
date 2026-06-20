@@ -22,23 +22,77 @@
       transition: color 0.2s;
     }
     #back:hover { color: rgba(255,255,255,0.75); }
-    #info {
+    #controls {
       position: fixed;
       bottom: 22px;
-      left: 22px;
+      right: 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .ctrl-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .ctrl-label {
       font-family: 'Roboto', sans-serif;
       font-size: 10px;
       letter-spacing: 0.14em;
-      color: rgba(255,255,255,0.25);
-      pointer-events: none;
-      user-select: none;
+      color: rgba(255,255,255,0.3);
+      width: 64px;
+      text-align: right;
+    }
+    .ctrl-slider {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 100px;
+      height: 1px;
+      background: rgba(255,255,255,0.2);
+      outline: none;
+      cursor: pointer;
+    }
+    .ctrl-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.75);
+      cursor: pointer;
+    }
+    .ctrl-slider::-moz-range-thumb {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.75);
+      border: none;
+      cursor: pointer;
+    }
+    @media (max-width: 768px) {
+      #controls {
+        bottom: auto;
+        top: 20px;
+      }
     }
   </style>
 </head>
 <body>
   <canvas id="c"></canvas>
   <a href="/lab" id="back">← LAB</a>
-  <div id="info">EXP-001 · GRAVITY WELL · CLICK TO FLING · DRAG WELL TO MOVE</div>
+<div id="controls">
+    <div class="ctrl-row">
+      <span class="ctrl-label">GRAVITY</span>
+      <input class="ctrl-slider" type="range" id="sl-gravity" min="2000000" max="60000000" step="1000000" value="20000000">
+    </div>
+    <div class="ctrl-row">
+      <span class="ctrl-label">GLOW</span>
+      <input class="ctrl-slider" type="range" id="sl-glow" min="0" max="0.5" step="0.01" value="0.2">
+    </div>
+    <div class="ctrl-row">
+      <span class="ctrl-label">DAMPING</span>
+      <input class="ctrl-slider" type="range" id="sl-damp" min="0.6" max="0.99" step="0.01" value="0.86">
+    </div>
+  </div>
   <script>
     const canvas = document.getElementById('c');
     const ctx = canvas.getContext('2d');
@@ -57,9 +111,15 @@
     window.addEventListener('resize', resize);
 
     const particles = [];
-    const G = 20000000;
+    let G = 20000000;
+    let glowAlpha = 0.2;
+    let dampBase = 0.86;
     const SCATTER_R = 35;
     const MAX = 400;
+
+    document.getElementById('sl-gravity').addEventListener('input', e => { G = +e.target.value; });
+    document.getElementById('sl-glow').addEventListener('input', e => { glowAlpha = +e.target.value; });
+    document.getElementById('sl-damp').addEventListener('input', e => { dampBase = +e.target.value; });
 
     function spawn(x, y, n = 10) {
       for (let i = 0; i < n && particles.length < MAX; i++) {
@@ -107,7 +167,7 @@
           p.vx += (dx / d) * f * dt;
           p.vy += (dy / d) * f * dt;
           // 감속으로 궤도가 서서히 안쪽으로 나선형이 됨
-          const damp = Math.pow(0.86, dt);
+          const damp = Math.pow(dampBase, dt);
           p.vx *= damp;
           p.vy *= damp;
         }
@@ -133,7 +193,7 @@
 
       // 파티클: 글로우 헤일로 + 밝은 코어
       for (const p of particles) {
-        ctx.globalAlpha = p.life * 0.2;
+        ctx.globalAlpha = p.life * glowAlpha;
         ctx.fillStyle = '#fff';
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.r * 4, 0, Math.PI * 2);
@@ -145,14 +205,8 @@
         ctx.fill();
       }
 
-      // well 주변을 순수 검정으로 덮어써서 글로우 잔상 방지
-      ctx.globalAlpha = 1;
-      ctx.fillStyle = '#000';
-      ctx.beginPath();
-      ctx.arc(well.x, well.y, 52, 0, Math.PI * 2);
-      ctx.fill();
-
       // well 렌더링
+      ctx.globalAlpha = 1;
       const g = ctx.createRadialGradient(well.x, well.y, 0, well.x, well.y, 38);
       g.addColorStop(0, 'rgba(255,255,255,0.14)');
       g.addColorStop(1, 'rgba(255,255,255,0)');

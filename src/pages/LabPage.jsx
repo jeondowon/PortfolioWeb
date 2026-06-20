@@ -215,12 +215,11 @@ export default function LabPage() {
                     onTouchEnd={onTouchEnd}
                   >
                     <div className="lab-detail-thumb">
-                      <div className="lab-thumb-bg" />
-                      <div className="lab-detail-placeholder">
-                        <div className="lab-detail-placeholder-title">
-                          {ap.title}
-                        </div>
-                      </div>
+                      {ap.thumbnail ? (
+                        <img className="lab-thumb-img" src={ap.thumbnail} alt={ap.title} />
+                      ) : (
+                        <div className="lab-thumb-bg" />
+                      )}
                     </div>
                     <div className="lab-detail-meta">
                       {ap.exp} · {ap.date}
@@ -305,9 +304,6 @@ export default function LabPage() {
                   <div
                     className="lab-card"
                     style={{
-                      border: isActive
-                        ? "2px solid #fff"
-                        : `1px solid rgba(255,255,255,${Math.max(0.12, 0.45 - ar * 0.05)})`,
                       boxShadow: isActive
                         ? "0 34px 72px -18px rgba(0,0,0,.78)"
                         : "0 16px 34px -16px rgba(0,0,0,.6)",
@@ -316,18 +312,12 @@ export default function LabPage() {
                         : `grayscale(1) brightness(${Math.max(0.5, 0.84 - ar * 0.05)})`,
                     }}
                   >
-                    <div className="lab-card-header">
-                      <span className="lab-card-dot" />
-                      <span className="lab-card-dot" />
-                      <span className="lab-card-dot" />
-                      <span className="lab-card-url">{item.url}</span>
-                    </div>
                     <div className="lab-card-thumb-area">
-                      <div className="lab-thumb-bg" />
-                      <div className="lab-card-placeholder">
-                        <div className="lab-card-exp">{item.exp}</div>
-                        <div className="lab-card-title-inner">{item.title}</div>
-                      </div>
+                      {item.thumbnail ? (
+                        <img className="lab-thumb-img" src={item.thumbnail} alt={item.title} />
+                      ) : (
+                        <div className="lab-thumb-bg" />
+                      )}
                     </div>
                   </div>
                 </div>
@@ -337,12 +327,11 @@ export default function LabPage() {
             {ap && (
               <div className="lab-detail">
                 <div className="lab-detail-thumb">
-                  <div className="lab-thumb-bg" />
-                  <div className="lab-detail-placeholder">
-                    <div className="lab-detail-placeholder-title">
-                      {ap.title}
-                    </div>
-                  </div>
+                  {ap.thumbnail ? (
+                    <img className="lab-thumb-img" src={ap.thumbnail} alt={ap.title} />
+                  ) : (
+                    <div className="lab-thumb-bg" />
+                  )}
                 </div>
                 <div className="lab-detail-meta">
                   {ap.exp} · {ap.date}
