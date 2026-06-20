@@ -8,7 +8,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    html, body { width: 100%; height: 100%; background: #0a0a0a; overflow: hidden; }
+    html, body { width: 100%; height: 100%; background: #000; overflow: hidden; }
     canvas { display: block; touch-action: none; }
     #back {
       position: fixed;
@@ -49,6 +49,9 @@
       W = canvas.width = window.innerWidth;
       H = canvas.height = window.innerHeight;
       if (!well) well = { x: W / 2, y: H / 2 };
+      // 캔버스를 불투명 검정으로 초기화 (투명 상태에서 시작하면 body color와 합성 오류)
+      ctx.fillStyle = '#000';
+      ctx.fillRect(0, 0, W, H);
     }
     resize();
     window.addEventListener('resize', resize);
@@ -123,9 +126,9 @@
     }
 
     function draw() {
-      // 페이드 오버레이 → 파티클 꼬리(별똥별 효과) 누적
+      // 페이드 대상을 rgb(0,0,0)으로 설정 → 8비트 반올림 문제 없이 순수 검정으로 수렴
       ctx.globalAlpha = 1;
-      ctx.fillStyle = 'rgba(10,10,10,0.2)';
+      ctx.fillStyle = 'rgba(0,0,0,0.25)';
       ctx.fillRect(0, 0, W, H);
 
       // 파티클: 글로우 헤일로 + 밝은 코어
@@ -142,9 +145,9 @@
         ctx.fill();
       }
 
-      // well 주변을 검정으로 덮어써서 글로우 잔상 방지
+      // well 주변을 순수 검정으로 덮어써서 글로우 잔상 방지
       ctx.globalAlpha = 1;
-      ctx.fillStyle = '#0a0a0a';
+      ctx.fillStyle = '#000';
       ctx.beginPath();
       ctx.arc(well.x, well.y, 52, 0, Math.PI * 2);
       ctx.fill();
