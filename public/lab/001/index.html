@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Gravity Well — EXP-001</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html, body { width: 100%; height: 100%; background: #0a0a0a; overflow: hidden; }
@@ -12,7 +14,7 @@
       position: fixed;
       top: 20px;
       left: 20px;
-      font-family: 'Courier New', monospace;
+      font-family: 'Roboto', sans-serif;
       font-size: 11px;
       letter-spacing: 0.1em;
       color: rgba(255,255,255,0.3);
@@ -24,7 +26,7 @@
       position: fixed;
       bottom: 22px;
       left: 22px;
-      font-family: 'Courier New', monospace;
+      font-family: 'Roboto', sans-serif;
       font-size: 10px;
       letter-spacing: 0.14em;
       color: rgba(255,255,255,0.25);
@@ -70,7 +72,7 @@
         const ty = dx / d;
 
         particles.push({
-          x, y, px: x, py: y,
+          x, y,
           vx: tx * speed * dir,
           vy: ty * speed * dir,
           life: 1.0,
@@ -110,8 +112,6 @@
         const spd = Math.sqrt(p.vx * p.vx + p.vy * p.vy);
         if (spd > 1500) { p.vx = p.vx / spd * 1500; p.vy = p.vy / spd * 1500; }
 
-        p.px = p.x;
-        p.py = p.y;
         p.x += p.vx * dt;
         p.y += p.vy * dt;
         p.life -= p.decay;
@@ -123,27 +123,35 @@
     }
 
     function draw() {
-      // 매 프레임 완전히 지워서 well 잔상 제거
+      // 페이드 오버레이 → 파티클 꼬리(별똥별 효과) 누적
       ctx.globalAlpha = 1;
-      ctx.fillStyle = '#0a0a0a';
+      ctx.fillStyle = 'rgba(10,10,10,0.2)';
       ctx.fillRect(0, 0, W, H);
 
-      // 파티클: 이전 위치 → 현재 위치 선으로 트레일 표현
-      ctx.lineCap = 'round';
+      // 파티클: 글로우 헤일로 + 밝은 코어
       for (const p of particles) {
-        ctx.globalAlpha = p.life * 0.8;
-        ctx.strokeStyle = '#fff';
-        ctx.lineWidth = p.r * 1.4;
+        ctx.globalAlpha = p.life * 0.2;
+        ctx.fillStyle = '#fff';
         ctx.beginPath();
-        ctx.moveTo(p.px, p.py);
-        ctx.lineTo(p.x, p.y);
-        ctx.stroke();
+        ctx.arc(p.x, p.y, p.r * 4, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.globalAlpha = p.life * 0.9;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fill();
       }
 
+      // well 주변을 검정으로 덮어써서 글로우 잔상 방지
       ctx.globalAlpha = 1;
+      ctx.fillStyle = '#0a0a0a';
+      ctx.beginPath();
+      ctx.arc(well.x, well.y, 52, 0, Math.PI * 2);
+      ctx.fill();
 
+      // well 렌더링
       const g = ctx.createRadialGradient(well.x, well.y, 0, well.x, well.y, 38);
-      g.addColorStop(0, 'rgba(255,255,255,0.12)');
+      g.addColorStop(0, 'rgba(255,255,255,0.14)');
       g.addColorStop(1, 'rgba(255,255,255,0)');
       ctx.fillStyle = g;
       ctx.beginPath();
