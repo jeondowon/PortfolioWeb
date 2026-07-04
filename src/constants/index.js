@@ -259,6 +259,7 @@ export const LAB_ITEMS = [
     title: "Text Shape",
     date: "2025.05",
     tags: ["canvas", "typography"],
+    thumbnail: "/lab/thumbnails/exp002.png",
     blurb:
       "Type any word, pick a shape — watch your text flow endlessly along its edge in a tilted 3D ribbon.",
   },

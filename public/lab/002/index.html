@@ -1,424 +1,593 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Text Shape — EXP-002</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    html, body { width: 100%; height: 100%; background: #000; overflow: hidden; }
-    canvas { display: block; }
-    #back {
-      position: fixed;
-      top: 20px; left: 20px;
-      font-family: 'Roboto', sans-serif;
-      font-size: 11px;
-      letter-spacing: 0.1em;
-      color: rgba(255,255,255,0.3);
-      text-decoration: none;
-      transition: color 0.2s;
-      z-index: 10;
-    }
-    #back:hover { color: rgba(255,255,255,0.75); }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Text Shape — EXP-002</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        width: 100%;
+        height: 100%;
+        background: #000;
+        overflow: hidden;
+      }
+      canvas {
+        display: block;
+      }
+      #back {
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        font-family: "Roboto", sans-serif;
+        font-size: 11px;
+        letter-spacing: 0.1em;
+        color: rgba(255, 255, 255, 0.3);
+        text-decoration: none;
+        transition: color 0.2s;
+        z-index: 10;
+      }
+      #back:hover {
+        color: rgba(255, 255, 255, 0.75);
+      }
 
-    #controls {
-      position: fixed;
-      bottom: 22px; right: 22px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      z-index: 10;
-    }
-    .ctrl-row {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-    .ctrl-label {
-      font-family: 'Roboto', sans-serif;
-      font-size: 10px;
-      letter-spacing: 0.14em;
-      color: rgba(255,255,255,0.3);
-      width: 64px;
-      text-align: right;
-    }
-    .ctrl-slider {
-      -webkit-appearance: none;
-      appearance: none;
-      width: 100px;
-      height: 1px;
-      background: rgba(255,255,255,0.2);
-      outline: none;
-      cursor: pointer;
-    }
-    .ctrl-slider::-webkit-slider-thumb {
-      -webkit-appearance: none;
-      width: 10px; height: 10px;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.75);
-      cursor: pointer;
-    }
-    .ctrl-slider::-moz-range-thumb {
-      width: 10px; height: 10px;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.75);
-      border: none;
-      cursor: pointer;
-    }
-    .ctrl-text {
-      width: 176px;
-      background: transparent;
-      border: none;
-      border-bottom: 1px solid rgba(255,255,255,0.2);
-      color: rgba(255,255,255,0.75);
-      font-family: 'Roboto', sans-serif;
-      font-size: 11px;
-      letter-spacing: 0.06em;
-      outline: none;
-      padding: 2px 0;
-    }
-    .ctrl-text::placeholder { color: rgba(255,255,255,0.2); }
+      #controls {
+        position: fixed;
+        bottom: 22px;
+        right: 22px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        z-index: 10;
+      }
+      .ctrl-row {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .ctrl-label {
+        font-family: "Roboto", sans-serif;
+        font-size: 10px;
+        letter-spacing: 0.14em;
+        color: rgba(255, 255, 255, 0.3);
+        width: 64px;
+        text-align: right;
+      }
+      .ctrl-slider {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 100px;
+        height: 1px;
+        background: rgba(255, 255, 255, 0.2);
+        outline: none;
+        cursor: pointer;
+      }
+      .ctrl-slider::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.75);
+        cursor: pointer;
+      }
+      .ctrl-slider::-moz-range-thumb {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.75);
+        border: none;
+        cursor: pointer;
+      }
+      .ctrl-text {
+        width: 176px;
+        background: transparent;
+        border: none;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        color: rgba(255, 255, 255, 0.75);
+        font-family: "Roboto", sans-serif;
+        font-size: 11px;
+        letter-spacing: 0.06em;
+        outline: none;
+        padding: 2px 0;
+      }
+      .ctrl-text::placeholder {
+        color: rgba(255, 255, 255, 0.2);
+      }
 
-    .shape-btns {
-      display: flex;
-      gap: 6px;
-      justify-content: flex-end;
-    }
-    .shape-btn {
-      width: 26px; height: 26px;
-      background: transparent;
-      border: 1px solid rgba(255,255,255,0.15);
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: border-color 0.15s;
-      padding: 0;
-    }
-    .shape-btn:hover { border-color: rgba(255,255,255,0.4); }
-    .shape-btn.active { border-color: rgba(255,255,255,0.75); }
-    .shape-btn svg { width: 13px; height: 13px; }
+      .shape-btns {
+        display: flex;
+        gap: 6px;
+        justify-content: flex-end;
+      }
+      .shape-btn {
+        width: 26px;
+        height: 26px;
+        background: transparent;
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: border-color 0.15s;
+        padding: 0;
+      }
+      .shape-btn:hover {
+        border-color: rgba(255, 255, 255, 0.4);
+      }
+      .shape-btn.active {
+        border-color: rgba(255, 255, 255, 0.75);
+      }
+      .shape-btn svg {
+        width: 13px;
+        height: 13px;
+      }
 
-    @media (max-width: 768px) {
-      #controls { bottom: auto; top: 20px; right: 12px; }
-      .ctrl-label { width: 52px; }
-      .ctrl-slider { width: 80px; }
-      .ctrl-text { width: 132px; }
-    }
-  </style>
-</head>
-<body>
-  <canvas id="c"></canvas>
-  <a href="/lab" id="back">← LAB</a>
+      @media (max-width: 768px) {
+        #controls {
+          bottom: auto;
+          top: 20px;
+          right: 12px;
+        }
+        .ctrl-label {
+          width: 52px;
+        }
+        .ctrl-slider {
+          width: 80px;
+        }
+        .ctrl-text {
+          width: 132px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="c"></canvas>
+    <a href="/lab" id="back">← LAB</a>
 
-  <div id="controls">
-    <div class="ctrl-row" style="justify-content:flex-end">
-      <input class="ctrl-text" id="txt-input" type="text" maxlength="80" placeholder="type something…" value="I love you">
-    </div>
-    <div class="ctrl-row">
-      <span class="ctrl-label">SHAPE</span>
-      <div class="shape-btns" id="shape-btns">
-        <!-- heart -->
-        <button class="shape-btn active" data-shape="heart" title="Heart">
-          <svg viewBox="0 0 16 16" fill="none"><path d="M8 13.5S1.5 9.5 1.5 5.5a3 3 0 0 1 6-0.5 3 3 0 0 1 6 0.5C13.5 9.5 8 13.5 8 13.5z" fill="rgba(255,255,255,0.6)"/></svg>
-        </button>
-        <!-- circle -->
-        <button class="shape-btn" data-shape="circle" title="Circle">
-          <svg viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="5.5" stroke="rgba(255,255,255,0.6)" stroke-width="1.2"/></svg>
-        </button>
-        <!-- star -->
-        <button class="shape-btn" data-shape="star" title="Star">
-          <svg viewBox="0 0 16 16" fill="none"><polygon points="8,2 9.5,6.5 14,6.5 10.5,9 11.5,13.5 8,11 4.5,13.5 5.5,9 2,6.5 6.5,6.5" fill="rgba(255,255,255,0.6)"/></svg>
-        </button>
-        <!-- triangle -->
-        <button class="shape-btn" data-shape="triangle" title="Triangle">
-          <svg viewBox="0 0 16 16" fill="none"><polygon points="8,2 14,13 2,13" stroke="rgba(255,255,255,0.6)" stroke-width="1.2" fill="none"/></svg>
-        </button>
-        <!-- square -->
-        <button class="shape-btn" data-shape="square" title="Square">
-          <svg viewBox="0 0 16 16" fill="none"><rect x="2.5" y="2.5" width="11" height="11" stroke="rgba(255,255,255,0.6)" stroke-width="1.2"/></svg>
-        </button>
-        <!-- pentagon -->
-        <button class="shape-btn" data-shape="pentagon" title="Pentagon">
-          <svg viewBox="0 0 16 16" fill="none"><polygon points="8,1.5 14,6 11.5,13 4.5,13 2,6" stroke="rgba(255,255,255,0.6)" stroke-width="1.2" fill="none"/></svg>
-        </button>
+    <div id="controls">
+      <div class="ctrl-row" style="justify-content: flex-end">
+        <input
+          class="ctrl-text"
+          id="txt-input"
+          type="text"
+          maxlength="80"
+          placeholder="type something…"
+          value="I love you"
+        />
+      </div>
+      <div class="ctrl-row">
+        <span class="ctrl-label">SHAPE</span>
+        <div class="shape-btns" id="shape-btns">
+          <!-- heart -->
+          <button class="shape-btn active" data-shape="heart" title="Heart">
+            <svg viewBox="0 0 16 16" fill="none">
+              <path
+                d="M8 13.5S1.5 9.5 1.5 5.5a3 3 0 0 1 6-0.5 3 3 0 0 1 6 0.5C13.5 9.5 8 13.5 8 13.5z"
+                fill="rgba(255,255,255,0.6)"
+              />
+            </svg>
+          </button>
+          <!-- circle -->
+          <button class="shape-btn" data-shape="circle" title="Circle">
+            <svg viewBox="0 0 16 16" fill="none">
+              <circle
+                cx="8"
+                cy="8"
+                r="5.5"
+                stroke="rgba(255,255,255,0.6)"
+                stroke-width="1.2"
+              />
+            </svg>
+          </button>
+          <!-- star -->
+          <button class="shape-btn" data-shape="star" title="Star">
+            <svg viewBox="0 0 16 16" fill="none">
+              <polygon
+                points="8,2 9.5,6.5 14,6.5 10.5,9 11.5,13.5 8,11 4.5,13.5 5.5,9 2,6.5 6.5,6.5"
+                fill="rgba(255,255,255,0.6)"
+              />
+            </svg>
+          </button>
+          <!-- triangle -->
+          <button class="shape-btn" data-shape="triangle" title="Triangle">
+            <svg viewBox="0 0 16 16" fill="none">
+              <polygon
+                points="8,2 14,13 2,13"
+                stroke="rgba(255,255,255,0.6)"
+                stroke-width="1.2"
+                fill="none"
+              />
+            </svg>
+          </button>
+          <!-- square -->
+          <button class="shape-btn" data-shape="square" title="Square">
+            <svg viewBox="0 0 16 16" fill="none">
+              <rect
+                x="2.5"
+                y="2.5"
+                width="11"
+                height="11"
+                stroke="rgba(255,255,255,0.6)"
+                stroke-width="1.2"
+              />
+            </svg>
+          </button>
+          <!-- pentagon -->
+          <button class="shape-btn" data-shape="pentagon" title="Pentagon">
+            <svg viewBox="0 0 16 16" fill="none">
+              <polygon
+                points="8,1.5 14,6 11.5,13 4.5,13 2,6"
+                stroke="rgba(255,255,255,0.6)"
+                stroke-width="1.2"
+                fill="none"
+              />
+            </svg>
+          </button>
+        </div>
+      </div>
+      <div class="ctrl-row">
+        <span class="ctrl-label">SIZE</span>
+        <input
+          class="ctrl-slider"
+          type="range"
+          id="sl-size"
+          min="6"
+          max="22"
+          step="0.5"
+          value="20"
+        />
+      </div>
+      <div class="ctrl-row">
+        <span class="ctrl-label">DENSITY</span>
+        <input
+          class="ctrl-slider"
+          type="range"
+          id="sl-density"
+          min="0.3"
+          max="1.5"
+          step="0.05"
+          value="0.85"
+        />
+      </div>
+      <div class="ctrl-row">
+        <span class="ctrl-label">SPEED</span>
+        <input
+          class="ctrl-slider"
+          type="range"
+          id="sl-speed"
+          min="10"
+          max="120"
+          step="1"
+          value="40"
+        />
+      </div>
+      <div class="ctrl-row">
+        <span class="ctrl-label">GLOW</span>
+        <input
+          class="ctrl-slider"
+          type="range"
+          id="sl-glow"
+          min="0"
+          max="20"
+          step="0.5"
+          value="8"
+        />
       </div>
     </div>
-    <div class="ctrl-row">
-      <span class="ctrl-label">SIZE</span>
-      <input class="ctrl-slider" type="range" id="sl-size" min="6" max="22" step="0.5" value="11">
-    </div>
-    <div class="ctrl-row">
-      <span class="ctrl-label">DENSITY</span>
-      <input class="ctrl-slider" type="range" id="sl-density" min="0.3" max="1.5" step="0.05" value="0.85">
-    </div>
-    <div class="ctrl-row">
-      <span class="ctrl-label">SPEED</span>
-      <input class="ctrl-slider" type="range" id="sl-speed" min="10" max="120" step="1" value="40">
-    </div>
-    <div class="ctrl-row">
-      <span class="ctrl-label">GLOW</span>
-      <input class="ctrl-slider" type="range" id="sl-glow" min="0" max="20" step="0.5" value="8">
-    </div>
-  </div>
 
-  <script>
-    const canvas = document.getElementById('c');
-    const ctx = canvas.getContext('2d');
-    let W, H;
+    <script>
+      const canvas = document.getElementById("c");
+      const ctx = canvas.getContext("2d");
+      let W, H;
 
-    function resize() {
-      W = canvas.width = window.innerWidth;
-      H = canvas.height = window.innerHeight;
-    }
-    resize();
-    window.addEventListener('resize', resize);
-
-    // ── params ──
-    let userText = 'I love you ';
-    let currentShape = 'heart';
-    let fontSize = 12;
-    let density = 0.85;
-    let speed = 40;
-    let glowBlur = 8;
-
-    // ── conveyor geometry ──
-    // The shape path is the centerline of the text ribbon. The word is stamped
-    // repeatedly along the path and flows around it (the conveyor motion). The
-    // path is tilted into 3D so one side recedes (smaller + dimmer), but every
-    // word is BILLBOARDED: always drawn horizontal and upright, never rotated
-    // or mirrored — it keeps its own angle and shape everywhere.
-    const TILT_X = 0.10; // global tilt: a touch of vertical depth
-    const TILT_Y = 0.50; // global tilt: right side recedes (smaller + dimmer)
-
-    function rotX(p, a) {
-      const c = Math.cos(a), s = Math.sin(a);
-      return { x: p.x, y: p.y * c - p.z * s, z: p.y * s + p.z * c };
-    }
-    function rotY(p, a) {
-      const c = Math.cos(a), s = Math.sin(a);
-      return { x: p.x * c + p.z * s, y: p.y, z: -p.x * s + p.z * c };
-    }
-
-    // ── shape path generators ──
-    // Each returns array of {x,y} in local coords (centered at 0,0), radius ~1
-    function buildHeart(n) {
-      const pts = [];
-      for (let i = 0; i < n; i++) {
-        const t = (i / n) * 2 * Math.PI;
-        const x = 16 * Math.pow(Math.sin(t), 3);
-        const y = 13 * Math.cos(t) - 5 * Math.cos(2*t) - 2 * Math.cos(3*t) - Math.cos(4*t);
-        pts.push({ x, y });
+      function resize() {
+        W = canvas.width = window.innerWidth;
+        H = canvas.height = window.innerHeight;
       }
-      return pts;
-    }
+      resize();
+      window.addEventListener("resize", resize);
 
-    function buildCircle(n) {
-      const pts = [];
-      for (let i = 0; i < n; i++) {
-        const t = (i / n) * 2 * Math.PI;
-        pts.push({ x: Math.cos(t), y: Math.sin(t) });
+      // ── params ──
+      let userText = "I love you ";
+      let currentShape = "heart";
+      let fontSize = 20;
+      let density = 0.85;
+      let speed = 40;
+      let glowBlur = 8;
+
+      // ── conveyor geometry ──
+      // The shape path is the centerline of the text ribbon. The word is stamped
+      // repeatedly along the path and flows around it (the conveyor motion). The
+      // path is tilted into 3D so one side recedes (smaller + dimmer), but every
+      // word is BILLBOARDED: always drawn horizontal and upright, never rotated
+      // or mirrored — it keeps its own angle and shape everywhere.
+      const TILT_X = 0.16; // global tilt: a touch of vertical depth
+      const TILT_Y = -0.32; // global tilt: left side clearly rotates away from viewer
+
+      function rotX(p, a) {
+        const c = Math.cos(a),
+          s = Math.sin(a);
+        return { x: p.x, y: p.y * c - p.z * s, z: p.y * s + p.z * c };
       }
-      return pts;
-    }
-
-    function buildStar(n, outerR = 1, innerR = 0.42, points = 5) {
-      const pts = [];
-      const total = points * 2;
-      for (let i = 0; i < n; i++) {
-        const frac = i / n;
-        const seg = frac * total;
-        const idx = Math.floor(seg);
-        const t = seg - idx;
-        const a0 = (idx / total) * 2 * Math.PI - Math.PI / 2;
-        const a1 = ((idx + 1) / total) * 2 * Math.PI - Math.PI / 2;
-        const r0 = idx % 2 === 0 ? outerR : innerR;
-        const r1 = idx % 2 === 0 ? innerR : outerR;
-        const x0 = r0 * Math.cos(a0), y0 = r0 * Math.sin(a0);
-        const x1 = r1 * Math.cos(a1), y1 = r1 * Math.sin(a1);
-        pts.push({ x: x0 + (x1 - x0) * t, y: y0 + (y1 - y0) * t });
-      }
-      return pts;
-    }
-
-    function buildPolygon(n, sides) {
-      const pts = [];
-      const verts = [];
-      for (let i = 0; i < sides; i++) {
-        const a = (i / sides) * 2 * Math.PI - Math.PI / 2;
-        verts.push({ x: Math.cos(a), y: Math.sin(a) });
-      }
-      for (let i = 0; i < n; i++) {
-        const frac = i / n;
-        const seg = frac * sides;
-        const idx = Math.floor(seg) % sides;
-        const t = seg - Math.floor(seg);
-        const v0 = verts[idx];
-        const v1 = verts[(idx + 1) % sides];
-        pts.push({ x: v0.x + (v1.x - v0.x) * t, y: v0.y + (v1.y - v0.y) * t });
-      }
-      return pts;
-    }
-
-    // center + normalize a path so it's centroid-0 and max radius ~1, y-up
-    function normalize(pts) {
-      let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
-      for (const p of pts) {
-        if (p.x < minX) minX = p.x; if (p.x > maxX) maxX = p.x;
-        if (p.y < minY) minY = p.y; if (p.y > maxY) maxY = p.y;
-      }
-      const cx = (minX + maxX) / 2, cy = (minY + maxY) / 2;
-      let r = 0;
-      for (const p of pts) {
-        const dx = p.x - cx, dy = p.y - cy;
-        r = Math.max(r, Math.hypot(dx, dy));
-      }
-      return pts.map(p => ({ x: (p.x - cx) / r, y: (p.y - cy) / r }));
-    }
-
-    const PATH_N = 1200;
-    function buildPath(shape) {
-      let raw;
-      switch (shape) {
-        case 'heart':    raw = buildHeart(PATH_N); break;
-        case 'circle':   raw = buildCircle(PATH_N); break;
-        case 'star':     raw = buildStar(PATH_N); break;
-        case 'triangle': raw = buildPolygon(PATH_N, 3); break;
-        case 'square':   raw = buildPolygon(PATH_N, 4); break;
-        case 'pentagon': raw = buildPolygon(PATH_N, 5); break;
-        default:         raw = buildCircle(PATH_N);
-      }
-      return normalize(raw);
-    }
-
-    // pre-compute arc lengths for a path
-    function arcLengths(pts) {
-      const lens = [0];
-      for (let i = 1; i < pts.length; i++) {
-        const dx = pts[i].x - pts[i-1].x;
-        const dy = pts[i].y - pts[i-1].y;
-        lens.push(lens[i-1] + Math.sqrt(dx*dx + dy*dy));
-      }
-      // close the loop
-      const dx = pts[0].x - pts[pts.length-1].x;
-      const dy = pts[0].y - pts[pts.length-1].y;
-      lens.push(lens[lens.length-1] + Math.sqrt(dx*dx + dy*dy));
-      return lens;
-    }
-
-    // sample path at arc-length s, returns {x,y,angle} (angle = tangent dir)
-    function samplePath(pts, lens, s) {
-      const n = pts.length;
-      const total = lens[n];
-      s = ((s % total) + total) % total;
-      let lo = 0, hi = n;
-      while (lo < hi - 1) {
-        const mid = (lo + hi) >> 1;
-        if (lens[mid] <= s) lo = mid; else hi = mid;
-      }
-      const hiI = hi % n;
-      const t = (s - lens[lo]) / (lens[hi] - lens[lo] || 1);
-      const x = pts[lo].x + (pts[hiI].x - pts[lo].x) * t;
-      const y = pts[lo].y + (pts[hiI].y - pts[lo].y) * t;
-      const angle = Math.atan2(pts[hiI].y - pts[lo].y, pts[hiI].x - pts[lo].x);
-      return { x, y, angle };
-    }
-
-    let path = buildPath(currentShape);
-    let lens = arcLengths(path);
-    let totalLen = lens[lens.length - 1];
-
-    let offset = 0;
-    let lastTs = null;
-
-    function draw(ts) {
-      if (!lastTs) lastTs = ts;
-      const dt = Math.min((ts - lastTs) / 1000, 0.05);
-      lastTs = ts;
-
-      const cx = W / 2, cy = H / 2;
-      const R = Math.min(W, H) * 0.30; // pixel radius
-      const F = R * 3.4;               // perspective focal length
-
-      // conveyor flow along the path
-      offset = (offset + (speed / R) * dt) % totalLen;
-
-      ctx.clearRect(0, 0, W, H);
-      ctx.fillStyle = '#000';
-      ctx.fillRect(0, 0, W, H);
-
-      const S = (userText.length ? userText : ' ');
-
-      ctx.shadowBlur = glowBlur;
-      ctx.shadowColor = 'rgba(255,150,180,0.9)';
-      ctx.fillStyle = 'rgb(255,175,200)';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.font = `${fontSize}px 'Roboto', sans-serif`;
-
-      // spacing of word-stamps along the path (line spacing), in unit arc length
-      const lineGap = (fontSize * 0.95 / density) / R;
-      const nRungs = Math.floor(totalLen / lineGap);
-
-      for (let i = 0; i < nRungs; i++) {
-        const s = (offset + i * lineGap) % totalLen;
-        const { x: px, y: py } = samplePath(path, lens, s);
-
-        // tilt the anchor into 3D for depth, but keep the word itself upright
-        const p = rotY(rotX({ x: px, y: py, z: 0 }, TILT_X), TILT_Y);
-        const scale = F / (F - p.z * R);
-        const sx = cx + p.x * R * scale;
-        const sy = cy - p.y * R * scale;
-
-        // depth shading: the receding (right) side is dimmer
-        const front = p.z * 0.5 + 0.5; // ~0 far … ~1 near
-        const alpha = (0.22 + 0.78 * front) * Math.min(1, 0.6 + 0.4 * scale);
-
-        ctx.globalAlpha = Math.max(0.06, Math.min(1, alpha));
-        ctx.save();
-        ctx.translate(sx, sy);
-        // constant glyph size everywhere — depth shows in position + brightness only
-        ctx.fillText(S, 0, 0); // whole word, horizontal & upright — never rotated/mirrored/resized
-        ctx.restore();
+      function rotY(p, a) {
+        const c = Math.cos(a),
+          s = Math.sin(a);
+        return { x: p.x * c + p.z * s, y: p.y, z: -p.x * s + p.z * c };
       }
 
-      ctx.globalAlpha = 1;
-      ctx.shadowBlur = 0;
+      // ── shape path generators ──
+      // Each returns array of {x,y} in local coords (centered at 0,0), radius ~1
+      function buildHeart(n) {
+        const pts = [];
+        for (let i = 0; i < n; i++) {
+          const t = (i / n) * 2 * Math.PI;
+          const x = 16 * Math.pow(Math.sin(t), 3);
+          const y =
+            13 * Math.cos(t) -
+            5 * Math.cos(2 * t) -
+            2 * Math.cos(3 * t) -
+            Math.cos(4 * t);
+          pts.push({ x, y });
+        }
+        return pts;
+      }
+
+      function buildCircle(n) {
+        const pts = [];
+        for (let i = 0; i < n; i++) {
+          const t = (i / n) * 2 * Math.PI;
+          pts.push({ x: Math.cos(t), y: Math.sin(t) });
+        }
+        return pts;
+      }
+
+      function buildStar(n, outerR = 1, innerR = 0.42, points = 5) {
+        const pts = [];
+        const total = points * 2;
+        for (let i = 0; i < n; i++) {
+          const frac = i / n;
+          const seg = frac * total;
+          const idx = Math.floor(seg);
+          const t = seg - idx;
+          const a0 = (idx / total) * 2 * Math.PI - Math.PI / 2;
+          const a1 = ((idx + 1) / total) * 2 * Math.PI - Math.PI / 2;
+          const r0 = idx % 2 === 0 ? outerR : innerR;
+          const r1 = idx % 2 === 0 ? innerR : outerR;
+          const x0 = r0 * Math.cos(a0),
+            y0 = r0 * Math.sin(a0);
+          const x1 = r1 * Math.cos(a1),
+            y1 = r1 * Math.sin(a1);
+          pts.push({ x: x0 + (x1 - x0) * t, y: y0 + (y1 - y0) * t });
+        }
+        return pts;
+      }
+
+      function buildPolygon(n, sides) {
+        const pts = [];
+        const verts = [];
+        for (let i = 0; i < sides; i++) {
+          const a = (i / sides) * 2 * Math.PI - Math.PI / 2;
+          verts.push({ x: Math.cos(a), y: Math.sin(a) });
+        }
+        for (let i = 0; i < n; i++) {
+          const frac = i / n;
+          const seg = frac * sides;
+          const idx = Math.floor(seg) % sides;
+          const t = seg - Math.floor(seg);
+          const v0 = verts[idx];
+          const v1 = verts[(idx + 1) % sides];
+          pts.push({
+            x: v0.x + (v1.x - v0.x) * t,
+            y: v0.y + (v1.y - v0.y) * t,
+          });
+        }
+        return pts;
+      }
+
+      // center + normalize a path so it's centroid-0 and max radius ~1, y-up
+      function normalize(pts) {
+        let minX = Infinity,
+          maxX = -Infinity,
+          minY = Infinity,
+          maxY = -Infinity;
+        for (const p of pts) {
+          if (p.x < minX) minX = p.x;
+          if (p.x > maxX) maxX = p.x;
+          if (p.y < minY) minY = p.y;
+          if (p.y > maxY) maxY = p.y;
+        }
+        const cx = (minX + maxX) / 2,
+          cy = (minY + maxY) / 2;
+        let r = 0;
+        for (const p of pts) {
+          const dx = p.x - cx,
+            dy = p.y - cy;
+          r = Math.max(r, Math.hypot(dx, dy));
+        }
+        return pts.map((p) => ({ x: (p.x - cx) / r, y: (p.y - cy) / r }));
+      }
+
+      const PATH_N = 1200;
+      function buildPath(shape) {
+        let raw;
+        switch (shape) {
+          case "heart":
+            raw = buildHeart(PATH_N);
+            break;
+          case "circle":
+            raw = buildCircle(PATH_N);
+            break;
+          case "star":
+            raw = buildStar(PATH_N);
+            break;
+          case "triangle":
+            raw = buildPolygon(PATH_N, 3);
+            break;
+          case "square":
+            raw = buildPolygon(PATH_N, 4);
+            break;
+          case "pentagon":
+            raw = buildPolygon(PATH_N, 5);
+            break;
+          default:
+            raw = buildCircle(PATH_N);
+        }
+        return normalize(raw);
+      }
+
+      // project a path into the tilted 3D + perspective space. Since F = 2R,
+      // the perspective scale is 2/(2 - z) — screen-independent, so the
+      // projection only needs recomputing when the shape changes.
+      function projectPath(pts) {
+        return pts.map((q) => {
+          const p = rotY(rotX({ x: q.x, y: q.y, z: 0 }, TILT_X), TILT_Y);
+          const scale = 2 / (2 - p.z);
+          return { X: p.x * scale, Y: p.y * scale, z: p.z };
+        });
+      }
+
+      // arc lengths measured in the PROJECTED space (what the viewer sees), so
+      // stamping at equal steps here gives even on-screen spacing everywhere.
+      function projArcLengths(P) {
+        const lens = [0];
+        for (let i = 1; i < P.length; i++) {
+          lens.push(
+            lens[i - 1] + Math.hypot(P[i].X - P[i - 1].X, P[i].Y - P[i - 1].Y),
+          );
+        }
+        const last = P.length - 1;
+        lens.push(lens[last] + Math.hypot(P[0].X - P[last].X, P[0].Y - P[last].Y));
+        return lens;
+      }
+
+      // sample projected param at projected arc-length sp → {X,Y,z}
+      function sampleProj(P, lens, sp) {
+        const n = P.length;
+        const total = lens[n];
+        sp = ((sp % total) + total) % total;
+        let lo = 0,
+          hi = n;
+        while (lo < hi - 1) {
+          const mid = (lo + hi) >> 1;
+          if (lens[mid] <= sp) lo = mid;
+          else hi = mid;
+        }
+        const hiI = hi % n;
+        const t = (sp - lens[lo]) / (lens[hi] - lens[lo] || 1);
+        return {
+          X: P[lo].X + (P[hiI].X - P[lo].X) * t,
+          Y: P[lo].Y + (P[hiI].Y - P[lo].Y) * t,
+          z: P[lo].z + (P[hiI].z - P[lo].z) * t,
+        };
+      }
+
+      let path = buildPath(currentShape);
+      let proj = projectPath(path);
+      let plens = projArcLengths(proj);
+      let projTotal = plens[plens.length - 1];
+
+      let offset = 0;
+      let lastTs = null;
+
+      function draw(ts) {
+        if (!lastTs) lastTs = ts;
+        const dt = Math.min((ts - lastTs) / 1000, 0.05);
+        lastTs = ts;
+
+        const cx = W / 2,
+          cy = H / 2;
+        const R = Math.min(W, H) * 0.3; // pixel radius
+
+        // conveyor flow along the path (in projected arc length)
+        offset = (offset + (speed / R) * dt) % projTotal;
+
+        ctx.clearRect(0, 0, W, H);
+        ctx.fillStyle = "#000";
+        ctx.fillRect(0, 0, W, H);
+
+        const S = userText.length ? userText : " ";
+
+        ctx.shadowBlur = glowBlur;
+        ctx.shadowColor = "rgba(255,150,180,0.9)";
+        ctx.fillStyle = "rgb(255,175,200)";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.font = `${fontSize}px 'Roboto', sans-serif`;
+
+        // spacing of word-stamps (line spacing), in projected arc length so the
+        // on-screen gap between words stays even on both the near and far sides
+        const lineGap = (fontSize * 0.95) / density / R;
+        const nRungs = Math.floor(projTotal / lineGap);
+
+        for (let i = 0; i < nRungs; i++) {
+          const sp = (offset + i * lineGap) % projTotal;
+          const { X, Y, z } = sampleProj(proj, plens, sp);
+
+          // already tilted + perspective-projected; place the upright word here
+          const scale = 2 / (2 - z);
+          const sx = cx + X * R;
+          const sy = cy - Y * R;
+
+          // depth shading: the receding (left) side is clearly dimmer
+          const front = z * 0.5 + 0.5; // ~0 far … ~1 near
+          const alpha = (0.14 + 0.86 * front) * Math.min(1, 0.6 + 0.4 * scale);
+
+          ctx.globalAlpha = Math.max(0.06, Math.min(1, alpha));
+          ctx.save();
+          ctx.translate(sx, sy);
+          // constant glyph size everywhere — depth shows in position + brightness only
+          ctx.fillText(S, 0, 0); // whole word, horizontal & upright — never rotated/mirrored/resized
+          ctx.restore();
+        }
+
+        ctx.globalAlpha = 1;
+        ctx.shadowBlur = 0;
+        requestAnimationFrame(draw);
+      }
       requestAnimationFrame(draw);
-    }
-    requestAnimationFrame(draw);
 
-    // ── controls ──
-    document.getElementById('txt-input').addEventListener('input', e => {
-      userText = e.target.value || ' ';
-    });
+      // ── controls ──
+      document.getElementById("txt-input").addEventListener("input", (e) => {
+        userText = e.target.value || " ";
+      });
 
-    document.getElementById('sl-size').addEventListener('input', e => {
-      fontSize = +e.target.value;
-    });
-    document.getElementById('sl-density').addEventListener('input', e => {
-      density = +e.target.value;
-    });
-    document.getElementById('sl-speed').addEventListener('input', e => {
-      speed = +e.target.value;
-    });
-    document.getElementById('sl-glow').addEventListener('input', e => {
-      glowBlur = +e.target.value;
-    });
+      document.getElementById("sl-size").addEventListener("input", (e) => {
+        fontSize = +e.target.value;
+      });
+      document.getElementById("sl-density").addEventListener("input", (e) => {
+        density = +e.target.value;
+      });
+      document.getElementById("sl-speed").addEventListener("input", (e) => {
+        speed = +e.target.value;
+      });
+      document.getElementById("sl-glow").addEventListener("input", (e) => {
+        glowBlur = +e.target.value;
+      });
 
-    document.getElementById('shape-btns').addEventListener('click', e => {
-      const btn = e.target.closest('.shape-btn');
-      if (!btn) return;
-      document.querySelectorAll('.shape-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      currentShape = btn.dataset.shape;
-      path = buildPath(currentShape);
-      lens = arcLengths(path);
-      totalLen = lens[lens.length - 1];
-      offset = 0;
-    });
-  </script>
-</body>
+      document.getElementById("shape-btns").addEventListener("click", (e) => {
+        const btn = e.target.closest(".shape-btn");
+        if (!btn) return;
+        document
+          .querySelectorAll(".shape-btn")
+          .forEach((b) => b.classList.remove("active"));
+        btn.classList.add("active");
+        currentShape = btn.dataset.shape;
+        path = buildPath(currentShape);
+        proj = projectPath(path);
+        plens = projArcLengths(proj);
+        projTotal = plens[plens.length - 1];
+        offset = 0;
+      });
+    </script>
+  </body>
 </html>
