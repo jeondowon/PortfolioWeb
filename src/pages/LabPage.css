@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap");
 
 /* ── Container ── */
 .lab-container {
@@ -8,7 +8,7 @@
   margin-top: 64px;
   overflow: hidden;
   background: #0a0a0a;
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
   color: #fff;
   user-select: none;
   -webkit-user-select: none;
@@ -19,8 +19,8 @@
   inset: 0;
   pointer-events: none;
   background-image:
-    linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px);
+    linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
   background-size: 50px 50px;
 }
 
@@ -28,7 +28,11 @@
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background: radial-gradient(120% 100% at 50% 50%, transparent 55%, rgba(0,0,0,.55) 100%);
+  background: radial-gradient(
+    120% 100% at 50% 50%,
+    transparent 55%,
+    rgba(0, 0, 0, 0.55) 100%
+  );
 }
 
 /* ── Title block (desktop: absolute, mobile: static via .lab-mobile) ── */
@@ -49,12 +53,11 @@
 
 .lab-subtitle {
   font-size: 16px;
-  color: rgba(255,255,255,.55);
+  color: rgba(255, 255, 255, 0.55);
   margin-top: 16px;
   max-width: 380px;
   line-height: 1.5;
 }
-
 
 /* ── Shared thumbnail background ── */
 .lab-thumb-img {
@@ -71,8 +74,10 @@
   background-color: #f0f0f1;
   background-image: repeating-linear-gradient(
     45deg,
-    #f3f3f4 0, #f3f3f4 13px,
-    #e7e7e9 13px, #e7e7e9 26px
+    #f3f3f4 0,
+    #f3f3f4 13px,
+    #e7e7e9 13px,
+    #e7e7e9 26px
   );
 }
 
@@ -81,18 +86,24 @@
   position: absolute;
   left: 43%;
   top: 50%;
-  transition: transform .55s cubic-bezier(.22,.61,.36,1), opacity .55s ease;
+  transition:
+    transform 0.55s cubic-bezier(0.22, 0.61, 0.36, 1),
+    opacity 0.55s ease;
   will-change: transform;
 }
 
 .lab-card {
   width: 460px;
   height: 290px;
+  box-sizing: border-box;
   overflow: hidden;
   display: flex;
   flex-direction: column;
   background: #fff;
-  transition: filter .45s ease, box-shadow .45s ease;
+  border: 0.5px solid rgba(87, 87, 87, 0.7);
+  transition:
+    filter 0.45s ease,
+    box-shadow 0.45s ease;
 }
 
 .lab-card-thumb-area {
@@ -109,9 +120,9 @@
   width: 300px;
   z-index: 600;
   background: #121215;
-  border: 1px solid rgba(255,255,255,.14);
+  border: 1px solid rgba(255, 255, 255, 0.14);
   padding: 16px;
-  box-shadow: 0 26px 64px -22px rgba(0,0,0,.85);
+  box-shadow: 0 26px 64px -22px rgba(0, 0, 0, 0.85);
 }
 
 .lab-detail-thumb {
@@ -119,27 +130,27 @@
   width: 100%;
   height: 160px;
   overflow: hidden;
-  border: 1px solid rgba(255,255,255,.1);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .lab-detail-meta {
   font-size: 11px;
-  letter-spacing: .16em;
-  color: rgba(255,255,255,.5);
+  letter-spacing: 0.16em;
+  color: rgba(255, 255, 255, 0.5);
   margin-top: 17px;
 }
 
 .lab-detail-title {
   font-size: 25px;
   font-weight: 600;
-  letter-spacing: -.015em;
+  letter-spacing: -0.015em;
   margin-top: 7px;
 }
 
 .lab-detail-blurb {
   font-size: 14px;
   line-height: 1.55;
-  color: rgba(255,255,255,.62);
+  color: rgba(255, 255, 255, 0.62);
   margin-top: 9px;
   min-height: calc(1.55em * 3);
 }
@@ -153,9 +164,9 @@
 
 .lab-detail-tag {
   font-size: 10px;
-  letter-spacing: .08em;
-  color: rgba(255,255,255,.62);
-  border: 1px solid rgba(255,255,255,.2);
+  letter-spacing: 0.08em;
+  color: rgba(255, 255, 255, 0.62);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   padding: 4px 11px;
 }
 
@@ -214,9 +225,9 @@
     display: flex;
     flex-direction: column;
     background: #121215;
-    border: 1px solid rgba(255,255,255,.14);
+    border: 1px solid rgba(255, 255, 255, 0.14);
     padding: 14px;
-    box-shadow: 0 26px 64px -22px rgba(0,0,0,.85);
+    box-shadow: 0 26px 64px -22px rgba(0, 0, 0, 0.85);
     touch-action: none;
   }
 
@@ -225,7 +236,9 @@
     aspect-ratio: unset;
   }
 
-  .lab-mobile-full-card .lab-detail-meta { margin-top: 13px; }
+  .lab-mobile-full-card .lab-detail-meta {
+    margin-top: 13px;
+  }
 
   .lab-mobile-full-card .lab-detail-title {
     font-size: 20px;
@@ -241,7 +254,9 @@
     overflow: hidden;
   }
 
-  .lab-mobile-full-card .lab-detail-tags { margin-top: 11px; }
+  .lab-mobile-full-card .lab-detail-tags {
+    margin-top: 11px;
+  }
 
   .lab-mobile-full-card .lab-detail-open {
     margin-top: 13px;
@@ -258,7 +273,7 @@
     width: 6px;
     height: 6px;
     border-radius: 50%;
-    background: rgba(255,255,255,.25);
+    background: rgba(255, 255, 255, 0.25);
     cursor: pointer;
     transition: background 0.2s;
   }
