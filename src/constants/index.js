@@ -267,11 +267,12 @@ export const LAB_ITEMS = [
     id: "exp03",
     exp: "EXP-003",
     url: "/lab/003",
-    title: "Tic-Tac-Toe Neue",
+    title: "First to 100 Wins!",
     date: "2025.06",
-    tags: ["game", "minimax"],
+    tags: ["game"],
+    thumbnail: "/lab/thumbnails/exp003.png",
     blurb:
-      "Three in a row, stripped to ink and paper. The bot never loses—your job is to force the draw.",
+      "Four glowing dots bounce around inside a circular arena. Guess which dot will win!",
   },
   {
     id: "exp04",

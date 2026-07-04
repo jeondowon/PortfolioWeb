@@ -216,7 +216,11 @@ export default function LabPage() {
                   >
                     <div className="lab-detail-thumb">
                       {ap.thumbnail ? (
-                        <img className="lab-thumb-img" src={ap.thumbnail} alt={ap.title} />
+                        <img
+                          className="lab-thumb-img"
+                          src={ap.thumbnail}
+                          alt={ap.title}
+                        />
                       ) : (
                         <div className="lab-thumb-bg" />
                       )}
@@ -314,7 +318,11 @@ export default function LabPage() {
                   >
                     <div className="lab-card-thumb-area">
                       {item.thumbnail ? (
-                        <img className="lab-thumb-img" src={item.thumbnail} alt={item.title} />
+                        <img
+                          className="lab-thumb-img"
+                          src={item.thumbnail}
+                          alt={item.title}
+                        />
                       ) : (
                         <div className="lab-thumb-bg" />
                       )}
@@ -328,7 +336,11 @@ export default function LabPage() {
               <div className="lab-detail">
                 <div className="lab-detail-thumb">
                   {ap.thumbnail ? (
-                    <img className="lab-thumb-img" src={ap.thumbnail} alt={ap.title} />
+                    <img
+                      className="lab-thumb-img"
+                      src={ap.thumbnail}
+                      alt={ap.title}
+                    />
                   ) : (
                     <div className="lab-thumb-bg" />
                   )}

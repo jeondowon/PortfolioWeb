@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>First to 100 wins!</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 100%; height: 100%; overflow: hidden; background: #000; }
+  canvas { display: block; }
+  #start {
+    position: absolute;
+    left: 50%; top: 50%;
+    transform: translate(-50%, -50%);
+    padding: 0.7em 2.2em;
+    font: 700 clamp(16px, 2.5vmin, 28px) "Roboto", -apple-system, Helvetica, Arial, sans-serif;
+    color: #fff;
+    background: rgba(20, 20, 20, 0.75);
+    border: 2px solid #fff;
+    border-radius: 999px;
+    cursor: pointer;
+    letter-spacing: 0.08em;
+  }
+  #start:hover { background: rgba(255, 255, 255, 0.15); }
+</style>
+</head>
+<body>
+<canvas id="game"></canvas>
+<button id="start">START</button>
+<script>
+"use strict";
+
+/* ============================================================
+ * First to 100 wins! — bouncing-dot line-battle simulation
+ *
+ * Four dots bounce inside a circular arena.
+ *  - Wall bounce  -> leave a colored line, score +1
+ *  - Enemy line touching a dot's body -> the toucher STEALS the line:
+ *    it changes color/owner (toucher +1, previous owner -1)
+ *  - Score 0      -> dot eliminated
+ *  - First to 100 -> wins, round resets, loops forever
+ * A dot's score is always exactly the number of lines it owns.
+ *
+ * Each line is anchored at its wall bounce point and its other end
+ * follows the owner dot, so every dot drags a fan of lines behind it.
+ *
+ * Capture triggers the moment a line touches an enemy dot's body
+ * (segment-to-circle contact), except for the stretch right next to
+ * its owner (see LINE_SHIELD).
+ * ============================================================ */
+
+/* ---------------- Tunable constants ---------------- */
+const ARENA_RADIUS_FACTOR = 0.42;   // arena radius = min(vw, vh) * this
+const DOT_RADIUS_FACTOR   = 0.06;   // dot radius = arenaRadius * this
+const DOT_RADIUS_MIN_PX   = 8;      // dot radius never smaller than this
+const LINE_WIDTH_FACTOR   = 0.0022; // line width = arenaRadius * this (min 1px)
+const ARENA_STROKE_FACTOR = 0.005;  // arena outline width (min 1.5px)
+const BASE_SPEED_FACTOR   = 2.6;    // dot speed = arenaRadius * this, per second
+const WIN_TARGET          = 100;    // first dot to reach this score wins
+const START_SCORE         = 0;      // each dot starts with this many lines
+const START_DIST          = 0.62;   // start position distance from center,
+                                    // fraction of arenaRadius
+const LINE_ALPHA          = 0.5;    // trail line opacity
+const WIN_PAUSE_MS        = 1600;   // pause on win before the next round
+const RING_MS             = 400;    // wall-bounce ring effect duration
+const RING_GROWTH         = 3.0;    // ring expands to dotR * this
+const LINE_SHIELD         = 4;      // line part within dotR * this of its
+                                    // owner can't be captured (lines converge
+                                    // on the owner, and a colliding enemy body
+                                    // reaches 3 dot-radii from the owner's
+                                    // center — without this margin every
+                                    // dot-dot collision would swap both fans)
+
+// startAngle: fixed spawn direction from center (canvas y grows downward),
+// matching the reference layout — yellow/blue on top, green/red below.
+const PLAYERS = [
+  { name: "Blue",   color: "#2E86FF", startAngle: -Math.PI / 4 },     // upper right
+  { name: "Green",  color: "#1FB871", startAngle: Math.PI * 3 / 4 },  // lower left
+  { name: "Red",    color: "#F0483C", startAngle: Math.PI / 4 },      // lower right
+  { name: "Yellow", color: "#E0A21A", startAngle: -Math.PI * 3 / 4 }, // upper left
+];
+
+/* ---------------- Canvas setup ---------------- */
+const canvas = document.getElementById("game");
+const ctx = canvas.getContext("2d");
+
+let W = 0, H = 0;            // CSS pixel size
+let cx = 0, cy = 0;          // arena center
+let arenaR = 0;              // arena radius
+let dotR = 0;                // dot radius
+let lineW = 1;               // trail line width
+
+function computeMetrics() {
+  arenaR = Math.min(W, H) * ARENA_RADIUS_FACTOR;
+  dotR   = Math.max(DOT_RADIUS_MIN_PX, arenaR * DOT_RADIUS_FACTOR);
+  lineW  = Math.max(1, arenaR * LINE_WIDTH_FACTOR);
+  cx = W / 2;
+  cy = H / 2;
+}
+
+function resize() {
+  const dpr = window.devicePixelRatio || 1;
+  const oldR = arenaR, oldCx = cx, oldCy = cy;
+
+  W = window.innerWidth;
+  H = window.innerHeight;
+  canvas.width  = W * dpr;
+  canvas.height = H * dpr;
+  canvas.style.width  = W + "px";
+  canvas.style.height = H + "px";
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+  computeMetrics();
+
+  // Rescale the whole scene about the arena center so proportions
+  // and gameplay survive the resize.
+  if (oldR > 0) {
+    const s = arenaR / oldR;
+    for (const d of dots) {
+      d.x = cx + (d.x - oldCx) * s;
+      d.y = cy + (d.y - oldCy) * s;
+      d.vx *= s;
+      d.vy *= s;
+      for (const L of d.lines) {
+        L.x = cx + (L.x - oldCx) * s;
+        L.y = cy + (L.y - oldCy) * s;
+      }
+      clampInside(d);
+    }
+    for (const r of rings) {
+      r.x = cx + (r.x - oldCx) * s;
+      r.y = cy + (r.y - oldCy) * s;
+    }
+  }
+}
+
+/* ---------------- Game state ---------------- */
+let dots = [];        // active + eliminated players (alive flag)
+let rings = [];       // wall-bounce ring effects
+let phase = "ready";  // "ready" | "play" | "win"
+let winTimer = 0;     // ms remaining in win pause
+let winner = null;
+
+function clampInside(d) {
+  const dx = d.x - cx, dy = d.y - cy;
+  const dist = Math.hypot(dx, dy);
+  const maxDist = arenaR - dotR;
+  if (dist > maxDist) {
+    const k = maxDist / dist;
+    d.x = cx + dx * k;
+    d.y = cy + dy * k;
+  }
+}
+
+// A line is just a wall anchor point; its other end is always the
+// owner dot's current position.
+function spawnLine(dot, px, py) {
+  dot.lines.push({ x: px, y: py });
+}
+
+// Place the four dots at their designated start positions.
+// autoStart=false leaves them at rest (waiting for the START button).
+function resetRound(autoStart) {
+  dots = [];
+  rings = [];
+  winner = null;
+
+  for (const p of PLAYERS) {
+    const d = {
+      ...p,
+      x: cx + Math.cos(p.startAngle) * arenaR * START_DIST,
+      y: cy + Math.sin(p.startAngle) * arenaR * START_DIST,
+      vx: 0,
+      vy: 0,
+      lines: [],   // score === lines.length, always
+      alive: true,
+    };
+    // Starting score: START_SCORE lines from random wall points.
+    for (let k = 0; k < START_SCORE; k++) {
+      const wa = Math.random() * Math.PI * 2;
+      spawnLine(d, cx + Math.cos(wa) * arenaR, cy + Math.sin(wa) * arenaR);
+    }
+    dots.push(d);
+  }
+  if (autoStart) launch();
+  else phase = "ready";
+}
+
+// Give every dot a fresh random direction and begin play.
+function launch() {
+  const speed = arenaR * BASE_SPEED_FACTOR;
+  for (const d of dots) {
+    const va = Math.random() * Math.PI * 2;
+    d.vx = Math.cos(va) * speed;
+    d.vy = Math.sin(va) * speed;
+  }
+  phase = "play";
+}
+
+/* ---------------- Physics helpers ---------------- */
+
+// Shortest distance from point (px,py) to segment (x1,y1)-(x2,y2).
+function segPointDist(px, py, x1, y1, x2, y2) {
+  const dx = x2 - x1, dy = y2 - y1;
+  const lenSq = dx * dx + dy * dy;
+  let t = lenSq > 0 ? ((px - x1) * dx + (py - y1) * dy) / lenSq : 0;
+  t = Math.max(0, Math.min(1, t));
+  const qx = x1 + dx * t, qy = y1 + dy * t;
+  return Math.hypot(px - qx, py - qy);
+}
+
+function eliminate(dot) {
+  dot.alive = false;
+  dot.lines.length = 0; // score 0 means no lines anyway
+}
+
+function declareWin(dot) {
+  phase = "win";
+  winner = dot;
+  winTimer = WIN_PAUSE_MS;
+}
+
+// Steal every enemy line touching this dot's body (border contact):
+// the line changes owner — toucher +1, previous owner -1.
+// An enemy line runs from its wall anchor to its owner's current position.
+function captureEnemyLines(dot) {
+  const shield = dotR * LINE_SHIELD;
+  for (const other of dots) {
+    if (other === dot || other.lines.length === 0) continue;
+    for (let i = other.lines.length - 1; i >= 0; i--) {
+      const L = other.lines[i];
+      // Capturable part of each line stops LINE_SHIELD dot-radii short
+      // of the owner; the stretch right at the owner is untouchable.
+      const dx = L.x - other.x, dy = L.y - other.y;
+      const len = Math.hypot(dx, dy);
+      if (len <= shield) continue; // line fully inside the shielded zone
+      const ex = other.x + dx * (shield / len);
+      const ey = other.y + dy * (shield / len);
+      if (segPointDist(dot.x, dot.y, L.x, L.y, ex, ey) <= dotR) {
+        other.lines.splice(i, 1); // previous owner loses 1 point
+        dot.lines.push(L);        // toucher gains the line (and the point)
+      }
+    }
+    if (other.alive && other.lines.length === 0) eliminate(other);
+  }
+  if (phase === "play" && dot.lines.length >= WIN_TARGET) declareWin(dot);
+}
+
+function step(dtMs) {
+  if (phase === "ready") return; // waiting for the START/RESTART button
+  if (phase === "win") {
+    winTimer -= dtMs;
+    if (winTimer <= 0) showRestart();
+    return;
+  }
+
+  const dt = Math.min(dtMs, 50) / 1000; // clamp long frames (tab switch)
+  const alive = dots.filter(d => d.alive);
+
+  // Sub-step so fast dots can't tunnel through lines or the wall.
+  const speed = arenaR * BASE_SPEED_FACTOR;
+  const maxMove = dotR * 0.5;
+  const steps = Math.max(1, Math.ceil((speed * dt) / maxMove));
+  const h = dt / steps;
+
+  for (let s = 0; s < steps; s++) {
+    for (const d of alive) {
+      if (!d.alive) continue;
+      d.x += d.vx * h;
+      d.y += d.vy * h;
+
+      // --- Wall bounce: reflect about the radial normal, +1 line ---
+      const dx = d.x - cx, dy = d.y - cy;
+      const dist = Math.hypot(dx, dy);
+      if (dist >= arenaR - dotR) {
+        const nx = dx / dist, ny = dy / dist;
+        const dot_vn = d.vx * nx + d.vy * ny;
+        if (dot_vn > 0) {
+          d.vx -= 2 * dot_vn * nx;
+          d.vy -= 2 * dot_vn * ny;
+        }
+        // Nudge back just inside so it doesn't stick.
+        d.x = cx + nx * (arenaR - dotR - 0.5);
+        d.y = cy + ny * (arenaR - dotR - 0.5);
+        // The bounce point on the wall itself:
+        const wx = cx + nx * arenaR, wy = cy + ny * arenaR;
+        spawnLine(d, wx, wy);
+        rings.push({ x: wx, y: wy, color: d.color, t: RING_MS });
+
+        if (d.lines.length >= WIN_TARGET) {
+          declareWin(d);
+          return;
+        }
+      }
+
+      // --- Steal enemy lines touching this dot's border ---
+      captureEnemyLines(d);
+      if (phase === "win") return;
+    }
+
+    // --- Dot–dot collisions: elastic bounce, no score change ---
+    for (let i = 0; i < alive.length; i++) {
+      for (let j = i + 1; j < alive.length; j++) {
+        const a = alive[i], b = alive[j];
+        if (!a.alive || !b.alive) continue;
+        const dx = b.x - a.x, dy = b.y - a.y;
+        const dist = Math.hypot(dx, dy);
+        const minDist = dotR * 2;
+        if (dist > 0 && dist < minDist) {
+          const nx = dx / dist, ny = dy / dist;
+          // Equal masses: swap velocity components along the normal.
+          const va = a.vx * nx + a.vy * ny;
+          const vb = b.vx * nx + b.vy * ny;
+          if (va - vb > 0) { // only if approaching
+            a.vx += (vb - va) * nx; a.vy += (vb - va) * ny;
+            b.vx += (va - vb) * nx; b.vy += (va - vb) * ny;
+          }
+          // Separate so they don't stick.
+          const push = (minDist - dist) / 2 + 0.1;
+          a.x -= nx * push; a.y -= ny * push;
+          b.x += nx * push; b.y += ny * push;
+          clampInside(a);
+          clampInside(b);
+        }
+      }
+    }
+  }
+
+  // Advance bounce-ring effects.
+  for (let i = rings.length - 1; i >= 0; i--) {
+    rings[i].t -= dtMs;
+    if (rings[i].t <= 0) rings.splice(i, 1);
+  }
+}
+
+/* ---------------- Rendering ---------------- */
+const FONT = '"Roboto", -apple-system, "SF Pro", Helvetica, Arial, sans-serif';
+
+function draw() {
+  ctx.clearRect(0, 0, W, H);
+  ctx.fillStyle = "#000";
+  ctx.fillRect(0, 0, W, H);
+
+  // Arena circle
+  ctx.beginPath();
+  ctx.arc(cx, cy, arenaR, 0, Math.PI * 2);
+  ctx.strokeStyle = "rgba(255,255,255,0.85)";
+  ctx.lineWidth = Math.max(1.5, arenaR * ARENA_STROKE_FACTOR);
+  ctx.stroke();
+
+  // Trail lines — additive so overlaps brighten
+  ctx.save();
+  ctx.globalCompositeOperation = "lighter";
+  ctx.lineWidth = lineW;
+  ctx.globalAlpha = LINE_ALPHA;
+  for (const d of dots) {
+    if (d.lines.length === 0) continue;
+    ctx.strokeStyle = d.color;
+    ctx.beginPath();
+    for (const L of d.lines) {
+      ctx.moveTo(L.x, L.y);   // wall anchor
+      ctx.lineTo(d.x, d.y);   // follows the dot
+    }
+    ctx.stroke();
+  }
+  ctx.restore();
+
+  // Dots with neon glow
+  for (const d of dots) {
+    if (!d.alive) continue;
+    const emphasize = phase === "win" && d === winner;
+    ctx.save();
+    ctx.shadowColor = d.color;
+    ctx.shadowBlur = dotR * (emphasize ? 5 : 2.5);
+    ctx.fillStyle = d.color;
+    ctx.beginPath();
+    ctx.arc(d.x, d.y, dotR, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.fill(); // second pass strengthens the bloom
+    ctx.restore();
+  }
+
+  // Wall-bounce rings: expand and fade at the impact point
+  for (const r of rings) {
+    const p = 1 - r.t / RING_MS;                 // 0 -> 1 over lifetime
+    ctx.save();
+    ctx.globalAlpha = 1 - p;
+    ctx.strokeStyle = r.color;
+    ctx.lineWidth = Math.max(2, dotR * 0.35 * (1 - p * 0.5));
+    ctx.beginPath();
+    ctx.arc(r.x, r.y, dotR * (0.8 + p * (RING_GROWTH - 0.8)), 0, Math.PI * 2);
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  drawTitle();
+  drawScoreboard();
+  if (phase === "win" && winner) drawWinner();
+}
+
+function drawTitle() {
+  const size = Math.max(18, Math.min(W, H) * 0.045);
+  ctx.font = `700 ${size}px ${FONT}`;
+  ctx.textAlign = "center";
+  ctx.textBaseline = "top";
+  ctx.fillStyle = "#fff";
+  ctx.fillText("First to 100 wins!", W / 2, Math.min(W, H) * 0.025);
+}
+
+function drawScoreboard() {
+  // Sorted every frame, highest score on top.
+  const rows = [...dots].sort((a, b) => b.lines.length - a.lines.length);
+  const u = Math.max(12, Math.min(W, H) * 0.022); // row unit
+  const pad = u * 0.7;
+  const rowH = u * 1.5;
+  const panelW = u * 6.5;
+  const panelH = pad * 2 + rowH * rows.length;
+  const x = u, y = u;
+
+  ctx.save();
+  ctx.fillStyle = "rgba(20,20,20,0.6)";
+  ctx.beginPath();
+  ctx.roundRect(x, y, panelW, panelH, u * 0.6);
+  ctx.fill();
+
+  ctx.font = `700 ${u}px ${FONT}`;
+  ctx.textAlign = "left";
+  ctx.textBaseline = "middle";
+  rows.forEach((d, i) => {
+    const ry = y + pad + rowH * i + rowH / 2;
+    ctx.globalAlpha = d.alive ? 1 : 0.35;
+    ctx.fillStyle = d.color;
+    ctx.beginPath();
+    ctx.arc(x + pad + u * 0.45, ry, u * 0.45, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.fillStyle = "#fff";
+    ctx.fillText(String(d.lines.length), x + pad + u * 1.5, ry);
+  });
+  ctx.restore();
+}
+
+function drawWinner() {
+  const size = Math.max(22, Math.min(W, H) * 0.06);
+  // Flash: pulse alpha with time remaining
+  const pulse = 0.65 + 0.35 * Math.sin(winTimer * 0.02);
+  ctx.save();
+  ctx.globalAlpha = pulse;
+  ctx.font = `700 ${size}px ${FONT}`;
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  ctx.shadowColor = winner.color;
+  ctx.shadowBlur = size * 0.8;
+  ctx.fillStyle = winner.color;
+  ctx.fillText(`${winner.name} wins!`, cx, cy);
+  ctx.restore();
+}
+
+/* ---------------- Main loop ---------------- */
+let lastT = 0;
+function frame(t) {
+  const dtMs = lastT ? t - lastT : 16.7;
+  lastT = t;
+  step(dtMs);
+  draw();
+  requestAnimationFrame(frame);
+}
+
+const startBtn = document.getElementById("start");
+
+// After a win, park the dots back at their start positions and swap
+// the button to RESTART instead of auto-starting the next round.
+function showRestart() {
+  resetRound(false);
+  startBtn.textContent = "RESTART";
+  startBtn.style.display = "";
+}
+
+startBtn.addEventListener("click", () => {
+  startBtn.style.display = "none";
+  launch();
+});
+
+window.addEventListener("resize", resize);
+resize();
+resetRound(false); // wait at the start positions until START is pressed
+requestAnimationFrame(frame);
+</script>
+</body>
+</html>
