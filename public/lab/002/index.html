@@ -445,56 +445,47 @@
         return normalize(raw);
       }
 
-      // project a path into the tilted 3D + perspective space. Since F = 2R,
-      // the perspective scale is 2/(2 - z) — screen-independent, so the
-      // projection only needs recomputing when the shape changes.
-      function projectPath(pts) {
-        return pts.map((q) => {
-          const p = rotY(rotX({ x: q.x, y: q.y, z: 0 }, TILT_X), TILT_Y);
-          const scale = 2 / (2 - p.z);
-          return { X: p.x * scale, Y: p.y * scale, z: p.z };
-        });
-      }
-
-      // arc lengths measured in the PROJECTED space (what the viewer sees), so
-      // stamping at equal steps here gives even on-screen spacing everywhere.
-      function projArcLengths(P) {
+      // pre-compute arc lengths for a path
+      function arcLengths(pts) {
         const lens = [0];
-        for (let i = 1; i < P.length; i++) {
-          lens.push(
-            lens[i - 1] + Math.hypot(P[i].X - P[i - 1].X, P[i].Y - P[i - 1].Y),
-          );
+        for (let i = 1; i < pts.length; i++) {
+          const dx = pts[i].x - pts[i - 1].x;
+          const dy = pts[i].y - pts[i - 1].y;
+          lens.push(lens[i - 1] + Math.sqrt(dx * dx + dy * dy));
         }
-        const last = P.length - 1;
-        lens.push(lens[last] + Math.hypot(P[0].X - P[last].X, P[0].Y - P[last].Y));
+        // close the loop
+        const dx = pts[0].x - pts[pts.length - 1].x;
+        const dy = pts[0].y - pts[pts.length - 1].y;
+        lens.push(lens[lens.length - 1] + Math.sqrt(dx * dx + dy * dy));
         return lens;
       }
 
-      // sample projected param at projected arc-length sp → {X,Y,z}
-      function sampleProj(P, lens, sp) {
-        const n = P.length;
+      // sample path at arc-length s, returns {x,y,angle} (angle = tangent dir)
+      function samplePath(pts, lens, s) {
+        const n = pts.length;
         const total = lens[n];
-        sp = ((sp % total) + total) % total;
+        s = ((s % total) + total) % total;
         let lo = 0,
           hi = n;
         while (lo < hi - 1) {
           const mid = (lo + hi) >> 1;
-          if (lens[mid] <= sp) lo = mid;
+          if (lens[mid] <= s) lo = mid;
           else hi = mid;
         }
         const hiI = hi % n;
-        const t = (sp - lens[lo]) / (lens[hi] - lens[lo] || 1);
-        return {
-          X: P[lo].X + (P[hiI].X - P[lo].X) * t,
-          Y: P[lo].Y + (P[hiI].Y - P[lo].Y) * t,
-          z: P[lo].z + (P[hiI].z - P[lo].z) * t,
-        };
+        const t = (s - lens[lo]) / (lens[hi] - lens[lo] || 1);
+        const x = pts[lo].x + (pts[hiI].x - pts[lo].x) * t;
+        const y = pts[lo].y + (pts[hiI].y - pts[lo].y) * t;
+        const angle = Math.atan2(
+          pts[hiI].y - pts[lo].y,
+          pts[hiI].x - pts[lo].x,
+        );
+        return { x, y, angle };
       }
 
       let path = buildPath(currentShape);
-      let proj = projectPath(path);
-      let plens = projArcLengths(proj);
-      let projTotal = plens[plens.length - 1];
+      let lens = arcLengths(path);
+      let totalLen = lens[lens.length - 1];
 
       let offset = 0;
       let lastTs = null;
@@ -507,9 +498,10 @@
         const cx = W / 2,
           cy = H / 2;
         const R = Math.min(W, H) * 0.3; // pixel radius
+        const F = R * 2.0; // short focal length → strong position perspective
 
-        // conveyor flow along the path (in projected arc length)
-        offset = (offset + (speed / R) * dt) % projTotal;
+        // conveyor flow along the path
+        offset = (offset + (speed / R) * dt) % totalLen;
 
         ctx.clearRect(0, 0, W, H);
         ctx.fillStyle = "#000";
@@ -524,22 +516,25 @@
         ctx.textBaseline = "middle";
         ctx.font = `${fontSize}px 'Roboto', sans-serif`;
 
-        // spacing of word-stamps (line spacing), in projected arc length so the
-        // on-screen gap between words stays even on both the near and far sides
+        // spacing of word-stamps along the path (line spacing), in unit arc length
         const lineGap = (fontSize * 0.95) / density / R;
-        const nRungs = Math.floor(projTotal / lineGap);
+        // even count around the closed loop, then divide the loop into equal
+        // gaps so the wrap-around seam matches the spacing (no one-line gap)
+        const nRungs = Math.max(1, Math.round(totalLen / lineGap));
+        const actualGap = totalLen / nRungs;
 
         for (let i = 0; i < nRungs; i++) {
-          const sp = (offset + i * lineGap) % projTotal;
-          const { X, Y, z } = sampleProj(proj, plens, sp);
+          const s = (offset + i * actualGap) % totalLen;
+          const { x: px, y: py } = samplePath(path, lens, s);
 
-          // already tilted + perspective-projected; place the upright word here
-          const scale = 2 / (2 - z);
-          const sx = cx + X * R;
-          const sy = cy - Y * R;
+          // tilt the anchor into 3D for depth, but keep the word itself upright
+          const p = rotY(rotX({ x: px, y: py, z: 0 }, TILT_X), TILT_Y);
+          const scale = F / (F - p.z * R);
+          const sx = cx + p.x * R * scale;
+          const sy = cy - p.y * R * scale;
 
           // depth shading: the receding (left) side is clearly dimmer
-          const front = z * 0.5 + 0.5; // ~0 far … ~1 near
+          const front = p.z * 0.5 + 0.5; // ~0 far … ~1 near
           const alpha = (0.14 + 0.86 * front) * Math.min(1, 0.6 + 0.4 * scale);
 
           ctx.globalAlpha = Math.max(0.06, Math.min(1, alpha));
@@ -583,9 +578,8 @@
         btn.classList.add("active");
         currentShape = btn.dataset.shape;
         path = buildPath(currentShape);
-        proj = projectPath(path);
-        plens = projArcLengths(proj);
-        projTotal = plens[plens.length - 1];
+        lens = arcLengths(path);
+        totalLen = lens[lens.length - 1];
         offset = 0;
       });
     </script>
