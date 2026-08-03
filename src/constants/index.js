@@ -108,14 +108,15 @@ export const EXPERIENCE_DATA = {
 export const PROJECTS = [
   {
     id: 1,
-    title: "Check Team Mate",
-    category: ["App"],
+    title: "Rockie - 데스크톱 애완돌 키우기",
+    category: ["DeskTop App"],
     description: {
-      en: "A to-do app built for teamwork: assign tasks to teammates, monitor progress, and keep group projects on track. Built with React Native, Firebase.",
-      ko: "팀워크를 위한 투두 앱: 서로에게 할 일을 배분하고, 진행 상황을 모니터링하며, 그룹 프로젝트를 관리할 수 있습니다. React Native, Firebase로 개발하였습니다.",
+      en: "A desktop pet raising app built with Electron. Your pet rock follows your mouse around and even strikes up a conversation. Answer a daily question and watch how it grows into one of various rocks that mirrors you.",
+      ko: "Electron으로 만든 데스크톱 애완돌 키우기 앱. 애완돌이 마우스를 따라다니고, 말을 걸기도 해요. 매일 질문에 답하면 성향에 맞게 여러가지 돌 중 하나로 자라나요.",
     },
-    github: "https://github.com/jeondowon/CheckTeamMate",
-    image: "/images/CheckTeamMate.png",
+    github: "https://github.com/jeondowon/Rockie",
+    link: "/rockie/",
+    image: "/images/rockie.png",
     available: true,
   },
   {
@@ -132,6 +133,19 @@ export const PROJECTS = [
   },
   {
     id: 3,
+    title: "Check Team Mate",
+    category: ["App"],
+    description: {
+      en: "A to-do app built for teamwork: assign tasks to teammates, monitor progress, and keep group projects on track. Built with React Native, Firebase.",
+      ko: "팀워크를 위한 투두 앱: 서로에게 할 일을 배분하고, 진행 상황을 모니터링하며, 그룹 프로젝트를 관리할 수 있습니다. React Native, Firebase로 개발하였습니다.",
+    },
+    github: "https://github.com/jeondowon/CheckTeamMate",
+    image: "/images/CheckTeamMate.png",
+    available: true,
+  },
+
+  {
+    id: 4,
     title: "Candle",
     category: ["App", "Web", "Fintech"],
     description: {
@@ -143,19 +157,19 @@ export const PROJECTS = [
     available: true,
   },
   {
-    id: 4,
+    id: 5,
     title: "SpotLine",
     category: ["Web", "AI"],
     description: {
       en: "A Vision AI-powered SaaS dashboard for physical retail. Analyze CCTV footage, discover marketing strategies, and chat with SpotLine AI. Finalist at Google AI Agent Challenge.",
-      ko: "오프라인 매장을 위한 vision AI 기반 SaaS 대시보드. CCTV 영상을 분석하고, 매장 고객의 데이터를 쌓아 마케팅 전략을 발굴할 수 있습니다. SpotLine AI와 대화하여 더욱 깊은 인사이트를 경험하세요. Google AI Agent Challenge 결선 진출작.",
+      ko: "오프라인 매장을 위한 vision AI 기반 SaaS 대시보드. CCTV 영상을 분석하고, 매장 고객의 데이터를 쌓아 마케팅 전략을 발굴할 수 있습니다. SpotLine AI와 대화하여 더욱 깊은 인사이트를 경험하세요. Google AI Agent Challenge 우수상 수상작.",
     },
     github: "https://github.com/jeondowon/SpotLine-frontend",
     image: "/images/SpotLine.png",
     available: true,
   },
   {
-    id: 5,
+    id: 6,
     title: "FA Alumni Network Web",
     category: ["Web"],
     description: {
@@ -167,7 +181,7 @@ export const PROJECTS = [
     available: true,
   },
   {
-    id: 6,
+    id: 7,
     title: "Vinyl Room",
     category: ["Web"],
     description: {
@@ -179,7 +193,7 @@ export const PROJECTS = [
     available: true,
   },
   {
-    id: 7,
+    id: 8,
     title: "CRA Website",
     category: ["Web"],
     description: {
@@ -190,19 +204,7 @@ export const PROJECTS = [
     image: "/images/CRA.png",
     available: true,
   },
-  {
-    id: 8,
-    title: "Rockie - 데스크톱 애완돌 키우기",
-    category: ["DeskTop App"],
-    description: {
-      en: "A desktop pet raising game built with Electron — care for your virtual pet, feed it, play with it, and watch it grow.",
-      ko: "Electron으로 만든 데스크톱 애완돌 키우기 게임. 가상의 반려동물을 기르고, 먹이를 주며, 놀아주고, 성장시키세요.",
-    },
-    github: "https://github.com/jeondowon/Rockie",
-    link: "/rockie/",
-    image: "/images/rockie.png",
-    available: true,
-  },
+
   /*{
     id: 10,
     title: "",
