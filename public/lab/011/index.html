@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Type Storm — EXP-011</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { width: 100%; height: 100%; background: #000; overflow: hidden; }
+    canvas { display: block; touch-action: none; }
+    #back {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      font-family: 'Roboto', sans-serif;
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      color: rgba(255,255,255,0.3);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    #back:hover { color: rgba(255,255,255,0.75); }
+    #title {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: 'Roboto', sans-serif;
+      font-size: 11px;
+      letter-spacing: 0.22em;
+      color: rgba(255,255,255,0.35);
+      user-select: none;
+    }
+    #hint {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: 'Roboto', sans-serif;
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      color: rgba(255,255,255,0.25);
+      user-select: none;
+      white-space: nowrap;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="c"></canvas>
+  <a href="/lab" id="back">← LAB</a>
+  <div id="title">TYPE STORM — EXP-011</div>
+  <div id="hint">SWEEP ACROSS THE LINE · CLICK FOR A BLAST</div>
+<script>
+"use strict";
+
+/* ============================================================
+ * Type Storm — EXP-011
+ * Every letter of the line is a spring particle pinned to its home
+ * position. The cursor carries a repulsion field: sweep it across
+ * the line and letters blast away (with a bit of spin), then the
+ * spring pulls each one back into place. Click for a shockwave.
+ * ============================================================ */
+
+const TEXT = "KEEP DREAMING, MAKE IT REAL";
+const SPRING = 90;        // spring stiffness, 1/s^2
+const DAMP = 9;           // velocity damping, 1/s
+const FIELD_R_FACTOR = 0.16;  // cursor field radius = min(W,H) * this
+const FIELD_PUSH = 2400;      // cursor push strength, px/s^2 at center
+const BLAST_PUSH = 1400;      // click impulse, px/s at center
+const BLAST_R_FACTOR = 0.34;  // click blast radius
+
+const canvas = document.getElementById("c");
+const ctx = canvas.getContext("2d");
+
+let W = 0, H = 0, vmin = 0;
+let letters = [];   // { ch, hx, hy, x, y, vx, vy, a, va }
+let fontPx = 60;
+
+function resize() {
+  const dpr = window.devicePixelRatio || 1;
+  W = window.innerWidth;
+  H = window.innerHeight;
+  vmin = Math.min(W, H);
+  canvas.width = W * dpr;
+  canvas.height = H * dpr;
+  canvas.style.width = W + "px";
+  canvas.style.height = H + "px";
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  layout();
+}
+
+function layout() {
+  // Fit the line to ~86% of the width, then lay letters out centered.
+  fontPx = 100;
+  ctx.font = `700 ${fontPx}px "Roboto", sans-serif`;
+  const w100 = ctx.measureText(TEXT).width;
+  fontPx = Math.min(110, (W * 0.86 / w100) * 100);
+  ctx.font = `700 ${fontPx}px "Roboto", sans-serif`;
+
+  const total = ctx.measureText(TEXT).width;
+  let x = (W - total) / 2;
+  const y = H / 2;
+
+  letters = [];
+  for (const ch of TEXT) {
+    const cw = ctx.measureText(ch).width;
+    if (ch !== " ") {
+      letters.push({
+        ch,
+        hx: x + cw / 2, hy: y,   // home (letter center)
+        x: x + cw / 2, y,
+        vx: 0, vy: 0,
+        a: 0, va: 0,             // rotation angle / angular velocity
+      });
+    }
+    x += cw;
+  }
+}
+
+/* ---------------- Pointer ---------------- */
+const pointer = { x: -1e6, y: -1e6 };
+window.addEventListener("pointermove", (e) => {
+  pointer.x = e.clientX;
+  pointer.y = e.clientY;
+});
+window.addEventListener("pointerdown", (e) => {
+  const R = vmin * BLAST_R_FACTOR;
+  for (const L of letters) {
+    const dx = L.x - e.clientX, dy = L.y - e.clientY;
+    const d = Math.hypot(dx, dy);
+    if (d > R || d === 0) continue;
+    const f = (1 - d / R) * BLAST_PUSH;
+    L.vx += (dx / d) * f;
+    L.vy += (dy / d) * f;
+    L.va += (Math.random() - 0.5) * 14 * (1 - d / R);
+  }
+});
+
+/* ---------------- Simulation ---------------- */
+function step(dt) {
+  const R = vmin * FIELD_R_FACTOR;
+  for (const L of letters) {
+    // Cursor repulsion
+    const dx = L.x - pointer.x, dy = L.y - pointer.y;
+    const d = Math.hypot(dx, dy);
+    if (d < R && d > 0) {
+      const f = (1 - d / R) * FIELD_PUSH;
+      L.vx += (dx / d) * f * dt;
+      L.vy += (dy / d) * f * dt;
+      L.va += (Math.random() - 0.5) * 30 * (1 - d / R) * dt * 60;
+    }
+
+    // Spring back home + damping
+    L.vx += (L.hx - L.x) * SPRING * dt - L.vx * DAMP * dt;
+    L.vy += (L.hy - L.y) * SPRING * dt - L.vy * DAMP * dt;
+    L.x += L.vx * dt;
+    L.y += L.vy * dt;
+
+    // Rotation springs back to upright
+    L.va += (0 - L.a) * SPRING * 0.6 * dt - L.va * DAMP * 0.8 * dt;
+    L.a += L.va * dt;
+  }
+}
+
+/* ---------------- Rendering ---------------- */
+function draw() {
+  ctx.clearRect(0, 0, W, H);
+  ctx.fillStyle = "#000";
+  ctx.fillRect(0, 0, W, H);
+
+  ctx.font = `700 ${fontPx}px "Roboto", sans-serif`;
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+
+  for (const L of letters) {
+    const disp = Math.hypot(L.x - L.hx, L.y - L.hy);
+    const heat = Math.min(1, disp / (vmin * 0.18)); // 0 at rest -> 1 far away
+    ctx.save();
+    ctx.translate(L.x, L.y);
+    ctx.rotate(L.a);
+    if (heat > 0.02) {
+      ctx.shadowColor = "rgba(255,255,255,0.9)";
+      ctx.shadowBlur = 24 * heat;
+    }
+    // Letters dim slightly as they fly, like sparks cooling.
+    const alpha = 0.92 - 0.5 * heat;
+    ctx.fillStyle = `rgba(255,255,255,${alpha})`;
+    ctx.fillText(L.ch, 0, 0);
+    ctx.restore();
+  }
+}
+
+/* ---------------- Main loop ---------------- */
+let lastT = 0;
+function frame(t) {
+  const dt = Math.min(lastT ? t - lastT : 16.7, 50) / 1000;
+  lastT = t;
+  step(dt);
+  draw();
+  requestAnimationFrame(frame);
+}
+
+window.addEventListener("resize", resize);
+if (document.fonts && document.fonts.ready) {
+  // Lay out again once Roboto is actually loaded (metrics change).
+  document.fonts.ready.then(layout);
+}
+resize();
+requestAnimationFrame(frame);
+</script>
+</body>
+</html>

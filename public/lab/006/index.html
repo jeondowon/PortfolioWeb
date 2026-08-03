@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wave Field — EXP-006</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { width: 100%; height: 100%; background: #000; overflow: hidden; }
+    svg { display: block; touch-action: none; }
+    #back {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      font-family: 'Roboto', sans-serif;
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      color: rgba(255,255,255,0.3);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    #back:hover { color: rgba(255,255,255,0.75); }
+    #title {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: 'Roboto', sans-serif;
+      font-size: 11px;
+      letter-spacing: 0.22em;
+      color: rgba(255,255,255,0.35);
+      user-select: none;
+    }
+  </style>
+</head>
+<body>
+  <svg id="field"></svg>
+  <a href="/lab" id="back">← LAB</a>
+  <div id="title">WAVE FIELD — EXP-006</div>
+<script>
+"use strict";
+
+/* ============================================================
+ * Wave Field — EXP-006
+ * A grid of SVG dots. Each dot's size and brightness is the sum
+ * of three slow sine waves crossing the field at different angles
+ * and speeds — the "breathing". Moving the cursor drops ripples:
+ * expanding rings that lift dots as the wavefront passes, then
+ * decay away.
+ * ============================================================ */
+
+const SPACING_TARGET = 34;   // aim for this px between dots
+const MAX_DOTS = 1300;       // hard cap for SVG performance
+const R_BASE = 1.6;          // dot radius at rest, px (scaled below)
+const R_AMP = 1.4;           // radius swing from the breathing waves
+const RIPPLE_SPEED = 420;    // ripple wavefront speed, px/s
+const RIPPLE_WIDTH = 90;     // wavefront thickness, px
+const RIPPLE_LIFE = 1.6;     // ripple lifetime, s
+const RIPPLE_GAIN = 3.2;     // how strongly a ripple lifts a dot
+const RIPPLE_EVERY_MS = 70;  // min interval between spawned ripples
+const MAX_RIPPLES = 24;
+
+const svg = document.getElementById("field");
+const NS = "http://www.w3.org/2000/svg";
+
+let W = 0, H = 0;
+let dots = [];      // { el, x, y }
+let ripples = [];   // { x, y, age }
+let scale = 1;      // dot-size scale from actual spacing
+
+function resize() {
+  W = window.innerWidth;
+  H = window.innerHeight;
+  svg.setAttribute("width", W);
+  svg.setAttribute("height", H);
+  svg.setAttribute("viewBox", `0 0 ${W} ${H}`);
+  buildGrid();
+}
+
+function buildGrid() {
+  // Spacing so the dot count stays under MAX_DOTS.
+  let spacing = SPACING_TARGET;
+  if ((W / spacing) * (H / spacing) > MAX_DOTS) {
+    spacing = Math.sqrt((W * H) / MAX_DOTS);
+  }
+  scale = spacing / SPACING_TARGET;
+
+  const cols = Math.floor(W / spacing);
+  const rows = Math.floor(H / spacing);
+  const gx = (W - (cols - 1) * spacing) / 2;
+  const gy = (H - (rows - 1) * spacing) / 2;
+
+  svg.textContent = "";
+  dots = [];
+  for (let y = 0; y < rows; y++) {
+    for (let x = 0; x < cols; x++) {
+      const el = document.createElementNS(NS, "circle");
+      const px = gx + x * spacing;
+      const py = gy + y * spacing;
+      el.setAttribute("cx", px);
+      el.setAttribute("cy", py);
+      el.setAttribute("r", R_BASE * scale);
+      el.setAttribute("fill", "#fff");
+      svg.appendChild(el);
+      dots.push({ el, x: px, y: py });
+    }
+  }
+}
+
+/* ---------------- Ripples ---------------- */
+let lastRipple = 0;
+function pointerMove(e) {
+  const now = performance.now();
+  if (now - lastRipple < RIPPLE_EVERY_MS) return;
+  lastRipple = now;
+  ripples.push({ x: e.clientX, y: e.clientY, age: 0 });
+  if (ripples.length > MAX_RIPPLES) ripples.shift();
+}
+window.addEventListener("pointermove", pointerMove);
+window.addEventListener("pointerdown", (e) => {
+  ripples.push({ x: e.clientX, y: e.clientY, age: 0 });
+  if (ripples.length > MAX_RIPPLES) ripples.shift();
+});
+
+/* ---------------- Animation ---------------- */
+let lastT = 0;
+function frame(t) {
+  const dt = Math.min(lastT ? t - lastT : 16.7, 50) / 1000;
+  lastT = t;
+  const time = t / 1000;
+
+  for (let i = ripples.length - 1; i >= 0; i--) {
+    ripples[i].age += dt;
+    if (ripples[i].age > RIPPLE_LIFE) ripples.splice(i, 1);
+  }
+
+  for (const d of dots) {
+    // Breathing: three sine waves at different angles / frequencies.
+    const w1 = Math.sin(d.x * 0.010 + time * 1.1);
+    const w2 = Math.sin((d.x * 0.6 + d.y) * 0.008 - time * 0.7);
+    const w3 = Math.sin(d.y * 0.013 + time * 0.5);
+    let z = (w1 + w2 + w3) / 3; // -1 .. 1
+
+    // Ripples: a gaussian bump riding the expanding wavefront.
+    for (const rp of ripples) {
+      const dist = Math.hypot(d.x - rp.x, d.y - rp.y);
+      const front = rp.age * RIPPLE_SPEED;
+      const q = (dist - front) / RIPPLE_WIDTH;
+      if (q > 2 || q < -2) continue;
+      const fade = 1 - rp.age / RIPPLE_LIFE;
+      z += Math.exp(-q * q) * fade * fade * RIPPLE_GAIN;
+    }
+
+    const lift = Math.max(-1, Math.min(z, 3.2));
+    d.el.setAttribute("r", Math.max(0.3, (R_BASE + R_AMP * lift) * scale));
+    d.el.setAttribute("opacity", Math.max(0.08, Math.min(0.18 + 0.26 * (lift + 1), 1)));
+  }
+
+  requestAnimationFrame(frame);
+}
+
+window.addEventListener("resize", resize);
+resize();
+requestAnimationFrame(frame);
+</script>
+</body>
+</html>

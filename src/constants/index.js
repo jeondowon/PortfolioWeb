@@ -190,6 +190,19 @@ export const PROJECTS = [
     image: "/images/CRA.png",
     available: true,
   },
+  {
+    id: 8,
+    title: "Rockie - 데스크톱 애완돌 키우기",
+    category: ["DeskTop App"],
+    description: {
+      en: "A desktop pet raising game built with Electron — care for your virtual pet, feed it, play with it, and watch it grow.",
+      ko: "Electron으로 만든 데스크톱 애완돌 키우기 게임. 가상의 반려동물을 기르고, 먹이를 주며, 놀아주고, 성장시키세요.",
+    },
+    github: "https://github.com/jeondowon/Rockie",
+    link: "/rockie/",
+    image: "/images/Rockie.png",
+    available: true,
+  },
   /*{
     id: 10,
     title: "",
@@ -281,6 +294,7 @@ export const LAB_ITEMS = [
     title: "Chroma Mixer",
     date: "2025.07",
     tags: ["color", "ui"],
+    thumbnail: "/lab/thumbnails/exp004.png",
     blurb:
       "Pull three sliders and blend light like pigment. A small lab for learning how additive color actually behaves.",
   },
@@ -291,6 +305,7 @@ export const LAB_ITEMS = [
     title: "Maze 01",
     date: "2025.08",
     tags: ["game", "algorithm"],
+    thumbnail: "/lab/thumbnails/exp005.png",
     blurb:
       "Generate a perfect maze with one keystroke, then let a solver flood through it in real time.",
   },
@@ -301,6 +316,7 @@ export const LAB_ITEMS = [
     title: "Wave Field",
     date: "2025.09",
     tags: ["svg", "motion"],
+    thumbnail: "/lab/thumbnails/exp006.png",
     blurb:
       "A grid of dots breathing through layered sine waves. Move the cursor to push ripples across the surface.",
   },
@@ -308,31 +324,12 @@ export const LAB_ITEMS = [
     id: "exp07",
     exp: "EXP-007",
     url: "/lab/007",
-    title: "Snake.mono",
-    date: "2025.10",
-    tags: ["game", "canvas"],
-    blurb:
-      "The arcade classic rebuilt in under eighty lines, in nothing but black, white and one blinking pixel.",
-  },
-  {
-    id: "exp08",
-    exp: "EXP-008",
-    url: "/lab/008",
     title: "Cursor Ghosts",
     date: "2025.11",
     tags: ["pointer", "motion"],
+    thumbnail: "/lab/thumbnails/exp007.png",
     blurb:
       "A chain of delayed followers trailing your pointer, each one a softer echo of the last.",
-  },
-  {
-    id: "exp09",
-    exp: "EXP-009",
-    url: "/lab/009",
-    title: "Memory Grid",
-    date: "2026.01",
-    tags: ["game", "dom"],
-    blurb:
-      "Flip tiles, hold the pattern in your head and clear the board before the timer runs dry.",
   },
   {
     id: "exp10",
@@ -341,6 +338,7 @@ export const LAB_ITEMS = [
     title: "Pendulum Lab",
     date: "2026.02",
     tags: ["physics", "sim"],
+    thumbnail: "/lab/thumbnails/exp010.png",
     blurb:
       "Tune gravity, length and damping, release the bob and trace the long slow decay of its arc.",
   },
@@ -351,6 +349,7 @@ export const LAB_ITEMS = [
     title: "Type Storm",
     date: "2026.03",
     tags: ["type", "motion"],
+    thumbnail: "/lab/thumbnails/exp011.png",
     blurb:
       "Words that shatter into letters and drift back into place as your cursor sweeps across the line.",
   },
@@ -361,6 +360,7 @@ export const LAB_ITEMS = [
     title: "Brick Breaker",
     date: "2026.04",
     tags: ["game", "canvas"],
+    thumbnail: "/lab/thumbnails/exp012.png",
     blurb:
       "One paddle, one ball, an endless wall of bricks. A study in the smallest possible action loop.",
   },
@@ -371,6 +371,7 @@ export const LAB_ITEMS = [
     title: "Orbit Clock",
     date: "2026.05",
     tags: ["time", "svg"],
+    thumbnail: "/lab/thumbnails/exp013.png",
     blurb:
       "The hour, minute and second told as three concentric rings sweeping silently around a shared center.",
   },

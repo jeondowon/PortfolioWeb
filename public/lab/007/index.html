@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cursor Ghosts — EXP-007</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { width: 100%; height: 100%; background: #000; overflow: hidden; cursor: none; }
+    canvas { display: block; touch-action: none; }
+    #back {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      font-family: 'Roboto', sans-serif;
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      color: rgba(255,255,255,0.3);
+      text-decoration: none;
+      transition: color 0.2s;
+      cursor: pointer;
+    }
+    #back:hover { color: rgba(255,255,255,0.75); }
+    #title {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: 'Roboto', sans-serif;
+      font-size: 11px;
+      letter-spacing: 0.22em;
+      color: rgba(255,255,255,0.35);
+      user-select: none;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="c"></canvas>
+  <a href="/lab" id="back">← LAB</a>
+  <div id="title">CURSOR GHOSTS — EXP-007</div>
+<script>
+"use strict";
+
+/* ============================================================
+ * Cursor Ghosts — EXP-007
+ * A chain of followers: the first eases toward the pointer, each
+ * next one eases toward the one before it, so lag accumulates
+ * down the chain and the tail sweeps in long soft arcs. Each ghost
+ * is drawn smaller and fainter than the last — echoes of the cursor.
+ * When the pointer rests, the head wanders a slow Lissajous curve
+ * so the chain never dies.
+ * ============================================================ */
+
+const GHOSTS = 26;        // chain length
+const EASE = 11;          // easing rate per second (higher = tighter chain)
+const HEAD_R = 13;        // head ghost radius, px (scaled by viewport)
+const TAIL_R = 1.5;       // last ghost radius
+const IDLE_AFTER = 2.5;   // seconds without pointer movement -> autopilot
+
+const canvas = document.getElementById("c");
+const ctx = canvas.getContext("2d");
+
+let W = 0, H = 0, vmin = 0;
+
+function resize() {
+  const dpr = window.devicePixelRatio || 1;
+  W = window.innerWidth;
+  H = window.innerHeight;
+  vmin = Math.min(W, H);
+  canvas.width = W * dpr;
+  canvas.height = H * dpr;
+  canvas.style.width = W + "px";
+  canvas.style.height = H + "px";
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+}
+
+const ghosts = [];
+for (let i = 0; i < GHOSTS; i++) ghosts.push({ x: 0, y: 0 });
+
+const pointer = { x: null, y: null };
+let idleFor = IDLE_AFTER + 1; // start on autopilot
+
+window.addEventListener("pointermove", (e) => {
+  pointer.x = e.clientX;
+  pointer.y = e.clientY;
+  idleFor = 0;
+});
+
+let lastT = 0;
+function frame(t) {
+  const dt = Math.min(lastT ? t - lastT : 16.7, 50) / 1000;
+  lastT = t;
+  const time = t / 1000;
+  idleFor += dt;
+
+  // Head target: the pointer, or a slow Lissajous wander when idle.
+  let tx, ty;
+  if (pointer.x !== null && idleFor < IDLE_AFTER) {
+    tx = pointer.x;
+    ty = pointer.y;
+  } else {
+    tx = W / 2 + Math.sin(time * 0.9) * W * 0.28;
+    ty = H / 2 + Math.sin(time * 1.4 + 1.3) * H * 0.26;
+  }
+
+  // Chain easing: exponential smoothing, frame-rate independent.
+  const k = 1 - Math.exp(-EASE * dt);
+  ghosts[0].x += (tx - ghosts[0].x) * k;
+  ghosts[0].y += (ty - ghosts[0].y) * k;
+  for (let i = 1; i < GHOSTS; i++) {
+    ghosts[i].x += (ghosts[i - 1].x - ghosts[i].x) * k;
+    ghosts[i].y += (ghosts[i - 1].y - ghosts[i].y) * k;
+  }
+
+  // Draw tail-first so the head sits on top.
+  ctx.clearRect(0, 0, W, H);
+  ctx.fillStyle = "#000";
+  ctx.fillRect(0, 0, W, H);
+  ctx.save();
+  ctx.globalCompositeOperation = "lighter";
+  const scale = vmin / 900 + 0.55; // gentle size adaptation
+  for (let i = GHOSTS - 1; i >= 0; i--) {
+    const p = i / (GHOSTS - 1);            // 0 = head, 1 = tail end
+    const r = (HEAD_R + (TAIL_R - HEAD_R) * p) * scale;
+    const alpha = 0.85 * (1 - p) * (1 - p) + 0.04;
+    ctx.globalAlpha = alpha;
+    ctx.shadowColor = "rgba(255,255,255,0.9)";
+    ctx.shadowBlur = r * 2.2;
+    ctx.fillStyle = "#fff";
+    ctx.beginPath();
+    ctx.arc(ghosts[i].x, ghosts[i].y, r, 0, Math.PI * 2);
+    ctx.fill();
+  }
+  ctx.restore();
+
+  requestAnimationFrame(frame);
+}
+
+window.addEventListener("resize", resize);
+resize();
+ghosts.forEach(g => { g.x = W / 2; g.y = H / 2; });
+requestAnimationFrame(frame);
+</script>
+</body>
+</html>

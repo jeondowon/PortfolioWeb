@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Brick Breaker — EXP-012</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { width: 100%; height: 100%; background: #000; overflow: hidden; }
+    canvas { display: block; touch-action: none; cursor: none; }
+    #back {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      font-family: 'Roboto', sans-serif;
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      color: rgba(255,255,255,0.3);
+      text-decoration: none;
+      transition: color 0.2s;
+      cursor: pointer;
+    }
+    #back:hover { color: rgba(255,255,255,0.75); }
+    #title {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: 'Roboto', sans-serif;
+      font-size: 11px;
+      letter-spacing: 0.22em;
+      color: rgba(255,255,255,0.35);
+      user-select: none;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="c"></canvas>
+  <a href="/lab" id="back">← LAB</a>
+  <div id="title">BRICK BREAKER — EXP-012</div>
+<script>
+"use strict";
+
+/* ============================================================
+ * Brick Breaker — EXP-012
+ * One paddle (follows the pointer), one ball, an endless wall:
+ * every DESCEND_EVERY seconds a fresh row of bricks slides in from
+ * the top and the whole wall steps down. If the wall reaches the
+ * red line above the paddle, the game is over. Score = bricks broken.
+ * ============================================================ */
+
+const COLS = 12;
+const START_ROWS = 5;
+const DESCEND_EVERY = 10;    // seconds between new rows
+const BALL_SPEED_F = 0.62;   // ball speed = min(W,H) * this, per second
+const SPEED_RAMP = 0.012;    // speed multiplier gain per brick broken
+const PADDLE_W_F = 0.16;     // paddle width fraction of field width
+const FIELD_W_F = 0.62;      // field width = W * this (capped by height)
+
+const canvas = document.getElementById("c");
+const ctx = canvas.getContext("2d");
+const FONT = '"Roboto", sans-serif';
+
+let W = 0, H = 0;
+let fx = 0, fw = 0;          // field left / width
+let brickW = 0, brickH = 0;
+let paddleW = 0, paddleH = 0, paddleY = 0;
+let ballR = 0;
+let loseY = 0;               // wall reaching this line = game over
+
+let bricks = [];             // { col, row } — row grows downward, row 0 at wallTop
+let wallTop = 0;             // rows the wall has been pushed down
+let ball = { x: 0, y: 0, vx: 0, vy: 0 };
+let paddleX = 0;
+let score = 0;
+let speedMul = 1;
+let descendIn = DESCEND_EVERY;
+let phase = "ready";         // "ready" | "play" | "over"
+
+function resize() {
+  const dpr = window.devicePixelRatio || 1;
+  W = window.innerWidth;
+  H = window.innerHeight;
+  canvas.width = W * dpr;
+  canvas.height = H * dpr;
+  canvas.style.width = W + "px";
+  canvas.style.height = H + "px";
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+  fw = Math.min(W * FIELD_W_F, H * 0.9);
+  fw = Math.max(fw, Math.min(W * 0.94, 420)); // keep playable on phones
+  fx = (W - fw) / 2;
+  brickW = fw / COLS;
+  brickH = brickW * 0.42;
+  paddleW = fw * PADDLE_W_F;
+  paddleH = Math.max(8, brickH * 0.4);
+  paddleY = H * 0.88;
+  ballR = Math.max(5, brickW * 0.11);
+  loseY = paddleY - H * 0.16;
+}
+
+function rowY(row) { return H * 0.08 + (row + wallTop) * brickH; }
+
+function reset() {
+  bricks = [];
+  wallTop = 0;
+  for (let r = 0; r < START_ROWS; r++) {
+    for (let c = 0; c < COLS; c++) bricks.push({ col: c, row: r });
+  }
+  score = 0;
+  speedMul = 1;
+  descendIn = DESCEND_EVERY;
+  paddleX = W / 2;
+  stickBall();
+  phase = "ready";
+}
+
+function stickBall() {
+  ball.x = paddleX;
+  ball.y = paddleY - paddleH / 2 - ballR - 1;
+  ball.vx = 0;
+  ball.vy = 0;
+}
+
+function launch() {
+  const speed = Math.min(W, H) * BALL_SPEED_F * speedMul;
+  const ang = -Math.PI / 2 + (Math.random() - 0.5) * 0.7;
+  ball.vx = Math.cos(ang) * speed;
+  ball.vy = Math.sin(ang) * speed;
+  phase = "play";
+}
+
+/* ---------------- Pointer ---------------- */
+window.addEventListener("pointermove", (e) => {
+  paddleX = Math.max(fx + paddleW / 2, Math.min(e.clientX, fx + fw - paddleW / 2));
+  if (phase === "ready") stickBall();
+});
+window.addEventListener("pointerdown", () => {
+  if (phase === "ready") launch();
+  else if (phase === "over") reset();
+});
+
+/* ---------------- Simulation ---------------- */
+function descend() {
+  wallTop++;
+  // New row slides in above everything: row index -wallTop keeps it at the top.
+  for (let c = 0; c < COLS; c++) bricks.push({ col: c, row: -wallTop });
+  // Wall reached the red line?
+  for (const b of bricks) {
+    if (rowY(b.row) + brickH >= loseY) { phase = "over"; return; }
+  }
+}
+
+function step(dt) {
+  if (phase !== "play") return;
+
+  descendIn -= dt;
+  if (descendIn <= 0) {
+    descendIn = DESCEND_EVERY;
+    descend();
+    if (phase !== "play") return;
+  }
+
+  // Sub-step so the ball can't tunnel through bricks.
+  const speed = Math.hypot(ball.vx, ball.vy);
+  const n = Math.max(1, Math.ceil((speed * dt) / (ballR * 0.8)));
+  const h = dt / n;
+
+  for (let s = 0; s < n; s++) {
+    ball.x += ball.vx * h;
+    ball.y += ball.vy * h;
+
+    // Walls
+    if (ball.x < fx + ballR) { ball.x = fx + ballR; ball.vx = Math.abs(ball.vx); }
+    if (ball.x > fx + fw - ballR) { ball.x = fx + fw - ballR; ball.vx = -Math.abs(ball.vx); }
+    if (ball.y < ballR) { ball.y = ballR; ball.vy = Math.abs(ball.vy); }
+
+    // Missed: below the paddle
+    if (ball.y > H + ballR * 4) { phase = "over"; return; }
+
+    // Paddle: reflect, angle set by where the ball hits
+    if (ball.vy > 0 &&
+        ball.y + ballR >= paddleY - paddleH / 2 &&
+        ball.y - ballR <= paddleY + paddleH / 2 &&
+        Math.abs(ball.x - paddleX) <= paddleW / 2 + ballR) {
+      const hit = (ball.x - paddleX) / (paddleW / 2);   // -1 .. 1
+      const sp = Math.hypot(ball.vx, ball.vy);
+      const ang = -Math.PI / 2 + hit * 1.05;
+      ball.vx = Math.cos(ang) * sp;
+      ball.vy = Math.sin(ang) * sp;
+      ball.y = paddleY - paddleH / 2 - ballR;
+    }
+
+    // Bricks (AABB, pick reflection axis by penetration depth)
+    for (let i = bricks.length - 1; i >= 0; i--) {
+      const b = bricks[i];
+      const bx = fx + b.col * brickW, by = rowY(b.row);
+      if (ball.x + ballR < bx || ball.x - ballR > bx + brickW ||
+          ball.y + ballR < by || ball.y - ballR > by + brickH) continue;
+
+      const overlapX = Math.min(ball.x + ballR - bx, bx + brickW - (ball.x - ballR));
+      const overlapY = Math.min(ball.y + ballR - by, by + brickH - (ball.y - ballR));
+      if (overlapX < overlapY) ball.vx = ball.x < bx + brickW / 2 ? -Math.abs(ball.vx) : Math.abs(ball.vx);
+      else ball.vy = ball.y < by + brickH / 2 ? -Math.abs(ball.vy) : Math.abs(ball.vy);
+
+      bricks.splice(i, 1);
+      score++;
+      // Slow ramp-up keeps the loop tense.
+      speedMul = 1 + score * SPEED_RAMP;
+      const sp = Math.min(W, H) * BALL_SPEED_F * speedMul;
+      const cur = Math.hypot(ball.vx, ball.vy);
+      ball.vx = ball.vx / cur * sp;
+      ball.vy = ball.vy / cur * sp;
+      break;
+    }
+  }
+}
+
+/* ---------------- Rendering ---------------- */
+function draw() {
+  ctx.clearRect(0, 0, W, H);
+  ctx.fillStyle = "#000";
+  ctx.fillRect(0, 0, W, H);
+
+  // Field side walls
+  ctx.strokeStyle = "rgba(255,255,255,0.18)";
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(fx, 0); ctx.lineTo(fx, H);
+  ctx.moveTo(fx + fw, 0); ctx.lineTo(fx + fw, H);
+  ctx.stroke();
+
+  // Lose line
+  ctx.strokeStyle = "rgba(240,72,60,0.35)";
+  ctx.setLineDash([6, 8]);
+  ctx.beginPath();
+  ctx.moveTo(fx, loseY); ctx.lineTo(fx + fw, loseY);
+  ctx.stroke();
+  ctx.setLineDash([]);
+
+  // Bricks — deeper rows slightly dimmer
+  const gap = Math.max(1.5, brickW * 0.05);
+  for (const b of bricks) {
+    const by = rowY(b.row);
+    if (by + brickH < -brickH) continue;
+    const depth = (by / loseY);
+    ctx.fillStyle = `rgba(255,255,255,${0.9 - depth * 0.55})`;
+    ctx.fillRect(fx + b.col * brickW + gap / 2, by + gap / 2, brickW - gap, brickH - gap);
+  }
+
+  // Paddle
+  ctx.fillStyle = "#fff";
+  ctx.beginPath();
+  ctx.roundRect(paddleX - paddleW / 2, paddleY - paddleH / 2, paddleW, paddleH, paddleH / 2);
+  ctx.fill();
+
+  // Ball with glow
+  ctx.save();
+  ctx.shadowColor = "#fff";
+  ctx.shadowBlur = ballR * 3;
+  ctx.fillStyle = "#fff";
+  ctx.beginPath();
+  ctx.arc(ball.x, ball.y, ballR, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.restore();
+
+  // Score
+  ctx.font = `500 ${Math.max(13, Math.min(W, H) * 0.024)}px ${FONT}`;
+  ctx.textAlign = "center";
+  ctx.textBaseline = "top";
+  ctx.fillStyle = "rgba(255,255,255,0.6)";
+  ctx.fillText(String(score), W / 2, H * 0.055);
+
+  // Overlays
+  if (phase !== "play") {
+    ctx.textBaseline = "middle";
+    if (phase === "ready") {
+      ctx.font = `500 ${Math.max(12, Math.min(W, H) * 0.02)}px ${FONT}`;
+      ctx.fillStyle = "rgba(255,255,255,0.5)";
+      ctx.fillText("CLICK TO LAUNCH", W / 2, H * 0.55);
+    } else {
+      ctx.font = `700 ${Math.max(20, Math.min(W, H) * 0.05)}px ${FONT}`;
+      ctx.fillStyle = "#fff";
+      ctx.fillText("GAME OVER", W / 2, H * 0.46);
+      ctx.font = `500 ${Math.max(12, Math.min(W, H) * 0.022)}px ${FONT}`;
+      ctx.fillStyle = "rgba(255,255,255,0.55)";
+      ctx.fillText(`SCORE ${score} · CLICK TO RESTART`, W / 2, H * 0.53);
+    }
+  }
+}
+
+/* ---------------- Main loop ---------------- */
+let lastT = 0;
+function frame(t) {
+  const dt = Math.min(lastT ? t - lastT : 16.7, 50) / 1000;
+  lastT = t;
+  step(dt);
+  draw();
+  requestAnimationFrame(frame);
+}
+
+window.addEventListener("resize", () => { resize(); reset(); });
+resize();
+reset();
+requestAnimationFrame(frame);
+</script>
+</body>
+</html>

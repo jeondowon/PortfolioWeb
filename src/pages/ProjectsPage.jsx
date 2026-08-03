@@ -96,11 +96,16 @@ export default function ProjectsPage() {
 
           <div className="projects-grid">
             {filtered.map((project) => {
-              const isLink = project.available && project.github;
+              const internalLink = project.available && project.link;
+              const externalLink =
+                project.available && !project.link && project.github;
+              const isLink = internalLink || externalLink;
               const Tag = isLink ? "a" : "div";
-              const linkProps = isLink
-                ? { href: project.github, target: "_blank", rel: "noreferrer" }
-                : {};
+              const linkProps = internalLink
+                ? { href: project.link }
+                : externalLink
+                  ? { href: project.github, target: "_blank", rel: "noreferrer" }
+                  : {};
 
               return (
                 <Tag

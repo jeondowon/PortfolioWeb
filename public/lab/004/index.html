@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chroma Mixer — EXP-004</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { width: 100%; height: 100%; background: #000; overflow: hidden; }
+    canvas { display: block; }
+    #back {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      font-family: 'Roboto', sans-serif;
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      color: rgba(255,255,255,0.3);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    #back:hover { color: rgba(255,255,255,0.75); }
+    #title {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: 'Roboto', sans-serif;
+      font-size: 11px;
+      letter-spacing: 0.22em;
+      color: rgba(255,255,255,0.35);
+      user-select: none;
+    }
+    #readout {
+      position: fixed;
+      bottom: 128px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-family: 'Roboto', sans-serif;
+      user-select: none;
+    }
+    #swatch {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.25);
+    }
+    #hex {
+      font-size: 15px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      color: rgba(255,255,255,0.85);
+      cursor: pointer;
+    }
+    #rgb {
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      color: rgba(255,255,255,0.35);
+    }
+    #controls {
+      position: fixed;
+      bottom: 28px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .ctrl-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .ctrl-label {
+      font-family: 'Roboto', sans-serif;
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      width: 46px;
+      text-align: right;
+    }
+    .ctrl-val {
+      font-family: 'Roboto', sans-serif;
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      color: rgba(255,255,255,0.35);
+      width: 28px;
+    }
+    .ctrl-slider {
+      -webkit-appearance: none;
+      appearance: none;
+      width: min(230px, 52vw);
+      height: 1px;
+      background: rgba(255,255,255,0.2);
+      outline: none;
+      cursor: pointer;
+    }
+    .ctrl-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--thumb, #fff);
+      cursor: pointer;
+    }
+    .ctrl-slider::-moz-range-thumb {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--thumb, #fff);
+      border: none;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="c"></canvas>
+  <a href="/lab" id="back">← LAB</a>
+  <div id="title">CHROMA MIXER — EXP-004</div>
+  <div id="readout">
+    <div id="swatch"></div>
+    <div id="hex" title="click to copy">#FFFFFF</div>
+    <div id="rgb"></div>
+  </div>
+  <div id="controls">
+    <div class="ctrl-row">
+      <span class="ctrl-label" style="color:#ff5a4d">RED</span>
+      <input class="ctrl-slider" id="r" type="range" min="0" max="255" value="255" style="--thumb:#ff5a4d">
+      <span class="ctrl-val" id="rv">255</span>
+    </div>
+    <div class="ctrl-row">
+      <span class="ctrl-label" style="color:#4dff88">GREEN</span>
+      <input class="ctrl-slider" id="g" type="range" min="0" max="255" value="255" style="--thumb:#4dff88">
+      <span class="ctrl-val" id="gv">255</span>
+    </div>
+    <div class="ctrl-row">
+      <span class="ctrl-label" style="color:#4d8cff">BLUE</span>
+      <input class="ctrl-slider" id="b" type="range" min="0" max="255" value="255" style="--thumb:#4d8cff">
+      <span class="ctrl-val" id="bv">255</span>
+    </div>
+  </div>
+<script>
+"use strict";
+
+/* ============================================================
+ * Chroma Mixer — EXP-004
+ * Three sliders drive the intensity of a red, a green and a blue
+ * light circle drawn with additive blending ("lighter"), so the
+ * overlaps show exactly how light mixes: R+G=yellow, G+B=cyan,
+ * R+B=magenta, all three = the mixed color shown in the readout.
+ * ============================================================ */
+
+const canvas = document.getElementById("c");
+const ctx = canvas.getContext("2d");
+
+const sliders = {
+  r: document.getElementById("r"),
+  g: document.getElementById("g"),
+  b: document.getElementById("b"),
+};
+const vals = {
+  r: document.getElementById("rv"),
+  g: document.getElementById("gv"),
+  b: document.getElementById("bv"),
+};
+const swatch = document.getElementById("swatch");
+const hexEl = document.getElementById("hex");
+const rgbEl = document.getElementById("rgb");
+
+let W = 0, H = 0;
+
+function resize() {
+  const dpr = window.devicePixelRatio || 1;
+  W = window.innerWidth;
+  H = window.innerHeight;
+  canvas.width = W * dpr;
+  canvas.height = H * dpr;
+  canvas.style.width = W + "px";
+  canvas.style.height = H + "px";
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  draw();
+}
+
+// Current channel values, plus eased values for a soft transition.
+const target = { r: 255, g: 255, b: 255 };
+const shown = { r: 255, g: 255, b: 255 };
+
+function hex2(n) {
+  return Math.round(n).toString(16).padStart(2, "0").toUpperCase();
+}
+
+function draw() {
+  ctx.clearRect(0, 0, W, H);
+  ctx.fillStyle = "#000";
+  ctx.fillRect(0, 0, W, H);
+
+  // Circle layout: classic venn triangle around the visual center
+  // (shifted up a bit to make room for the controls).
+  const cx = W / 2;
+  const cy = H * 0.44;
+  const R = Math.min(W, H) * 0.21;
+  const off = R * 0.55;
+  const circles = [
+    { x: cx,                       y: cy - off,             c: [shown.r, 0, 0] },
+    { x: cx - off * Math.sin(Math.PI / 3), y: cy + off * 0.5, c: [0, shown.g, 0] },
+    { x: cx + off * Math.sin(Math.PI / 3), y: cy + off * 0.5, c: [0, 0, shown.b] },
+  ];
+
+  ctx.save();
+  ctx.globalCompositeOperation = "lighter";
+  for (const circle of circles) {
+    const [r, g, b] = circle.c;
+    if (r + g + b === 0) continue;
+    // Radial gradient: solid core, soft edge — reads as a light beam.
+    const grad = ctx.createRadialGradient(circle.x, circle.y, 0, circle.x, circle.y, R);
+    grad.addColorStop(0, `rgb(${r},${g},${b})`);
+    grad.addColorStop(0.75, `rgb(${r},${g},${b})`);
+    grad.addColorStop(1, "rgb(0,0,0)");
+    ctx.fillStyle = grad;
+    ctx.beginPath();
+    ctx.arc(circle.x, circle.y, R, 0, Math.PI * 2);
+    ctx.fill();
+  }
+  ctx.restore();
+}
+
+function updateReadout() {
+  const { r, g, b } = target;
+  const hex = `#${hex2(r)}${hex2(g)}${hex2(b)}`;
+  swatch.style.background = `rgb(${r},${g},${b})`;
+  hexEl.textContent = hex;
+  rgbEl.textContent = `rgb(${r}, ${g}, ${b})`;
+}
+
+for (const k of ["r", "g", "b"]) {
+  sliders[k].addEventListener("input", () => {
+    target[k] = +sliders[k].value;
+    vals[k].textContent = sliders[k].value;
+    updateReadout();
+  });
+}
+
+hexEl.addEventListener("click", () => {
+  navigator.clipboard?.writeText(hexEl.textContent);
+  const prev = hexEl.textContent;
+  hexEl.textContent = "COPIED";
+  setTimeout(() => { hexEl.textContent = prev; }, 700);
+});
+
+function frame() {
+  // Ease the drawn intensities toward the slider values.
+  let moving = false;
+  for (const k of ["r", "g", "b"]) {
+    const d = target[k] - shown[k];
+    if (Math.abs(d) > 0.5) {
+      shown[k] += d * 0.18;
+      moving = true;
+    } else {
+      shown[k] = target[k];
+    }
+  }
+  draw();
+  requestAnimationFrame(frame);
+}
+
+window.addEventListener("resize", resize);
+resize();
+updateReadout();
+requestAnimationFrame(frame);
+</script>
+</body>
+</html>

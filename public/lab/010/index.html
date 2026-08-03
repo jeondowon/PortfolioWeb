@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pendulum Lab — EXP-010</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { width: 100%; height: 100%; background: #000; overflow: hidden; }
+    canvas { display: block; touch-action: none; }
+    #back {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      font-family: 'Roboto', sans-serif;
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      color: rgba(255,255,255,0.3);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    #back:hover { color: rgba(255,255,255,0.75); }
+    #title {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: 'Roboto', sans-serif;
+      font-size: 11px;
+      letter-spacing: 0.22em;
+      color: rgba(255,255,255,0.35);
+      user-select: none;
+    }
+    #hint {
+      position: fixed;
+      bottom: 24px;
+      left: 24px;
+      font-family: 'Roboto', sans-serif;
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      color: rgba(255,255,255,0.25);
+      user-select: none;
+    }
+    #controls {
+      position: fixed;
+      bottom: 22px;
+      right: 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .ctrl-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .ctrl-label {
+      font-family: 'Roboto', sans-serif;
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      color: rgba(255,255,255,0.3);
+      width: 64px;
+      text-align: right;
+    }
+    .ctrl-val {
+      font-family: 'Roboto', sans-serif;
+      font-size: 10px;
+      letter-spacing: 0.06em;
+      color: rgba(255,255,255,0.45);
+      width: 42px;
+    }
+    .ctrl-slider {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 100px;
+      height: 1px;
+      background: rgba(255,255,255,0.2);
+      outline: none;
+      cursor: pointer;
+    }
+    .ctrl-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.75);
+      cursor: pointer;
+    }
+    .ctrl-slider::-moz-range-thumb {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.75);
+      border: none;
+      cursor: pointer;
+    }
+    @media (max-width: 768px) {
+      #controls { bottom: auto; top: 52px; }
+      #hint { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="c"></canvas>
+  <a href="/lab" id="back">← LAB</a>
+  <div id="title">PENDULUM LAB — EXP-010</div>
+  <div id="hint">DRAG THE BOB · RELEASE TO SWING</div>
+  <div id="controls">
+    <div class="ctrl-row">
+      <span class="ctrl-label">GRAVITY</span>
+      <input class="ctrl-slider" id="gravity" type="range" min="1" max="30" step="0.1" value="9.8">
+      <span class="ctrl-val" id="gravity-val">9.8</span>
+    </div>
+    <div class="ctrl-row">
+      <span class="ctrl-label">LENGTH</span>
+      <input class="ctrl-slider" id="length" type="range" min="0.4" max="2" step="0.01" value="1.2">
+      <span class="ctrl-val" id="length-val">1.20</span>
+    </div>
+    <div class="ctrl-row">
+      <span class="ctrl-label">DAMPING</span>
+      <input class="ctrl-slider" id="damping" type="range" min="0" max="1" step="0.01" value="0.12">
+      <span class="ctrl-val" id="damping-val">0.12</span>
+    </div>
+  </div>
+<script>
+"use strict";
+
+/* ============================================================
+ * Pendulum Lab — EXP-010
+ * A single damped pendulum: th'' = -(g/L)·sin(th) - c·th'.
+ * Tune gravity, length and damping with the sliders, drag the bob
+ * to any angle and release. The bob leaves a fading trace, so the
+ * slow decay of the swing is drawn as a shrinking arc.
+ * ============================================================ */
+
+const TRAIL_MAX = 700;      // trace points kept
+const TRAIL_LIFE = 9;       // seconds a trace point takes to fade out
+const PX_PER_M_FACTOR = 0.30; // px per meter = min(W,H) * this
+
+const canvas = document.getElementById("c");
+const ctx = canvas.getContext("2d");
+
+const params = { gravity: 9.8, length: 1.2, damping: 0.12 };
+for (const key of ["gravity", "length", "damping"]) {
+  const el = document.getElementById(key);
+  const val = document.getElementById(key + "-val");
+  el.addEventListener("input", () => {
+    params[key] = +el.value;
+    val.textContent = (+el.value).toFixed(key === "gravity" ? 1 : 2);
+  });
+}
+
+let W = 0, H = 0;
+let px = 0, py = 0;      // pivot
+let pxPerM = 300;
+
+function resize() {
+  const dpr = window.devicePixelRatio || 1;
+  W = window.innerWidth;
+  H = window.innerHeight;
+  canvas.width = W * dpr;
+  canvas.height = H * dpr;
+  canvas.style.width = W + "px";
+  canvas.style.height = H + "px";
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  px = W / 2;
+  py = H * 0.2;
+  pxPerM = Math.min(W, H) * PX_PER_M_FACTOR;
+}
+
+// theta measured from straight-down, positive to the right.
+let theta = Math.PI / 3;
+let omega = 0;
+let dragging = false;
+const trail = [];   // { x, y, age }
+
+function bobPos() {
+  const L = params.length * pxPerM;
+  return {
+    x: px + Math.sin(theta) * L,
+    y: py + Math.cos(theta) * L,
+    r: Math.max(9, pxPerM * 0.055),
+  };
+}
+
+/* ---------------- Pointer: drag the bob ---------------- */
+function pointerAngle(e) {
+  return Math.atan2(e.clientX - px, e.clientY - py); // from straight-down
+}
+
+canvas.addEventListener("pointerdown", (e) => {
+  const b = bobPos();
+  if (Math.hypot(e.clientX - b.x, e.clientY - b.y) < b.r * 3) {
+    dragging = true;
+    omega = 0;
+    theta = pointerAngle(e);
+    canvas.setPointerCapture(e.pointerId);
+  }
+});
+canvas.addEventListener("pointermove", (e) => {
+  if (dragging) {
+    theta = pointerAngle(e);
+    omega = 0;
+  }
+});
+canvas.addEventListener("pointerup", () => { dragging = false; });
+
+/* ---------------- Simulation ---------------- */
+function step(dt) {
+  if (dragging) return;
+  // Sub-step for stability at high gravity / short length.
+  const n = 8;
+  const h = dt / n;
+  for (let i = 0; i < n; i++) {
+    const acc = -(params.gravity / params.length) * Math.sin(theta) - params.damping * omega;
+    omega += acc * h;
+    theta += omega * h;
+  }
+}
+
+/* ---------------- Rendering ---------------- */
+function draw(dt) {
+  ctx.clearRect(0, 0, W, H);
+  ctx.fillStyle = "#000";
+  ctx.fillRect(0, 0, W, H);
+
+  const b = bobPos();
+
+  // Trace: record while moving, fade with age.
+  if (!dragging) {
+    trail.push({ x: b.x, y: b.y, age: 0 });
+    if (trail.length > TRAIL_MAX) trail.shift();
+  }
+  for (let i = trail.length - 1; i >= 0; i--) {
+    trail[i].age += dt;
+    if (trail[i].age > TRAIL_LIFE) trail.splice(i, 1);
+  }
+  ctx.lineCap = "round";
+  for (let i = 1; i < trail.length; i++) {
+    const a = trail[i - 1], c = trail[i];
+    const fade = 1 - c.age / TRAIL_LIFE;
+    ctx.strokeStyle = `rgba(120, 200, 255, ${0.45 * fade * fade})`;
+    ctx.lineWidth = 1 + 1.5 * fade;
+    ctx.beginPath();
+    ctx.moveTo(a.x, a.y);
+    ctx.lineTo(c.x, c.y);
+    ctx.stroke();
+  }
+
+  // Pivot mount
+  ctx.fillStyle = "rgba(255,255,255,0.5)";
+  ctx.beginPath();
+  ctx.arc(px, py, 4, 0, Math.PI * 2);
+  ctx.fill();
+
+  // Rod
+  ctx.strokeStyle = "rgba(255,255,255,0.55)";
+  ctx.lineWidth = 1.5;
+  ctx.beginPath();
+  ctx.moveTo(px, py);
+  ctx.lineTo(b.x, b.y);
+  ctx.stroke();
+
+  // Bob with glow
+  ctx.save();
+  ctx.shadowColor = "#fff";
+  ctx.shadowBlur = b.r * (dragging ? 3.5 : 2);
+  ctx.fillStyle = "#fff";
+  ctx.beginPath();
+  ctx.arc(b.x, b.y, b.r, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.restore();
+}
+
+/* ---------------- Main loop ---------------- */
+let lastT = 0;
+function frame(t) {
+  const dt = Math.min(lastT ? t - lastT : 16.7, 50) / 1000;
+  lastT = t;
+  step(dt);
+  draw(dt);
+  requestAnimationFrame(frame);
+}
+
+window.addEventListener("resize", resize);
+resize();
+requestAnimationFrame(frame);
+</script>
+</body>
+</html>

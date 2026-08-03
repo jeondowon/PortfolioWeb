@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Maze 01 — EXP-005</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { width: 100%; height: 100%; background: #000; overflow: hidden; }
+    canvas { display: block; }
+    #back {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      font-family: 'Roboto', sans-serif;
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      color: rgba(255,255,255,0.3);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    #back:hover { color: rgba(255,255,255,0.75); }
+    #title {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: 'Roboto', sans-serif;
+      font-size: 11px;
+      letter-spacing: 0.22em;
+      color: rgba(255,255,255,0.35);
+      user-select: none;
+    }
+    #hint {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: 'Roboto', sans-serif;
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      color: rgba(255,255,255,0.3);
+      user-select: none;
+      white-space: nowrap;
+    }
+    #hint .key {
+      color: rgba(255,255,255,0.75);
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+    #hint .key:hover { color: #fff; }
+  </style>
+</head>
+<body>
+  <canvas id="c"></canvas>
+  <a href="/lab" id="back">← LAB</a>
+  <div id="title">MAZE 01 — EXP-005</div>
+  <div id="hint"><span class="key" id="btn-gen">[G] GENERATE</span> &nbsp;·&nbsp; <span class="key" id="btn-solve">[S] SOLVE</span></div>
+<script>
+"use strict";
+
+/* ============================================================
+ * Maze 01 — EXP-005
+ * [G] carves a perfect maze (iterative recursive backtracker,
+ *     animated a few steps per frame).
+ * [S] releases a BFS flood from the entrance; visited cells are
+ *     tinted by distance, and when the flood reaches the exit the
+ *     shortest path is traced back and drawn on top.
+ * Perfect maze -> exactly one path between any two cells.
+ * ============================================================ */
+
+const CELL_TARGET = 26;   // aim for cells about this many px wide
+const GEN_CPS  = 900;     // generation speed, cells per second
+const FLOOD_CPS = 700;    // flood speed, cells per second
+const PATH_CPS = 90;      // path trace speed, cells per second
+
+// Wall bitmasks per cell
+const T = 1, R = 2, B = 4, L = 8;
+const DIRS = [
+  { dx: 0, dy: -1, wall: T, opp: B },
+  { dx: 1, dy: 0,  wall: R, opp: L },
+  { dx: 0, dy: 1,  wall: B, opp: T },
+  { dx: -1, dy: 0, wall: L, opp: R },
+];
+
+const canvas = document.getElementById("c");
+const ctx = canvas.getContext("2d");
+
+let W = 0, H = 0;
+let cols = 0, rows = 0, cell = 0;   // grid metrics
+let ox = 0, oy = 0;                 // maze top-left offset (centered)
+
+let walls = null;      // Uint8Array, wall bitmask per cell
+let phase = "empty";   // "empty" | "gen" | "idle" | "flood" | "trace" | "done"
+
+// Generation state
+let genStack = [];
+let genVisited = null;
+let carved = 0;
+
+// Solve state
+let dist = null;       // Int32Array, BFS distance (-1 = unvisited)
+let prev = null;       // Int32Array, BFS parent cell index
+let queue = [];        // BFS frontier
+let maxDist = 0;
+let path = [];         // traced shortest path, entrance -> exit
+let pathShown = 0;     // how many path cells are drawn so far
+
+let carry = 0;         // fractional cells carried between frames
+
+const idx = (x, y) => y * cols + x;
+
+function resize() {
+  const dpr = window.devicePixelRatio || 1;
+  W = window.innerWidth;
+  H = window.innerHeight;
+  canvas.width = W * dpr;
+  canvas.height = H * dpr;
+  canvas.style.width = W + "px";
+  canvas.style.height = H + "px";
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+  // Usable area with margins for the title / hint rows.
+  const mw = W * 0.86, mh = H * 0.74;
+  cols = Math.max(9, Math.floor(mw / CELL_TARGET));
+  rows = Math.max(9, Math.floor(mh / CELL_TARGET));
+  cell = Math.min(mw / cols, mh / rows);
+  ox = (W - cols * cell) / 2;
+  oy = (H - rows * cell) / 2;
+
+  // Grid size changed: start a fresh maze.
+  startGeneration();
+}
+
+/* ---------------- Generation: recursive backtracker ---------------- */
+function startGeneration() {
+  walls = new Uint8Array(cols * rows).fill(T | R | B | L);
+  genVisited = new Uint8Array(cols * rows);
+  genStack = [{ x: 0, y: 0 }];
+  genVisited[0] = 1;
+  carved = 1;
+  dist = null;
+  path = [];
+  phase = "gen";
+  carry = 0;
+}
+
+function genStep() {
+  const cur = genStack[genStack.length - 1];
+  const options = [];
+  for (const d of DIRS) {
+    const nx = cur.x + d.dx, ny = cur.y + d.dy;
+    if (nx >= 0 && nx < cols && ny >= 0 && ny < rows && !genVisited[idx(nx, ny)]) {
+      options.push(d);
+    }
+  }
+  if (options.length === 0) {
+    genStack.pop();
+    return;
+  }
+  const d = options[(Math.random() * options.length) | 0];
+  const nx = cur.x + d.dx, ny = cur.y + d.dy;
+  walls[idx(cur.x, cur.y)] &= ~d.wall;
+  walls[idx(nx, ny)] &= ~d.opp;
+  genVisited[idx(nx, ny)] = 1;
+  genStack.push({ x: nx, y: ny });
+  carved++;
+}
+
+/* ---------------- Solve: BFS flood + backtrace ---------------- */
+function startSolve() {
+  if (phase !== "idle" && phase !== "done") return;
+  dist = new Int32Array(cols * rows).fill(-1);
+  prev = new Int32Array(cols * rows).fill(-1);
+  dist[0] = 0;
+  queue = [0];
+  maxDist = 0;
+  path = [];
+  pathShown = 0;
+  phase = "flood";
+  carry = 0;
+}
+
+function floodStep() {
+  const i = queue.shift();
+  const x = i % cols, y = (i / cols) | 0;
+  const goal = idx(cols - 1, rows - 1);
+  for (const d of DIRS) {
+    if (walls[i] & d.wall) continue;
+    const j = idx(x + d.dx, y + d.dy);
+    if (dist[j] !== -1) continue;
+    dist[j] = dist[i] + 1;
+    prev[j] = i;
+    maxDist = Math.max(maxDist, dist[j]);
+    queue.push(j);
+    if (j === goal) {
+      // Trace the shortest path back to the entrance.
+      let k = goal;
+      while (k !== -1) {
+        path.push(k);
+        k = prev[k];
+      }
+      path.reverse();
+      pathShown = 0;
+      phase = "trace";
+      carry = 0;
+      return;
+    }
+  }
+}
+
+/* ---------------- Rendering ---------------- */
+function draw() {
+  ctx.clearRect(0, 0, W, H);
+  ctx.fillStyle = "#000";
+  ctx.fillRect(0, 0, W, H);
+  if (!walls) return;
+
+  // Flood tint: visited cells colored by BFS distance.
+  if (dist) {
+    for (let y = 0; y < rows; y++) {
+      for (let x = 0; x < cols; x++) {
+        const dv = dist[idx(x, y)];
+        if (dv < 0) continue;
+        const t = maxDist > 0 ? dv / maxDist : 0;
+        ctx.fillStyle = `hsla(${190 + t * 90}, 85%, 55%, 0.28)`;
+        ctx.fillRect(ox + x * cell, oy + y * cell, cell + 0.5, cell + 0.5);
+      }
+    }
+  }
+
+  // Shortest path, drawn progressively.
+  if (path.length > 0 && pathShown > 1) {
+    ctx.strokeStyle = "#fff";
+    ctx.lineWidth = Math.max(1.5, cell * 0.18);
+    ctx.lineCap = "round";
+    ctx.lineJoin = "round";
+    ctx.beginPath();
+    for (let n = 0; n < Math.min(pathShown, path.length); n++) {
+      const i = path[n];
+      const px = ox + (i % cols) * cell + cell / 2;
+      const py = oy + ((i / cols) | 0) * cell + cell / 2;
+      if (n === 0) ctx.moveTo(px, py);
+      else ctx.lineTo(px, py);
+    }
+    ctx.stroke();
+  }
+
+  // During generation, mark the carving head.
+  if (phase === "gen" && genStack.length > 0) {
+    const head = genStack[genStack.length - 1];
+    ctx.fillStyle = "rgba(255,255,255,0.5)";
+    ctx.fillRect(ox + head.x * cell + cell * 0.25, oy + head.y * cell + cell * 0.25, cell * 0.5, cell * 0.5);
+  }
+
+  // Walls — only carved cells are drawn, so the maze appears as it grows.
+  ctx.strokeStyle = "rgba(255,255,255,0.8)";
+  ctx.lineWidth = Math.max(1, cell * 0.08);
+  ctx.lineCap = "round";
+  ctx.beginPath();
+  for (let y = 0; y < rows; y++) {
+    for (let x = 0; x < cols; x++) {
+      const i = idx(x, y);
+      if (phase === "gen" && !genVisited[i]) continue;
+      const w = walls[i];
+      const x0 = ox + x * cell, y0 = oy + y * cell;
+      if (w & T) { ctx.moveTo(x0, y0); ctx.lineTo(x0 + cell, y0); }
+      if (w & L) { ctx.moveTo(x0, y0); ctx.lineTo(x0, y0 + cell); }
+      // Right/bottom edges only on the outer boundary (inner ones are
+      // some neighbor's top/left) — avoids double-drawing every wall.
+      if ((w & R) && x === cols - 1) { ctx.moveTo(x0 + cell, y0); ctx.lineTo(x0 + cell, y0 + cell); }
+      if ((w & B) && y === rows - 1) { ctx.moveTo(x0, y0 + cell); ctx.lineTo(x0 + cell, y0 + cell); }
+    }
+  }
+  ctx.stroke();
+
+  // Entrance / exit markers.
+  const mr = cell * 0.22;
+  ctx.fillStyle = "#4dff88";
+  ctx.beginPath();
+  ctx.arc(ox + cell / 2, oy + cell / 2, mr, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.fillStyle = "#ff5a4d";
+  ctx.beginPath();
+  ctx.arc(ox + (cols - 0.5) * cell, oy + (rows - 0.5) * cell, mr, 0, Math.PI * 2);
+  ctx.fill();
+}
+
+/* ---------------- Main loop ---------------- */
+let lastT = 0;
+function frame(t) {
+  const dt = Math.min(lastT ? t - lastT : 16.7, 50) / 1000;
+  lastT = t;
+
+  if (phase === "gen") {
+    carry += GEN_CPS * dt;
+    while (carry >= 1 && genStack.length > 0) { genStep(); carry--; }
+    if (genStack.length === 0) phase = "idle";
+  } else if (phase === "flood") {
+    carry += FLOOD_CPS * dt;
+    while (carry >= 1 && queue.length > 0 && phase === "flood") { floodStep(); carry--; }
+  } else if (phase === "trace") {
+    carry += PATH_CPS * dt;
+    while (carry >= 1) { pathShown++; carry--; }
+    if (pathShown >= path.length) phase = "done";
+  }
+
+  draw();
+  requestAnimationFrame(frame);
+}
+
+window.addEventListener("keydown", (e) => {
+  const k = e.key.toLowerCase();
+  if (k === "g") startGeneration();
+  else if (k === "s") startSolve();
+});
+document.getElementById("btn-gen").addEventListener("click", startGeneration);
+document.getElementById("btn-solve").addEventListener("click", startSolve);
+
+window.addEventListener("resize", resize);
+resize();
+requestAnimationFrame(frame);
+</script>
+</body>
+</html>
