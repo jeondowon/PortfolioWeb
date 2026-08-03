@@ -1,407 +1,2299 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ko">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Rockie · 데스크톱 애완돌 키우기</title>
-<link rel="icon" type="image/png" href="assets/icon.png">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/galmuri/dist/galmuri.css">
-<style>
-  *{ box-sizing:border-box; margin:0; padding:0; }
-  html{ scroll-behavior:smooth; scroll-padding-top:84px; }
-  body{ font-family:'Pretendard','Apple SD Gothic Neo',sans-serif; background:#f2ede1; color:#1b1b16; -webkit-font-smoothing:antialiased; }
-  img{ display:block; }
-  a{ color:#4f7a3f; text-decoration:none; }
-  a:hover{ color:#a8432b; }
-  ::selection{ background:#4f7a3f; color:#f2ede1; }
-  ::-webkit-scrollbar{ width:12px; height:12px; }
-  ::-webkit-scrollbar-track{ background:#e7e1d2; }
-  ::-webkit-scrollbar-thumb{ background:#1b1b16; border:3px solid #e7e1d2; }
-  @keyframes bob{ 0%,100%{ transform:translateY(0) rotate(-1.5deg); } 50%{ transform:translateY(-9px) rotate(1.5deg); } }
-  @keyframes bobslow{ 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(-6px); } }
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Rockie · 데스크톱 애완돌 키우기</title>
+    <link rel="icon" type="image/png" href="assets/favicon.png" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/galmuri/dist/galmuri.css"
+    />
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      html {
+        scroll-behavior: smooth;
+        scroll-padding-top: 67px;
+        overflow-x: hidden;
+      }
+      body {
+        font-family: "Pretendard", "Apple SD Gothic Neo", sans-serif;
+        background: #f2ede1;
+        color: #1b1b16;
+        -webkit-font-smoothing: antialiased;
+      }
+      img {
+        display: block;
+      }
+      a {
+        color: #4f7a3f;
+        text-decoration: none;
+      }
+      a:hover {
+        color: #a8432b;
+      }
+      ::selection {
+        background: #4f7a3f;
+        color: #f2ede1;
+      }
+      ::-webkit-scrollbar {
+        width: 12px;
+        height: 12px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #e7e1d2;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #1b1b16;
+        border: 3px solid #e7e1d2;
+      }
+      @keyframes bob {
+        0%,
+        100% {
+          transform: translateY(0) rotate(-1.5deg);
+        }
+        50% {
+          transform: translateY(-9px) rotate(1.5deg);
+        }
+      }
+      @keyframes bobslow {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-6px);
+        }
+      }
 
-  /* hover states (from design style-hover) */
-  .hov{ transition:transform .12s ease, box-shadow .12s ease, border-color .12s ease, color .12s ease; }
-  .hov-nav:hover{ transform:translate(1px,1px); box-shadow:2px 2px 0 #000; }
-  .hov-cta:hover{ transform:translate(2px,2px); box-shadow:4px 4px 0 #000; }
-  .hov-ghost:hover{ border-color:#e9c85b; color:#e9c85b; }
-  .hov-dl:hover{ transform:translate(2px,2px); box-shadow:4px 4px 0 rgba(27,27,22,.3); }
-  .hov-donate:hover{ transform:translate(2px,2px); box-shadow:4px 4px 0 rgba(27,27,22,.16); }
-  .hov-contact:hover{ border-color:#e9c85b; }
+      /* hover states (from design style-hover) */
+      .hov {
+        transition:
+          transform 0.12s ease,
+          box-shadow 0.12s ease,
+          border-color 0.12s ease,
+          color 0.12s ease;
+      }
+      .hov-nav:hover {
+        transform: translate(1px, 1px);
+        box-shadow: 2px 2px 0 #000;
+      }
+      .hov-cta:hover {
+        transform: translate(2px, 2px);
+        box-shadow: 4px 4px 0 #000;
+      }
+      .hov-ghost:hover {
+        border-color: #e9c85b;
+        color: #e9c85b;
+      }
+      .hov-dl:hover {
+        transform: translate(2px, 2px);
+        box-shadow: 4px 4px 0 rgba(27, 27, 22, 0.3);
+      }
+      .hov-donate:hover {
+        transform: translate(2px, 2px);
+        box-shadow: 4px 4px 0 rgba(27, 27, 22, 0.16);
+      }
+      .hov-contact:hover {
+        border-color: #e9c85b;
+      }
 
-  @media (max-width:820px){
-    .hero-grid,.support-grid,.contact-grid{ grid-template-columns:1fr !important; }
-    .feat-grid,.stone-grid{ grid-template-columns:1fr !important; }
-    .nav-links a:not(.nav-dl){ display:none !important; }
-  }
-</style>
-</head>
-<body>
-
-<div style="min-height:100vh; overflow-x:hidden;">
-
-  <!-- ============ NAV ============ -->
-  <nav style="position:sticky; top:0; z-index:50; background:rgba(27,27,22,.96); border-bottom:3px solid #000;">
-    <div style="max-width:1180px; margin:0 auto; padding:0 24px; height:64px; display:flex; align-items:center; gap:14px;">
-      <a href="#top" style="display:flex; align-items:center; gap:10px; color:#f2ede1;">
-        <img src="assets/icon.png" alt="Rockie" style="width:26px; height:26px; image-rendering:pixelated; filter:invert(1) brightness(1.4);">
-        <span style="font-family:'Galmuri14',monospace; font-size:17px; letter-spacing:1px; color:#f2ede1;">ROCKIE</span>
-      </a>
-      <div class="nav-links" style="margin-left:auto; display:flex; align-items:center; gap:28px;">
-        <a href="#intro" style="font-family:'Galmuri11',monospace; font-size:12px; letter-spacing:1px; color:#c9c3b2;">소개</a>
-        <a href="#character" style="font-family:'Galmuri11',monospace; font-size:12px; letter-spacing:1px; color:#c9c3b2;">캐릭터</a>
-        <a href="#support" style="font-family:'Galmuri11',monospace; font-size:12px; letter-spacing:1px; color:#c9c3b2;">후원</a>
-        <a href="#contact" style="font-family:'Galmuri11',monospace; font-size:12px; letter-spacing:1px; color:#c9c3b2;">컨택</a>
-        <a href="#download" class="nav-dl hov hov-nav" style="font-family:'Galmuri14',monospace; font-size:13px; color:#1b1b16; background:#e9c85b; border:2px solid #000; box-shadow:3px 3px 0 #000; padding:8px 16px;">다운로드</a>
-      </div>
-    </div>
-  </nav>
-
-  <!-- ============ HERO ============ -->
-  <section id="top" style="position:relative; background:radial-gradient(1100px 560px at 78% -8%, #34362d 0%, #1e1f19 58%, #16160f 100%); border-bottom:3px solid #000;">
-    <div style="position:absolute; inset:0; pointer-events:none; opacity:.5; background-image:repeating-linear-gradient(0deg, transparent 0 23px, rgba(255,255,255,.04) 23px 24px), repeating-linear-gradient(90deg, transparent 0 23px, rgba(255,255,255,.04) 23px 24px);"></div>
-    <div class="hero-grid" style="position:relative; max-width:1180px; margin:0 auto; padding:clamp(56px,8vw,104px) 24px clamp(64px,9vw,112px); display:grid; grid-template-columns:1.05fr .95fr; gap:clamp(32px,5vw,64px); align-items:center;">
-
-      <!-- hero copy -->
-      <div>
-        <span style="display:inline-block; font-family:'Galmuri11',monospace; font-size:12px; letter-spacing:2px; color:#e9c85b; border:2px solid #e9c85b; padding:5px 11px; margin-bottom:22px;">데스크톱 애완돌 · v1.0</span>
-        <h1 style="font-family:'Galmuri14',monospace; font-size:clamp(34px,5.2vw,60px); line-height:1.28; color:#f6f1e4; letter-spacing:0.5px;">화면 위에 사는<br>작은 돌, <span style="color:#e9c85b;">Rockie</span></h1>
-        <p style="margin-top:22px; max-width:440px; font-size:17px; line-height:1.85; color:#c4beac;">마우스를 따라다니고, 쓰다듬으면 반응하고, 지금 쓰는 앱에 맞춰 말을 거는 데스크톱 펫. 매일 성향 질문에 답하면 나를 닮은 <strong style="color:#f6f1e4;">네 가지 돌</strong> 중 하나로 자라나요.</p>
-        <div style="margin-top:34px; display:flex; flex-wrap:wrap; gap:14px;">
-          <a href="#download" class="hov hov-cta" style="display:inline-flex; align-items:center; gap:10px; font-family:'Galmuri14',monospace; font-size:15px; color:#1b1b16; background:#e9c85b; border:3px solid #000; box-shadow:6px 6px 0 #000; padding:15px 24px;">⬇ 무료 다운로드</a>
-          <a href="#character" class="hov hov-ghost" style="display:inline-flex; align-items:center; gap:8px; font-family:'Galmuri14',monospace; font-size:15px; color:#f2ede1; background:transparent; border:3px solid #6b6656; box-shadow:6px 6px 0 rgba(0,0,0,.5); padding:15px 24px;">캐릭터 보기</a>
-        </div>
-        <div style="margin-top:26px; display:flex; flex-wrap:wrap; gap:18px; font-family:'Galmuri11',monospace; font-size:11px; letter-spacing:1px; color:#8f8975;">
-          <span>◆ 무료 · 오픈소스</span>
-          <span>◆ macOS · Windows</span>
-          <span>◆ 방해 없는 클릭 통과</span>
-        </div>
-      </div>
-
-      <!-- hero desktop mock -->
-      <div style="position:relative; justify-self:center; width:100%; max-width:440px;">
-        <div style="border:3px solid #000; box-shadow:14px 14px 0 rgba(0,0,0,.55); background:#0f0f0b;">
-          <div style="height:28px; background:#e7e1d2; border-bottom:3px solid #000; display:flex; align-items:center; gap:8px; padding:0 11px;">
-            <img src="assets/icon.png" alt="tray" style="width:15px; height:15px; image-rendering:pixelated;">
-            <span style="font-family:'Galmuri11',monospace; font-size:11px; color:#1b1b16;">Rockie</span>
-            <span style="margin-left:auto; font-family:'Galmuri11',monospace; font-size:11px; color:#514c3e;">9:41 AM</span>
+      @media (max-width: 820px) {
+        .hero-grid,
+        .support-grid,
+        .contact-grid {
+          grid-template-columns: 1fr !important;
+        }
+        .feat-grid,
+        .stone-grid {
+          grid-template-columns: 1fr !important;
+        }
+        .nav-links a:not(.nav-dl) {
+          display: none !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div style="min-height: 100vh">
+      <!-- ============ NAV ============ -->
+      <nav
+        style="
+          position: sticky;
+          top: 0;
+          z-index: 50;
+          background: #1b1b16;
+          border-bottom: 3px solid #000;
+        "
+      >
+        <div
+          style="
+            max-width: 1180px;
+            margin: 0 auto;
+            padding: 0 24px;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+          "
+        >
+          <a
+            href="#top"
+            style="
+              display: flex;
+              align-items: center;
+              gap: 10px;
+              color: #f2ede1;
+            "
+          >
+            <img
+              src="assets/favicon.png"
+              alt="Rockie"
+              style="width: 26px; height: 26px; image-rendering: pixelated"
+            />
+            <span
+              style="
+                font-family: &quot;Galmuri14&quot;, monospace;
+                font-size: 17px;
+                letter-spacing: 1px;
+                color: #f2ede1;
+              "
+              >ROCKIE</span
+            >
+          </a>
+          <div
+            class="nav-links"
+            style="
+              margin-left: auto;
+              display: flex;
+              align-items: center;
+              gap: 28px;
+            "
+          >
+            <a
+              href="#intro"
+              style="
+                font-family: &quot;Galmuri11&quot;, monospace;
+                font-size: 12px;
+                letter-spacing: 1px;
+                color: #c9c3b2;
+              "
+              >소개</a
+            >
+            <a
+              href="#character"
+              style="
+                font-family: &quot;Galmuri11&quot;, monospace;
+                font-size: 12px;
+                letter-spacing: 1px;
+                color: #c9c3b2;
+              "
+              >캐릭터</a
+            >
+            <a
+              href="#support"
+              style="
+                font-family: &quot;Galmuri11&quot;, monospace;
+                font-size: 12px;
+                letter-spacing: 1px;
+                color: #c9c3b2;
+              "
+              >후원</a
+            >
+            <a
+              href="#contact"
+              style="
+                font-family: &quot;Galmuri11&quot;, monospace;
+                font-size: 12px;
+                letter-spacing: 1px;
+                color: #c9c3b2;
+              "
+              >컨택</a
+            >
+            <a
+              href="#download"
+              class="nav-dl hov hov-nav"
+              style="
+                font-family: &quot;Galmuri14&quot;, monospace;
+                font-size: 13px;
+                color: #1b1b16;
+                background: #e9c85b;
+                border: 2px solid #000;
+                box-shadow: 3px 3px 0 #000;
+                padding: 8px 16px;
+              "
+              >다운로드</a
+            >
           </div>
-          <div style="position:relative; height:290px; background:linear-gradient(165deg,#b9d2d8 0%,#d5e0d0 55%,#e7ecdc 100%); overflow:hidden;">
-            <div style="position:absolute; inset:0; opacity:.4; background-image:repeating-linear-gradient(0deg, transparent 0 21px, rgba(27,27,22,.05) 21px 22px), repeating-linear-gradient(90deg, transparent 0 21px, rgba(27,27,22,.05) 21px 22px);"></div>
-            <div style="position:absolute; top:16px; left:16px; display:flex; flex-direction:column; gap:14px;">
-              <div style="width:34px; height:28px; background:#f2ede1; border:2px solid #1b1b16; box-shadow:3px 3px 0 rgba(0,0,0,.2);"></div>
-              <div style="width:34px; height:28px; background:#f2ede1; border:2px solid #1b1b16; box-shadow:3px 3px 0 rgba(0,0,0,.2);"></div>
-            </div>
-            <div style="position:absolute; right:26px; bottom:118px; background:#fffdf7; border:3px solid #1b1b16; box-shadow:4px 4px 0 rgba(0,0,0,.25); padding:9px 13px; animation:bobslow 3.2s ease-in-out infinite;">
-              <span style="font-family:'Galmuri11',monospace; font-size:12px; color:#1b1b16;">안녕하세요, 주인님!</span>
-              <div style="position:absolute; left:26px; bottom:-11px; width:0; height:0; border-left:8px solid transparent; border-right:8px solid transparent; border-top:11px solid #1b1b16;"></div>
-            </div>
-            <div style="position:absolute; left:0; right:0; bottom:0; height:34px; background:#b6c4a6; border-top:3px solid #1b1b16;"></div>
-            <img src="assets/char/rockie_smile.gif" alt="Rockie" style="position:absolute; right:44px; bottom:26px; width:96px; height:96px; image-rendering:pixelated; animation:bob 2.6s ease-in-out infinite;">
-          </div>
         </div>
-        <img src="assets/char/ruby_smile.gif" alt="" style="position:absolute; top:-26px; left:-22px; width:60px; height:60px; image-rendering:pixelated; animation:bobslow 3.6s ease-in-out infinite;">
-        <img src="assets/char/labradorite.gif" alt="" style="position:absolute; bottom:-24px; right:-18px; width:56px; height:56px; image-rendering:pixelated; animation:bobslow 4.2s ease-in-out infinite .6s;">
-      </div>
-    </div>
-  </section>
+      </nav>
 
-  <!-- ============ INTRO / FEATURES ============ -->
-  <section id="intro" style="padding:clamp(72px,10vw,128px) 0; background:#f2ede1;">
-    <div style="max-width:1180px; margin:0 auto; padding:0 24px;">
-      <div style="max-width:640px; margin:0 auto; text-align:center;">
-        <span style="font-family:'Galmuri11',monospace; font-size:12px; letter-spacing:2px; color:#4f7a3f;">WHAT IS ROCKIE?</span>
-        <h2 style="margin-top:16px; font-family:'Galmuri14',monospace; font-size:clamp(26px,3.6vw,42px); line-height:1.4; color:#1b1b16;">부담 없이 곁에 두는<br>데스크톱 친구</h2>
-        <p style="margin-top:20px; font-size:16px; line-height:1.9; color:#514c3e;">Rockie는 작업을 방해하지 않으면서 하루를 함께 보내는 작은 애완돌이에요. 알림처럼 재촉하지 않고, 화면 한 켠에서 조용히 살아 있어요.</p>
-      </div>
-
-      <div class="feat-grid" style="margin-top:clamp(44px,6vw,72px); display:grid; grid-template-columns:repeat(2,1fr); gap:22px;">
-        <div style="display:flex; gap:20px; align-items:flex-start; background:#fffdf7; border:3px solid #1b1b16; box-shadow:7px 7px 0 rgba(27,27,22,.14); padding:26px 26px 28px;">
-          <div style="flex:none; width:78px; height:78px; background:#efe9db; border:2px solid #1b1b16; display:flex; align-items:center; justify-content:center;">
-            <img src="assets/char/rockie_left.gif" alt="" style="width:62px; height:62px; image-rendering:pixelated; animation:bobslow 3s ease-in-out infinite;">
-          </div>
+      <!-- ============ HERO ============ -->
+      <section
+        id="top"
+        style="
+          position: relative;
+          min-height: calc(100vh - 67px);
+          display: flex;
+          align-items: center;
+          background: radial-gradient(
+            1100px 560px at 78% -8%,
+            #34362d 0%,
+            #1e1f19 58%,
+            #16160f 100%
+          );
+          border-bottom: 3px solid #000;
+        "
+      >
+        <div
+          style="
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            opacity: 0.5;
+            background-image:
+              repeating-linear-gradient(
+                0deg,
+                transparent 0 23px,
+                rgba(255, 255, 255, 0.04) 23px 24px
+              ),
+              repeating-linear-gradient(
+                90deg,
+                transparent 0 23px,
+                rgba(255, 255, 255, 0.04) 23px 24px
+              );
+          "
+        ></div>
+        <div
+          class="hero-grid"
+          style="
+            position: relative;
+            width: 100%;
+            max-width: 1180px;
+            margin: 0 auto;
+            padding: clamp(56px, 8vw, 104px) 24px clamp(64px, 9vw, 112px);
+            display: grid;
+            grid-template-columns: 1.05fr 0.95fr;
+            gap: clamp(32px, 5vw, 64px);
+            align-items: center;
+          "
+        >
+          <!-- hero copy -->
           <div>
-            <h3 style="font-family:'Galmuri14',monospace; font-size:17px; color:#1b1b16; line-height:1.4;">커서를 따라다녀요</h3>
-            <p style="margin-top:10px; font-size:14.5px; line-height:1.8; color:#514c3e;">화면 아래를 거닐며 마우스를 살랑살랑 쫓아와요. 클릭은 뒤쪽 앱으로 통과되니 일에 방해되지 않아요.</p>
-          </div>
-        </div>
-        <div style="display:flex; gap:20px; align-items:flex-start; background:#fffdf7; border:3px solid #1b1b16; box-shadow:7px 7px 0 rgba(27,27,22,.14); padding:26px 26px 28px;">
-          <div style="flex:none; width:78px; height:78px; background:#efe9db; border:2px solid #1b1b16; display:flex; align-items:center; justify-content:center;">
-            <img src="assets/char/rockie_love.gif" alt="" style="width:62px; height:62px; image-rendering:pixelated; animation:bobslow 3s ease-in-out infinite;">
-          </div>
-          <div>
-            <h3 style="font-family:'Galmuri14',monospace; font-size:17px; color:#1b1b16; line-height:1.4;">쓰다듬으면 반응해요</h3>
-            <p style="margin-top:10px; font-size:14.5px; line-height:1.8; color:#514c3e;">클릭하면 짧은 말과 표정으로 대답해요. 시간대에 따라, 오래 앉아 있으면 쉬라고도 말해줘요.</p>
-          </div>
-        </div>
-        <div style="display:flex; gap:20px; align-items:flex-start; background:#fffdf7; border:3px solid #1b1b16; box-shadow:7px 7px 0 rgba(27,27,22,.14); padding:26px 26px 28px;">
-          <div style="flex:none; width:78px; height:78px; background:#efe9db; border:2px solid #1b1b16; display:flex; align-items:center; justify-content:center;">
-            <img src="assets/char/rockie_smile.gif" alt="" style="width:62px; height:62px; image-rendering:pixelated; animation:bobslow 3s ease-in-out infinite;">
-          </div>
-          <div>
-            <h3 style="font-family:'Galmuri14',monospace; font-size:17px; color:#1b1b16; line-height:1.4;">지금 쓰는 앱을 알아채요</h3>
-            <p style="margin-top:10px; font-size:14.5px; line-height:1.8; color:#514c3e;">코드 에디터엔 “집중모드 ON!”, 영상엔 “즐감하세요~”. 활성 창에 맞춰 말풍선을 띄워요.</p>
-          </div>
-        </div>
-        <div style="display:flex; gap:20px; align-items:flex-start; background:#fffdf7; border:3px solid #1b1b16; box-shadow:7px 7px 0 rgba(27,27,22,.14); padding:26px 26px 28px;">
-          <div style="flex:none; width:78px; height:78px; background:#efe9db; border:2px solid #1b1b16; display:flex; align-items:center; justify-content:center;">
-            <img src="assets/char/granite_smile.gif" alt="" style="width:62px; height:62px; image-rendering:pixelated; animation:bobslow 3s ease-in-out infinite;">
-          </div>
-          <div>
-            <h3 style="font-family:'Galmuri14',monospace; font-size:17px; color:#1b1b16; line-height:1.4;">답할수록 성향이 자라나요</h3>
-            <p style="margin-top:10px; font-size:14.5px; line-height:1.8; color:#514c3e;">매일 건네는 성향 질문에 답하면, 조약돌이 나를 닮은 네 가지 돌 중 하나로 진화해요.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============ CHARACTER SHOWCASE ============ -->
-  <section id="character" style="padding:clamp(72px,10vw,128px) 0; background:#1b1b16; border-top:3px solid #000; border-bottom:3px solid #000; position:relative;">
-    <div style="position:absolute; inset:0; pointer-events:none; opacity:.5; background-image:repeating-linear-gradient(0deg, transparent 0 27px, rgba(255,255,255,.03) 27px 28px), repeating-linear-gradient(90deg, transparent 0 27px, rgba(255,255,255,.03) 27px 28px);"></div>
-    <div style="position:relative; max-width:1180px; margin:0 auto; padding:0 24px;">
-      <div style="max-width:660px;">
-        <span style="font-family:'Galmuri11',monospace; font-size:12px; letter-spacing:2px; color:#e9c85b;">FIND YOUR STONE</span>
-        <h2 style="margin-top:16px; font-family:'Galmuri14',monospace; font-size:clamp(26px,3.6vw,42px); line-height:1.4; color:#f6f1e4;">나를 닮은 네 가지 돌</h2>
-        <p style="margin-top:18px; font-size:16px; line-height:1.9; color:#b8b2a0;">매일의 성향 질문에 답하면 조약돌이 네 원석 중 하나로 확정돼요. 이후 성향에 따라 변성체를 거쳐 <strong style="color:#f6f1e4;">보석</strong>으로 진화해요.</p>
-      </div>
-
-      <div class="stone-grid" style="margin-top:clamp(40px,5vw,64px); display:grid; grid-template-columns:repeat(2,1fr); gap:24px;">
-
-        <!-- 화강암 -->
-        <div style="background:#efe7db; border:3px solid #000; box-shadow:9px 9px 0 rgba(0,0,0,.5); padding:28px 28px 26px;">
-          <div style="display:flex; align-items:center; gap:20px;">
-            <div style="flex:none; width:96px; height:96px; background:rgba(255,255,255,.5); border:2px solid #1b1b16; display:flex; align-items:center; justify-content:center;">
-              <img src="assets/char/granite_smile.gif" alt="화강암" style="width:76px; height:76px; image-rendering:pixelated; animation:bob 2.8s ease-in-out infinite;">
+            <span
+              style="
+                display: inline-block;
+                font-family: &quot;Galmuri11&quot;, monospace;
+                font-size: 12px;
+                letter-spacing: 2px;
+                color: #e9c85b;
+                border: 2px solid #e9c85b;
+                padding: 5px 11px;
+                margin-bottom: 22px;
+              "
+              >데스크톱 애완돌 · v1.0</span
+            >
+            <h1
+              style="
+                font-family: &quot;Galmuri14&quot;, monospace;
+                font-size: clamp(34px, 5.2vw, 60px);
+                line-height: 1.28;
+                color: #f6f1e4;
+                letter-spacing: 0.5px;
+              "
+            >
+              화면 위에 사는<br />작은 돌,
+              <span style="color: #e9c85b">Rockie</span>
+            </h1>
+            <p
+              style="
+                margin-top: 22px;
+                max-width: 440px;
+                font-size: 17px;
+                line-height: 1.85;
+                color: #c4beac;
+              "
+            >
+              마우스를 따라다니고, 쓰다듬으면 반응하고, 나에게 말을 거는
+              <br />데스크톱 펫. 매일 질문에 답하면 나를 닮은
+              <strong style="color: #f6f1e4">네 가지 돌</strong> 중 <br />하나로
+              자라나요.
+            </p>
+            <div
+              style="
+                margin-top: 34px;
+                display: flex;
+                flex-wrap: wrap;
+                gap: 14px;
+              "
+            >
+              <a
+                href="#download"
+                class="hov hov-cta"
+                style="
+                  display: inline-flex;
+                  align-items: center;
+                  gap: 10px;
+                  font-family: &quot;Galmuri14&quot;, monospace;
+                  font-size: 15px;
+                  color: #1b1b16;
+                  background: #e9c85b;
+                  border: 3px solid #000;
+                  box-shadow: 6px 6px 0 #000;
+                  padding: 15px 24px;
+                "
+                >⬇ 무료 다운로드</a
+              >
+              <a
+                href="#character"
+                class="hov hov-ghost"
+                style="
+                  display: inline-flex;
+                  align-items: center;
+                  gap: 8px;
+                  font-family: &quot;Galmuri14&quot;, monospace;
+                  font-size: 15px;
+                  color: #f2ede1;
+                  background: transparent;
+                  border: 3px solid #6b6656;
+                  box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.5);
+                  padding: 15px 24px;
+                "
+                >캐릭터 보기</a
+              >
             </div>
+            <div
+              style="
+                margin-top: 26px;
+                display: flex;
+                flex-wrap: wrap;
+                gap: 18px;
+                font-family: &quot;Galmuri11&quot;, monospace;
+                font-size: 11px;
+                letter-spacing: 1px;
+                color: #8f8975;
+              "
+            >
+              <span>◆ 무료 · 오픈소스</span>
+              <span>◆ macOS · Windows</span>
+              <span>◆ 방해 없는 클릭 통과</span>
+            </div>
+          </div>
+
+          <!-- hero desktop mock -->
+          <div
+            style="
+              position: relative;
+              justify-self: center;
+              width: 100%;
+              max-width: 440px;
+            "
+          >
+            <div
+              style="
+                border: 3px solid #000;
+                box-shadow: 14px 14px 0 rgba(0, 0, 0, 0.55);
+                background: #0f0f0b;
+              "
+            >
+              <div
+                style="
+                  height: 28px;
+                  background: #e7e1d2;
+                  border-bottom: 3px solid #000;
+                  display: flex;
+                  align-items: center;
+                  gap: 8px;
+                  padding: 0 11px;
+                "
+              >
+                <span
+                  style="
+                    font-family: &quot;Galmuri11&quot;, monospace;
+                    font-size: 11px;
+                    color: #1b1b16;
+                  "
+                  >Rockie</span
+                >
+                <span
+                  style="
+                    margin-left: auto;
+                    font-family: &quot;Galmuri11&quot;, monospace;
+                    font-size: 11px;
+                    color: #514c3e;
+                  "
+                  >9:41 AM</span
+                >
+              </div>
+              <div
+                style="
+                  position: relative;
+                  height: 290px;
+                  background: linear-gradient(
+                    165deg,
+                    #b9d2d8 0%,
+                    #d5e0d0 55%,
+                    #e7ecdc 100%
+                  );
+                  overflow: hidden;
+                "
+              >
+                <div
+                  style="
+                    position: absolute;
+                    inset: 0;
+                    opacity: 0.4;
+                    background-image:
+                      repeating-linear-gradient(
+                        0deg,
+                        transparent 0 21px,
+                        rgba(27, 27, 22, 0.05) 21px 22px
+                      ),
+                      repeating-linear-gradient(
+                        90deg,
+                        transparent 0 21px,
+                        rgba(27, 27, 22, 0.05) 21px 22px
+                      );
+                  "
+                ></div>
+                <div
+                  style="
+                    position: absolute;
+                    top: 16px;
+                    left: 16px;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 14px;
+                  "
+                >
+                  <div
+                    style="
+                      width: 34px;
+                      height: 28px;
+                      background: #f2ede1;
+                      border: 2px solid #1b1b16;
+                      box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.2);
+                    "
+                  ></div>
+                  <div
+                    style="
+                      width: 34px;
+                      height: 28px;
+                      background: #f2ede1;
+                      border: 2px solid #1b1b16;
+                      box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.2);
+                    "
+                  ></div>
+                </div>
+                <div
+                  style="
+                    position: absolute;
+                    right: 26px;
+                    bottom: 118px;
+                    background: #e7e1d2;
+                    border: 3px solid #1b1b16;
+                    box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.25);
+                    padding: 9px 13px;
+                    animation: bobslow 3.2s ease-in-out infinite;
+                  "
+                >
+                  <span
+                    style="
+                      font-family: &quot;Galmuri11&quot;, monospace;
+                      font-size: 12px;
+                      color: #1b1b16;
+                    "
+                    >안녕하세요, 주인님!</span
+                  >
+                  <div
+                    style="
+                      position: absolute;
+                      left: 26px;
+                      bottom: -11px;
+                      width: 0;
+                      height: 0;
+                      border-left: 8px solid transparent;
+                      border-right: 8px solid transparent;
+                      border-top: 11px solid #1b1b16;
+                    "
+                  ></div>
+                </div>
+                <div
+                  style="
+                    position: absolute;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    height: 34px;
+                    background: #b6c4a6;
+                    border-top: 3px solid #1b1b16;
+                  "
+                ></div>
+                <img
+                  src="assets/char/rockie_left.gif"
+                  alt="Rockie"
+                  style="
+                    position: absolute;
+                    right: 44px;
+                    bottom: 26px;
+                    width: 96px;
+                    height: 96px;
+                    image-rendering: pixelated;
+                    animation: bob 2.6s ease-in-out infinite;
+                  "
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ INTRO / FEATURES ============ -->
+      <section
+        id="intro"
+        style="padding: clamp(72px, 10vw, 128px) 0; background: #f2ede1"
+      >
+        <div style="max-width: 1180px; margin: 0 auto; padding: 0 24px">
+          <div style="max-width: 640px; margin: 0 auto; text-align: center">
+            <span
+              style="
+                font-family: &quot;Galmuri11&quot;, monospace;
+                font-size: 12px;
+                letter-spacing: 2px;
+                color: #4f7a3f;
+              "
+              >WHAT IS ROCKIE?</span
+            >
+            <h2
+              style="
+                margin-top: 16px;
+                font-family: &quot;Galmuri14&quot;, monospace;
+                font-size: clamp(26px, 3.6vw, 42px);
+                line-height: 1.4;
+                color: #1b1b16;
+              "
+            >
+              부담 없이 곁에 두는<br />데스크톱 친구
+            </h2>
+            <p
+              style="
+                margin-top: 20px;
+                font-size: 16px;
+                line-height: 1.9;
+                color: #514c3e;
+              "
+            >
+              Rockie는 컴퓨터 안에서 하루를 함께 보내는 작은 애완돌이에요.<br />나를
+              닮은 돌이 자라는 과정을 지켜보세요.
+            </p>
+          </div>
+
+          <div
+            class="feat-grid"
+            style="
+              margin-top: clamp(44px, 6vw, 72px);
+              display: grid;
+              grid-template-columns: repeat(2, 1fr);
+              gap: 22px;
+            "
+          >
+            <div
+              style="
+                display: flex;
+                gap: 20px;
+                align-items: flex-start;
+                background: #fffdf7;
+                border: 3px solid #1b1b16;
+                box-shadow: 7px 7px 0 rgba(27, 27, 22, 0.14);
+                padding: 26px 26px 28px;
+              "
+            >
+              <div
+                style="
+                  flex: none;
+                  width: 78px;
+                  height: 78px;
+                  background: #efe9db;
+                  border: 2px solid #1b1b16;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                "
+              >
+                <img
+                  src="assets/char/rockie_love.gif"
+                  alt=""
+                  style="
+                    width: 62px;
+                    height: 62px;
+                    image-rendering: pixelated;
+                    animation: bobslow 3s ease-in-out infinite;
+                  "
+                />
+              </div>
+              <div>
+                <h3
+                  style="
+                    font-family: &quot;Galmuri14&quot;, monospace;
+                    font-size: 17px;
+                    color: #1b1b16;
+                    line-height: 1.4;
+                  "
+                >
+                  커서를 따라다녀요
+                </h3>
+                <p
+                  style="
+                    margin-top: 10px;
+                    font-size: 14.5px;
+                    line-height: 1.8;
+                    color: #514c3e;
+                  "
+                >
+                  화면 아래를 거닐며 마우스를 살랑살랑 쫓아와요. <br />마우스를
+                  따라오지 않게 설정도 가능해요.
+                </p>
+              </div>
+            </div>
+            <div
+              style="
+                display: flex;
+                gap: 20px;
+                align-items: flex-start;
+                background: #fffdf7;
+                border: 3px solid #1b1b16;
+                box-shadow: 7px 7px 0 rgba(27, 27, 22, 0.14);
+                padding: 26px 26px 28px;
+              "
+            >
+              <div
+                style="
+                  flex: none;
+                  width: 78px;
+                  height: 78px;
+                  background: #efe9db;
+                  border: 2px solid #1b1b16;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                "
+              >
+                <img
+                  src="assets/char/gneiss_smile.gif"
+                  alt=""
+                  style="
+                    width: 62px;
+                    height: 62px;
+                    image-rendering: pixelated;
+                    animation: bobslow 3s ease-in-out infinite;
+                  "
+                />
+              </div>
+              <div>
+                <h3
+                  style="
+                    font-family: &quot;Galmuri14&quot;, monospace;
+                    font-size: 17px;
+                    color: #1b1b16;
+                    line-height: 1.4;
+                  "
+                >
+                  쓰다듬으면 반응해요
+                </h3>
+                <p
+                  style="
+                    margin-top: 10px;
+                    font-size: 14.5px;
+                    line-height: 1.8;
+                    color: #514c3e;
+                  "
+                >
+                  클릭해서 애완돌에게 말을 걸 수 있어요. <br />배터리가 없으면
+                  알려주기도, 가끔 먼저 말을 걸기도 헤요.
+                </p>
+              </div>
+            </div>
+            <div
+              style="
+                display: flex;
+                gap: 20px;
+                align-items: flex-start;
+                background: #fffdf7;
+                border: 3px solid #1b1b16;
+                box-shadow: 7px 7px 0 rgba(27, 27, 22, 0.14);
+                padding: 26px 26px 28px;
+              "
+            >
+              <div
+                style="
+                  flex: none;
+                  width: 78px;
+                  height: 78px;
+                  background: #efe9db;
+                  border: 2px solid #1b1b16;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                "
+              >
+                <img
+                  src="assets/char/basalt_smile.gif"
+                  alt=""
+                  style="
+                    width: 62px;
+                    height: 62px;
+                    image-rendering: pixelated;
+                    animation: bobslow 3s ease-in-out infinite;
+                  "
+                />
+              </div>
+              <div>
+                <h3
+                  style="
+                    font-family: &quot;Galmuri14&quot;, monospace;
+                    font-size: 17px;
+                    color: #1b1b16;
+                    line-height: 1.4;
+                  "
+                >
+                  여러가지 기능을 지원해요
+                </h3>
+                <p
+                  style="
+                    margin-top: 10px;
+                    font-size: 14.5px;
+                    line-height: 1.8;
+                    color: #514c3e;
+                  "
+                >
+                  키보드 청소 모드, 집중 모드, 발표 모드와 시스템 모니터링
+                  기능으로 <br />나의 컴퓨터 상태까지 간편하게 확인할 수 있어요.
+                </p>
+              </div>
+            </div>
+            <div
+              style="
+                display: flex;
+                gap: 20px;
+                align-items: flex-start;
+                background: #fffdf7;
+                border: 3px solid #1b1b16;
+                box-shadow: 7px 7px 0 rgba(27, 27, 22, 0.14);
+                padding: 26px 26px 28px;
+              "
+            >
+              <div
+                style="
+                  flex: none;
+                  width: 78px;
+                  height: 78px;
+                  background: #efe9db;
+                  border: 2px solid #1b1b16;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                "
+              >
+                <img
+                  src="assets/char/marble_smile.gif"
+                  alt=""
+                  style="
+                    width: 62px;
+                    height: 62px;
+                    image-rendering: pixelated;
+                    animation: bobslow 3s ease-in-out infinite;
+                  "
+                />
+              </div>
+              <div>
+                <h3
+                  style="
+                    font-family: &quot;Galmuri14&quot;, monospace;
+                    font-size: 17px;
+                    color: #1b1b16;
+                    line-height: 1.4;
+                  "
+                >
+                  답할수록 성향이 자라나요
+                </h3>
+                <p
+                  style="
+                    margin-top: 10px;
+                    font-size: 14.5px;
+                    line-height: 1.8;
+                    color: #514c3e;
+                  "
+                >
+                  매일 건네는 성향 질문에 답하면, 조약돌이 <br />나를 닮은 네
+                  가지 돌 중 하나로 진화해요.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ CHARACTER SHOWCASE ============ -->
+      <section
+        id="character"
+        style="
+          padding: clamp(72px, 10vw, 128px) 0;
+          background: #1b1b16;
+          border-top: 3px solid #000;
+          border-bottom: 3px solid #000;
+          position: relative;
+        "
+      >
+        <div
+          style="
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            opacity: 0.5;
+            background-image:
+              repeating-linear-gradient(
+                0deg,
+                transparent 0 27px,
+                rgba(255, 255, 255, 0.03) 27px 28px
+              ),
+              repeating-linear-gradient(
+                90deg,
+                transparent 0 27px,
+                rgba(255, 255, 255, 0.03) 27px 28px
+              );
+          "
+        ></div>
+        <div
+          style="
+            position: relative;
+            max-width: 1180px;
+            margin: 0 auto;
+            padding: 0 24px;
+          "
+        >
+          <div style="max-width: 660px">
+            <span
+              style="
+                font-family: &quot;Galmuri11&quot;, monospace;
+                font-size: 12px;
+                letter-spacing: 2px;
+                color: #e9c85b;
+              "
+              >FIND YOUR STONE</span
+            >
+            <h2
+              style="
+                margin-top: 16px;
+                font-family: &quot;Galmuri14&quot;, monospace;
+                font-size: clamp(26px, 3.6vw, 42px);
+                line-height: 1.4;
+                color: #f6f1e4;
+              "
+            >
+              나를 닮은 네 가지 돌
+            </h2>
+            <p
+              style="
+                margin-top: 18px;
+                font-size: 16px;
+                line-height: 1.9;
+                color: #b8b2a0;
+              "
+            >
+              매일의 성향 질문에 답하면 조약돌이 네 원석 중 하나로 확정돼요.
+              <br />
+              이후 성향에 따라 변성체를 거쳐
+              <strong style="color: #f6f1e4">보석</strong>으로 진화해요.
+            </p>
+          </div>
+
+          <div
+            class="stone-grid"
+            style="
+              margin-top: clamp(40px, 5vw, 64px);
+              display: grid;
+              grid-template-columns: repeat(2, 1fr);
+              gap: 24px;
+            "
+          >
+            <!-- 화강암 -->
+            <div
+              style="
+                background: #efe7db;
+                border: 3px solid #000;
+                box-shadow: 9px 9px 0 rgba(0, 0, 0, 0.5);
+                padding: 28px 28px 26px;
+              "
+            >
+              <div style="display: flex; align-items: center; gap: 20px">
+                <div
+                  style="
+                    flex: none;
+                    width: 96px;
+                    height: 96px;
+                    background: rgba(255, 255, 255, 0.5);
+                    border: 2px solid #1b1b16;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                  "
+                >
+                  <img
+                    src="assets/char/granite_smile.gif"
+                    alt="화강암"
+                    style="
+                      width: 76px;
+                      height: 76px;
+                      image-rendering: pixelated;
+                      animation: bob 2.8s ease-in-out infinite;
+                    "
+                  />
+                </div>
+                <div>
+                  <div
+                    style="
+                      font-family: &quot;Galmuri11&quot;, monospace;
+                      font-size: 11px;
+                      letter-spacing: 2px;
+                      color: #5a5647;
+                    "
+                  >
+                    GRANITE
+                  </div>
+                  <h3
+                    style="
+                      margin-top: 5px;
+                      font-family: &quot;Galmuri14&quot;, monospace;
+                      font-size: 26px;
+                      color: #1b1b16;
+                    "
+                  >
+                    화강암
+                  </h3>
+                  <span
+                    style="
+                      display: inline-block;
+                      margin-top: 8px;
+                      font-family: &quot;Galmuri11&quot;, monospace;
+                      font-size: 11px;
+                      color: #f2ede1;
+                      background: #a8926f;
+                      padding: 3px 9px;
+                    "
+                    >SJ · 관리자형</span
+                  >
+                </div>
+              </div>
+              <p
+                style="
+                  margin-top: 20px;
+                  font-size: 14.5px;
+                  line-height: 1.8;
+                  color: #3a362c;
+                "
+              >
+                오랜 시간 천천히 다져진 단단함. 맡은 일을 끝까지 해내고 상황을
+                차분하게 정리해요.
+              </p>
+              <div
+                style="
+                  margin-top: 16px;
+                  font-family: &quot;Galmuri11&quot;, monospace;
+                  font-size: 12px;
+                  letter-spacing: 1px;
+                  color: #514c3e;
+                "
+              >
+                원칙 · 안정 · 책임
+              </div>
+              <div
+                style="
+                  margin-top: 20px;
+                  padding-top: 18px;
+                  border-top: 2px dashed rgba(27, 27, 22, 0.35);
+                "
+              >
+                <div
+                  style="
+                    font-family: &quot;Galmuri11&quot;, monospace;
+                    font-size: 10px;
+                    letter-spacing: 1.5px;
+                    color: #6b6656;
+                    margin-bottom: 12px;
+                  "
+                >
+                  EVOLVES INTO ▸
+                </div>
+                <div style="display: flex; gap: 12px">
+                  <div
+                    style="
+                      flex: 1;
+                      background: #fffdf7;
+                      border: 2px solid #1b1b16;
+                      box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.2);
+                      padding: 10px 8px;
+                      text-align: center;
+                    "
+                  >
+                    <img
+                      src="assets/char/topaz.gif"
+                      alt="토파즈"
+                      style="
+                        width: 46px;
+                        height: 46px;
+                        margin: 0 auto;
+                        image-rendering: pixelated;
+                      "
+                    />
+                    <div
+                      style="
+                        margin-top: 8px;
+                        font-family: &quot;Galmuri11&quot;, monospace;
+                        font-size: 10px;
+                        color: #1b1b16;
+                        line-height: 1.3;
+                      "
+                    >
+                      토파즈
+                    </div>
+                    <div
+                      style="
+                        margin-top: 2px;
+                        font-family: &quot;Galmuri11&quot;, monospace;
+                        font-size: 9px;
+                        color: #8a8474;
+                      "
+                    >
+                      외향
+                    </div>
+                  </div>
+                  <div
+                    style="
+                      flex: 1;
+                      background: #fffdf7;
+                      border: 2px solid #1b1b16;
+                      box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.2);
+                      padding: 10px 8px;
+                      text-align: center;
+                    "
+                  >
+                    <img
+                      src="assets/char/aquamarine.gif"
+                      alt="아쿠아마린"
+                      style="
+                        width: 46px;
+                        height: 46px;
+                        margin: 0 auto;
+                        image-rendering: pixelated;
+                      "
+                    />
+                    <div
+                      style="
+                        margin-top: 8px;
+                        font-family: &quot;Galmuri11&quot;, monospace;
+                        font-size: 10px;
+                        color: #1b1b16;
+                        line-height: 1.3;
+                      "
+                    >
+                      아쿠아마린
+                    </div>
+                    <div
+                      style="
+                        margin-top: 2px;
+                        font-family: &quot;Galmuri11&quot;, monospace;
+                        font-size: 9px;
+                        color: #8a8474;
+                      "
+                    >
+                      내향
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 현무암 -->
+            <div
+              style="
+                background: #e7e6e2;
+                border: 3px solid #000;
+                box-shadow: 9px 9px 0 rgba(0, 0, 0, 0.5);
+                padding: 28px 28px 26px;
+              "
+            >
+              <div style="display: flex; align-items: center; gap: 20px">
+                <div
+                  style="
+                    flex: none;
+                    width: 96px;
+                    height: 96px;
+                    background: rgba(255, 255, 255, 0.5);
+                    border: 2px solid #1b1b16;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                  "
+                >
+                  <img
+                    src="assets/char/basalt_smile.gif"
+                    alt="현무암"
+                    style="
+                      width: 76px;
+                      height: 76px;
+                      image-rendering: pixelated;
+                      animation: bob 2.8s ease-in-out infinite;
+                    "
+                  />
+                </div>
+                <div>
+                  <div
+                    style="
+                      font-family: &quot;Galmuri11&quot;, monospace;
+                      font-size: 11px;
+                      letter-spacing: 2px;
+                      color: #5a5647;
+                    "
+                  >
+                    BASALT
+                  </div>
+                  <h3
+                    style="
+                      margin-top: 5px;
+                      font-family: &quot;Galmuri14&quot;, monospace;
+                      font-size: 26px;
+                      color: #1b1b16;
+                    "
+                  >
+                    현무암
+                  </h3>
+                  <span
+                    style="
+                      display: inline-block;
+                      margin-top: 8px;
+                      font-family: &quot;Galmuri11&quot;, monospace;
+                      font-size: 11px;
+                      color: #f2ede1;
+                      background: #4a4a44;
+                      padding: 3px 9px;
+                    "
+                    >SP · 탐험가형</span
+                  >
+                </div>
+              </div>
+              <p
+                style="
+                  margin-top: 20px;
+                  font-size: 14.5px;
+                  line-height: 1.8;
+                  color: #3a362c;
+                "
+              >
+                표면에 활발한 흔적이 그대로 남은 돌. 망설임 없이 시작하고 변화에
+                빠르게 적응해요.
+              </p>
+              <div
+                style="
+                  margin-top: 16px;
+                  font-family: &quot;Galmuri11&quot;, monospace;
+                  font-size: 12px;
+                  letter-spacing: 1px;
+                  color: #514c3e;
+                "
+              >
+                즉흥 · 행동 · 현재
+              </div>
+              <div
+                style="
+                  margin-top: 20px;
+                  padding-top: 18px;
+                  border-top: 2px dashed rgba(27, 27, 22, 0.35);
+                "
+              >
+                <div
+                  style="
+                    font-family: &quot;Galmuri11&quot;, monospace;
+                    font-size: 10px;
+                    letter-spacing: 1.5px;
+                    color: #6b6656;
+                    margin-bottom: 12px;
+                  "
+                >
+                  EVOLVES INTO ▸
+                </div>
+                <div style="display: flex; gap: 12px">
+                  <div
+                    style="
+                      flex: 1;
+                      background: #fffdf7;
+                      border: 2px solid #1b1b16;
+                      box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.2);
+                      padding: 10px 8px;
+                      text-align: center;
+                    "
+                  >
+                    <img
+                      src="assets/char/diamond_cut.gif"
+                      alt="브릴리언트 다이아"
+                      style="
+                        width: 46px;
+                        height: 46px;
+                        margin: 0 auto;
+                        image-rendering: pixelated;
+                      "
+                    />
+                    <div
+                      style="
+                        margin-top: 8px;
+                        font-family: &quot;Galmuri11&quot;, monospace;
+                        font-size: 10px;
+                        color: #1b1b16;
+                        line-height: 1.3;
+                      "
+                    >
+                      브릴리언트 다이아
+                    </div>
+                    <div
+                      style="
+                        margin-top: 2px;
+                        font-family: &quot;Galmuri11&quot;, monospace;
+                        font-size: 9px;
+                        color: #8a8474;
+                      "
+                    >
+                      외향
+                    </div>
+                  </div>
+                  <div
+                    style="
+                      flex: 1;
+                      background: #fffdf7;
+                      border: 2px solid #1b1b16;
+                      box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.2);
+                      padding: 10px 8px;
+                      text-align: center;
+                    "
+                  >
+                    <img
+                      src="assets/char/diamond_rough.gif"
+                      alt="원석 다이아"
+                      style="
+                        width: 46px;
+                        height: 46px;
+                        margin: 0 auto;
+                        image-rendering: pixelated;
+                      "
+                    />
+                    <div
+                      style="
+                        margin-top: 8px;
+                        font-family: &quot;Galmuri11&quot;, monospace;
+                        font-size: 10px;
+                        color: #1b1b16;
+                        line-height: 1.3;
+                      "
+                    >
+                      원석 다이아
+                    </div>
+                    <div
+                      style="
+                        margin-top: 2px;
+                        font-family: &quot;Galmuri11&quot;, monospace;
+                        font-size: 9px;
+                        color: #8a8474;
+                      "
+                    >
+                      내향
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 대리석 -->
+            <div
+              style="
+                background: #f3f0e9;
+                border: 3px solid #000;
+                box-shadow: 9px 9px 0 rgba(0, 0, 0, 0.5);
+                padding: 28px 28px 26px;
+              "
+            >
+              <div style="display: flex; align-items: center; gap: 20px">
+                <div
+                  style="
+                    flex: none;
+                    width: 96px;
+                    height: 96px;
+                    background: rgba(255, 255, 255, 0.5);
+                    border: 2px solid #1b1b16;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                  "
+                >
+                  <img
+                    src="assets/char/marble_smile.gif"
+                    alt="대리석"
+                    style="
+                      width: 76px;
+                      height: 76px;
+                      image-rendering: pixelated;
+                      animation: bob 2.8s ease-in-out infinite;
+                    "
+                  />
+                </div>
+                <div>
+                  <div
+                    style="
+                      font-family: &quot;Galmuri11&quot;, monospace;
+                      font-size: 11px;
+                      letter-spacing: 2px;
+                      color: #5a5647;
+                    "
+                  >
+                    MARBLE
+                  </div>
+                  <h3
+                    style="
+                      margin-top: 5px;
+                      font-family: &quot;Galmuri14&quot;, monospace;
+                      font-size: 26px;
+                      color: #1b1b16;
+                    "
+                  >
+                    대리석
+                  </h3>
+                  <span
+                    style="
+                      display: inline-block;
+                      margin-top: 8px;
+                      font-family: &quot;Galmuri11&quot;, monospace;
+                      font-size: 11px;
+                      color: #f2ede1;
+                      background: #c0a98f;
+                      padding: 3px 9px;
+                    "
+                    >NF · 외교관형</span
+                  >
+                </div>
+              </div>
+              <p
+                style="
+                  margin-top: 20px;
+                  font-size: 14.5px;
+                  line-height: 1.8;
+                  color: #3a362c;
+                "
+              >
+                부드럽고 매끄러운 결. 주변의 마음을 섬세하게 읽고 말과 분위기의
+                온도를 맞춰줘요.
+              </p>
+              <div
+                style="
+                  margin-top: 16px;
+                  font-family: &quot;Galmuri11&quot;, monospace;
+                  font-size: 12px;
+                  letter-spacing: 1px;
+                  color: #514c3e;
+                "
+              >
+                공감 · 감성 · 의미
+              </div>
+              <div
+                style="
+                  margin-top: 20px;
+                  padding-top: 18px;
+                  border-top: 2px dashed rgba(27, 27, 22, 0.35);
+                "
+              >
+                <div
+                  style="
+                    font-family: &quot;Galmuri11&quot;, monospace;
+                    font-size: 10px;
+                    letter-spacing: 1.5px;
+                    color: #6b6656;
+                    margin-bottom: 12px;
+                  "
+                >
+                  EVOLVES INTO ▸
+                </div>
+                <div style="display: flex; gap: 12px">
+                  <div
+                    style="
+                      flex: 1;
+                      background: #fffdf7;
+                      border: 2px solid #1b1b16;
+                      box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.2);
+                      padding: 10px 8px;
+                      text-align: center;
+                    "
+                  >
+                    <img
+                      src="assets/char/corundum_e.gif"
+                      alt="파티 사파이어"
+                      style="
+                        width: 46px;
+                        height: 46px;
+                        margin: 0 auto;
+                        image-rendering: pixelated;
+                      "
+                    />
+                    <div
+                      style="
+                        margin-top: 8px;
+                        font-family: &quot;Galmuri11&quot;, monospace;
+                        font-size: 10px;
+                        color: #1b1b16;
+                        line-height: 1.3;
+                      "
+                    >
+                      파티 사파이어
+                    </div>
+                    <div
+                      style="
+                        margin-top: 2px;
+                        font-family: &quot;Galmuri11&quot;, monospace;
+                        font-size: 9px;
+                        color: #8a8474;
+                      "
+                    >
+                      외향
+                    </div>
+                  </div>
+                  <div
+                    style="
+                      flex: 1;
+                      background: #fffdf7;
+                      border: 2px solid #1b1b16;
+                      box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.2);
+                      padding: 10px 8px;
+                      text-align: center;
+                    "
+                  >
+                    <img
+                      src="assets/char/ruby_smile.gif"
+                      alt="루비"
+                      style="
+                        width: 46px;
+                        height: 46px;
+                        margin: 0 auto;
+                        image-rendering: pixelated;
+                      "
+                    />
+                    <div
+                      style="
+                        margin-top: 8px;
+                        font-family: &quot;Galmuri11&quot;, monospace;
+                        font-size: 10px;
+                        color: #1b1b16;
+                        line-height: 1.3;
+                      "
+                    >
+                      루비
+                    </div>
+                    <div
+                      style="
+                        margin-top: 2px;
+                        font-family: &quot;Galmuri11&quot;, monospace;
+                        font-size: 9px;
+                        color: #8a8474;
+                      "
+                    >
+                      내향
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 편마암 -->
+            <div
+              style="
+                background: #edeadb;
+                border: 3px solid #000;
+                box-shadow: 9px 9px 0 rgba(0, 0, 0, 0.5);
+                padding: 28px 28px 26px;
+              "
+            >
+              <div style="display: flex; align-items: center; gap: 20px">
+                <div
+                  style="
+                    flex: none;
+                    width: 96px;
+                    height: 96px;
+                    background: rgba(255, 255, 255, 0.5);
+                    border: 2px solid #1b1b16;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                  "
+                >
+                  <img
+                    src="assets/char/gneiss_smile.gif"
+                    alt="편마암"
+                    style="
+                      width: 76px;
+                      height: 76px;
+                      image-rendering: pixelated;
+                      animation: bob 2.8s ease-in-out infinite;
+                    "
+                  />
+                </div>
+                <div>
+                  <div
+                    style="
+                      font-family: &quot;Galmuri11&quot;, monospace;
+                      font-size: 11px;
+                      letter-spacing: 2px;
+                      color: #5a5647;
+                    "
+                  >
+                    GNEISS
+                  </div>
+                  <h3
+                    style="
+                      margin-top: 5px;
+                      font-family: &quot;Galmuri14&quot;, monospace;
+                      font-size: 26px;
+                      color: #1b1b16;
+                    "
+                  >
+                    편마암
+                  </h3>
+                  <span
+                    style="
+                      display: inline-block;
+                      margin-top: 8px;
+                      font-family: &quot;Galmuri11&quot;, monospace;
+                      font-size: 11px;
+                      color: #f2ede1;
+                      background: #8b8563;
+                      padding: 3px 9px;
+                    "
+                    >NT · 분석가형</span
+                  >
+                </div>
+              </div>
+              <p
+                style="
+                  margin-top: 20px;
+                  font-size: 14.5px;
+                  line-height: 1.8;
+                  color: #3a362c;
+                "
+              >
+                여러 층의 무늬가 또렷한 돌. 복잡한 문제를 쪼개어 핵심 흐름과
+                근거를 세워요.
+              </p>
+              <div
+                style="
+                  margin-top: 16px;
+                  font-family: &quot;Galmuri11&quot;, monospace;
+                  font-size: 12px;
+                  letter-spacing: 1px;
+                  color: #514c3e;
+                "
+              >
+                논리 · 전략 · 구조
+              </div>
+              <div
+                style="
+                  margin-top: 20px;
+                  padding-top: 18px;
+                  border-top: 2px dashed rgba(27, 27, 22, 0.35);
+                "
+              >
+                <div
+                  style="
+                    font-family: &quot;Galmuri11&quot;, monospace;
+                    font-size: 10px;
+                    letter-spacing: 1.5px;
+                    color: #6b6656;
+                    margin-bottom: 12px;
+                  "
+                >
+                  EVOLVES INTO ▸
+                </div>
+                <div style="display: flex; gap: 12px">
+                  <div
+                    style="
+                      flex: 1;
+                      background: #fffdf7;
+                      border: 2px solid #1b1b16;
+                      box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.2);
+                      padding: 10px 8px;
+                      text-align: center;
+                    "
+                  >
+                    <img
+                      src="assets/char/labradorite.gif"
+                      alt="라브라도라이트"
+                      style="
+                        width: 46px;
+                        height: 46px;
+                        margin: 0 auto;
+                        image-rendering: pixelated;
+                      "
+                    />
+                    <div
+                      style="
+                        margin-top: 8px;
+                        font-family: &quot;Galmuri11&quot;, monospace;
+                        font-size: 10px;
+                        color: #1b1b16;
+                        line-height: 1.3;
+                      "
+                    >
+                      라브라도라이트
+                    </div>
+                    <div
+                      style="
+                        margin-top: 2px;
+                        font-family: &quot;Galmuri11&quot;, monospace;
+                        font-size: 9px;
+                        color: #8a8474;
+                      "
+                    >
+                      외향
+                    </div>
+                  </div>
+                  <div
+                    style="
+                      flex: 1;
+                      background: #fffdf7;
+                      border: 2px solid #1b1b16;
+                      box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.2);
+                      padding: 10px 8px;
+                      text-align: center;
+                    "
+                  >
+                    <img
+                      src="assets/char/moonstone.gif"
+                      alt="문스톤"
+                      style="
+                        width: 46px;
+                        height: 46px;
+                        margin: 0 auto;
+                        image-rendering: pixelated;
+                      "
+                    />
+                    <div
+                      style="
+                        margin-top: 8px;
+                        font-family: &quot;Galmuri11&quot;, monospace;
+                        font-size: 10px;
+                        color: #1b1b16;
+                        line-height: 1.3;
+                      "
+                    >
+                      문스톤
+                    </div>
+                    <div
+                      style="
+                        margin-top: 2px;
+                        font-family: &quot;Galmuri11&quot;, monospace;
+                        font-size: 9px;
+                        color: #8a8474;
+                      "
+                    >
+                      내향
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ DOWNLOAD ============ -->
+      <section
+        id="download"
+        style="padding: clamp(72px, 10vw, 128px) 0; background: #f2ede1"
+      >
+        <div
+          style="
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 24px;
+            text-align: center;
+          "
+        >
+          <img
+            src="assets/char/rockie_love.gif"
+            alt="Rockie"
+            style="
+              width: 96px;
+              height: 96px;
+              margin: 0 auto;
+              image-rendering: pixelated;
+              animation: bob 2.6s ease-in-out infinite;
+            "
+          />
+          <span
+            style="
+              display: block;
+              margin-top: 22px;
+              font-family: &quot;Galmuri11&quot;, monospace;
+              font-size: 12px;
+              letter-spacing: 2px;
+              color: #4f7a3f;
+            "
+            >GET ROCKIE</span
+          >
+          <h2
+            style="
+              margin-top: 14px;
+              font-family: &quot;Galmuri14&quot;, monospace;
+              font-size: clamp(26px, 3.6vw, 42px);
+              line-height: 1.4;
+              color: #1b1b16;
+            "
+          >
+            지금, 내 화면에 데려오기
+          </h2>
+          <p
+            style="
+              margin-top: 18px;
+              font-size: 16px;
+              line-height: 1.85;
+              color: #514c3e;
+            "
+          >
+            설치하고 실행하면 바로 곁에 나타나요. 완전 무료, 오픈소스예요.
+          </p>
+
+          <div
+            style="
+              margin-top: 38px;
+              display: flex;
+              flex-wrap: wrap;
+              gap: 18px;
+              justify-content: center;
+            "
+          >
+            <a
+              href="#"
+              class="hov hov-dl"
+              style="
+                display: flex;
+                align-items: center;
+                gap: 14px;
+                text-align: left;
+                background: #1b1b16;
+                border: 3px solid #000;
+                box-shadow: 6px 6px 0 rgba(27, 27, 22, 0.3);
+                padding: 16px 24px;
+              "
+            >
+              <img
+                src="assets/favicon.png"
+                alt=""
+                style="width: 26px; height: 26px; image-rendering: pixelated"
+              />
+              <span>
+                <span
+                  style="
+                    display: block;
+                    font-family: &quot;Galmuri11&quot;, monospace;
+                    font-size: 10px;
+                    color: #a8a292;
+                    letter-spacing: 1px;
+                  "
+                  >DOWNLOAD FOR</span
+                >
+                <span
+                  style="
+                    display: block;
+                    font-family: &quot;Galmuri14&quot;, monospace;
+                    font-size: 16px;
+                    color: #f6f1e4;
+                    margin-top: 3px;
+                  "
+                  >macOS (Apple Silicon)</span
+                >
+              </span>
+            </a>
+            <a
+              href="#"
+              class="hov hov-dl"
+              style="
+                display: flex;
+                align-items: center;
+                gap: 14px;
+                text-align: left;
+                background: #4f7a3f;
+                border: 3px solid #000;
+                box-shadow: 6px 6px 0 rgba(27, 27, 22, 0.3);
+                padding: 16px 24px;
+              "
+            >
+              <img
+                src="assets/favicon.png"
+                alt=""
+                style="width: 26px; height: 26px; image-rendering: pixelated"
+              />
+              <span>
+                <span
+                  style="
+                    display: block;
+                    font-family: &quot;Galmuri11&quot;, monospace;
+                    font-size: 10px;
+                    color: #d7e6cf;
+                    letter-spacing: 1px;
+                  "
+                  >DOWNLOAD FOR</span
+                >
+                <span
+                  style="
+                    display: block;
+                    font-family: &quot;Galmuri14&quot;, monospace;
+                    font-size: 16px;
+                    color: #f6f1e4;
+                    margin-top: 3px;
+                  "
+                  >Windows (.exe)</span
+                >
+              </span>
+            </a>
+          </div>
+          <p
+            style="
+              margin-top: 22px;
+              font-family: &quot;Galmuri11&quot;, monospace;
+              font-size: 11px;
+              letter-spacing: 0.5px;
+              color: #8a8474;
+            "
+          >
+            macOS 12+ · Windows 10+ — 첫 실행 시 화면 기록 권한을 허용하면 앱
+            인식 말풍선이 켜져요.
+          </p>
+        </div>
+      </section>
+
+      <!-- ============ SUPPORT / DONATE ============ -->
+      <section
+        id="support"
+        style="
+          padding: clamp(72px, 10vw, 128px) 0;
+          background: #e7e1d2;
+          border-top: 3px solid #1b1b16;
+        "
+      >
+        <div style="max-width: 1180px; margin: 0 auto; padding: 0 24px">
+          <div
+            class="support-grid"
+            style="
+              display: grid;
+              grid-template-columns: 1fr 1.4fr;
+              gap: clamp(32px, 5vw, 60px);
+              align-items: center;
+            "
+          >
             <div>
-              <div style="font-family:'Galmuri11',monospace; font-size:11px; letter-spacing:2px; color:#5a5647;">GRANITE</div>
-              <h3 style="margin-top:5px; font-family:'Galmuri14',monospace; font-size:26px; color:#1b1b16;">화강암</h3>
-              <span style="display:inline-block; margin-top:8px; font-family:'Galmuri11',monospace; font-size:11px; color:#f2ede1; background:#a8926f; padding:3px 9px;">SJ · 관리자형</span>
+              <span
+                style="
+                  font-family: &quot;Galmuri11&quot;, monospace;
+                  font-size: 12px;
+                  letter-spacing: 2px;
+                  color: #a8432b;
+                "
+                >SUPPORT ROCKIE</span
+              >
+              <h2
+                style="
+                  margin-top: 16px;
+                  font-family: &quot;Galmuri14&quot;, monospace;
+                  font-size: clamp(26px, 3.4vw, 40px);
+                  line-height: 1.4;
+                  color: #1b1b16;
+                "
+              >
+                후원하기
+              </h2>
+              <p
+                style="
+                  margin-top: 18px;
+                  font-size: 16px;
+                  line-height: 1.9;
+                  color: #514c3e;
+                "
+              >
+                Rockie는 1인 개발 프로젝트예요. 작은 후원이 다음 돌, 다음 보석,
+                <br />다음 기능을 만들어요. 편한 방법으로 응원해 주세요.
+              </p>
+              <img
+                src="assets/char/ruby_smile.gif"
+                alt=""
+                style="
+                  margin-top: 26px;
+                  width: 72px;
+                  height: 72px;
+                  image-rendering: pixelated;
+                  animation: bobslow 3.4s ease-in-out infinite;
+                "
+              />
             </div>
-          </div>
-          <p style="margin-top:20px; font-size:14.5px; line-height:1.8; color:#3a362c;">오랜 시간 천천히 다져진 단단함. 맡은 일을 끝까지 해내고 상황을 차분하게 정리해요.</p>
-          <div style="margin-top:16px; font-family:'Galmuri11',monospace; font-size:12px; letter-spacing:1px; color:#514c3e;">원칙 · 안정 · 책임</div>
-          <div style="margin-top:20px; padding-top:18px; border-top:2px dashed rgba(27,27,22,.35);">
-            <div style="font-family:'Galmuri11',monospace; font-size:10px; letter-spacing:1.5px; color:#6b6656; margin-bottom:12px;">EVOLVES INTO ▸</div>
-            <div style="display:flex; gap:12px;">
-              <div style="flex:1; background:#fffdf7; border:2px solid #1b1b16; box-shadow:3px 3px 0 rgba(0,0,0,.2); padding:10px 8px; text-align:center;">
-                <img src="assets/char/topaz.gif" alt="토파즈" style="width:46px; height:46px; margin:0 auto; image-rendering:pixelated;">
-                <div style="margin-top:8px; font-family:'Galmuri11',monospace; font-size:10px; color:#1b1b16; line-height:1.3;">토파즈</div>
-                <div style="margin-top:2px; font-family:'Galmuri11',monospace; font-size:9px; color:#8a8474;">외향</div>
-              </div>
-              <div style="flex:1; background:#fffdf7; border:2px solid #1b1b16; box-shadow:3px 3px 0 rgba(0,0,0,.2); padding:10px 8px; text-align:center;">
-                <img src="assets/char/aquamarine.gif" alt="아쿠아마린" style="width:46px; height:46px; margin:0 auto; image-rendering:pixelated;">
-                <div style="margin-top:8px; font-family:'Galmuri11',monospace; font-size:10px; color:#1b1b16; line-height:1.3;">아쿠아마린</div>
-                <div style="margin-top:2px; font-family:'Galmuri11',monospace; font-size:9px; color:#8a8474;">내향</div>
-              </div>
+            <div style="display: flex; flex-direction: column; gap: 16px">
+              <a
+                href="https://ctee.kr/place/jeondowon"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="hov hov-donate"
+                style="
+                  display: flex;
+                  align-items: center;
+                  gap: 18px;
+                  background: #fffdf7;
+                  border: 3px solid #1b1b16;
+                  box-shadow: 6px 6px 0 rgba(27, 27, 22, 0.16);
+                  padding: 20px 22px;
+                "
+              >
+                <span
+                  style="
+                    flex: none;
+                    font-family: &quot;Galmuri14&quot;, monospace;
+                    font-size: 14px;
+                    color: #1b1b16;
+                    background: #e9c85b;
+                    border: 2px solid #1b1b16;
+                    padding: 8px 12px;
+                  "
+                  >☕</span
+                >
+                <span style="flex: 1">
+                  <span
+                    style="
+                      display: block;
+                      font-family: &quot;Galmuri14&quot;, monospace;
+                      font-size: 16px;
+                      color: #1b1b16;
+                    "
+                    >크티(CTEE)</span
+                  >
+                  <span
+                    style="
+                      display: block;
+                      margin-top: 5px;
+                      font-size: 13.5px;
+                      line-height: 1.6;
+                      color: #514c3e;
+                    "
+                    >커피 한 잔으로 다음 업데이트를 응원해요.</span
+                  >
+                </span>
+                <span
+                  style="
+                    flex: none;
+                    font-family: &quot;Galmuri14&quot;, monospace;
+                    font-size: 18px;
+                    color: #4f7a3f;
+                  "
+                  >→</span
+                >
+              </a>
+              <a
+                href="https://qr.kakaopay.com/FE922E8jZ"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="hov hov-donate"
+                style="
+                  display: flex;
+                  align-items: center;
+                  gap: 18px;
+                  background: #fffdf7;
+                  border: 3px solid #1b1b16;
+                  box-shadow: 6px 6px 0 rgba(27, 27, 22, 0.16);
+                  padding: 20px 22px;
+                "
+              >
+                <span
+                  style="
+                    flex: none;
+                    font-family: &quot;Galmuri14&quot;, monospace;
+                    font-size: 14px;
+                    color: #1b1b16;
+                    background: #e9c85b;
+                    border: 2px solid #1b1b16;
+                    padding: 8px 12px;
+                  "
+                  >💬</span
+                >
+                <span style="flex: 1">
+                  <span
+                    style="
+                      display: block;
+                      font-family: &quot;Galmuri14&quot;, monospace;
+                      font-size: 16px;
+                      color: #1b1b16;
+                    "
+                    >카카오페이 송금</span
+                  >
+                  <span
+                    style="
+                      display: block;
+                      margin-top: 5px;
+                      font-size: 13.5px;
+                      line-height: 1.6;
+                      color: #514c3e;
+                    "
+                    >카카오톡으로 바로 톡 보내기. 폰에서 열어 주세요.</span
+                  >
+                </span>
+                <span
+                  style="
+                    flex: none;
+                    font-family: &quot;Galmuri14&quot;, monospace;
+                    font-size: 18px;
+                    color: #4f7a3f;
+                  "
+                  >→</span
+                >
+              </a>
             </div>
           </div>
         </div>
+      </section>
 
-        <!-- 현무암 -->
-        <div style="background:#e7e6e2; border:3px solid #000; box-shadow:9px 9px 0 rgba(0,0,0,.5); padding:28px 28px 26px;">
-          <div style="display:flex; align-items:center; gap:20px;">
-            <div style="flex:none; width:96px; height:96px; background:rgba(255,255,255,.5); border:2px solid #1b1b16; display:flex; align-items:center; justify-content:center;">
-              <img src="assets/char/basalt_smile.gif" alt="현무암" style="width:76px; height:76px; image-rendering:pixelated; animation:bob 2.8s ease-in-out infinite;">
-            </div>
+      <!-- ============ CONTACT / FOOTER ============ -->
+      <section
+        id="contact"
+        style="
+          background: #1b1b16;
+          border-top: 3px solid #000;
+          padding: clamp(64px, 8vw, 104px) 0 0;
+        "
+      >
+        <div style="max-width: 1180px; margin: 0 auto; padding: 0 24px">
+          <div
+            class="contact-grid"
+            style="
+              display: grid;
+              grid-template-columns: 1fr 1fr;
+              gap: clamp(32px, 5vw, 60px);
+              align-items: start;
+            "
+          >
             <div>
-              <div style="font-family:'Galmuri11',monospace; font-size:11px; letter-spacing:2px; color:#5a5647;">BASALT</div>
-              <h3 style="margin-top:5px; font-family:'Galmuri14',monospace; font-size:26px; color:#1b1b16;">현무암</h3>
-              <span style="display:inline-block; margin-top:8px; font-family:'Galmuri11',monospace; font-size:11px; color:#f2ede1; background:#4a4a44; padding:3px 9px;">SP · 탐험가형</span>
+              <span
+                style="
+                  font-family: &quot;Galmuri11&quot;, monospace;
+                  font-size: 12px;
+                  letter-spacing: 2px;
+                  color: #e9c85b;
+                "
+                >GET IN TOUCH</span
+              >
+              <h2
+                style="
+                  margin-top: 16px;
+                  font-family: &quot;Galmuri14&quot;, monospace;
+                  font-size: clamp(24px, 3.2vw, 38px);
+                  line-height: 1.4;
+                  color: #f6f1e4;
+                "
+              >
+                컨택
+              </h2>
+              <p
+                style="
+                  margin-top: 18px;
+                  max-width: 380px;
+                  font-size: 15.5px;
+                  line-height: 1.9;
+                  color: #b8b2a0;
+                "
+              >
+                버그 제보, 기능 제안, 협업 문의 모두 환영해요.<br />편한 채널로
+                편하게 연락 주세요.
+              </p>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 14px">
+              <a
+                href="mailto:dowon.9102@gmail.com"
+                class="hov hov-contact"
+                style="
+                  display: flex;
+                  align-items: center;
+                  gap: 16px;
+                  background: #23241f;
+                  border: 2px solid #3a3a30;
+                  padding: 18px 20px;
+                "
+              >
+                <span
+                  style="
+                    flex: none;
+                    font-family: &quot;Galmuri11&quot;, monospace;
+                    font-size: 11px;
+                    letter-spacing: 1px;
+                    color: #8f8975;
+                    width: 78px;
+                  "
+                  >Email</span
+                >
+                <span
+                  style="
+                    flex: 1;
+                    font-family: &quot;Galmuri14&quot;, monospace;
+                    font-size: 15px;
+                    color: #f6f1e4;
+                  "
+                  >dowon.9102@gmail.com</span
+                >
+                <span
+                  style="
+                    flex: none;
+                    font-family: &quot;Galmuri14&quot;, monospace;
+                    font-size: 16px;
+                    color: #e9c85b;
+                  "
+                  >↗</span
+                >
+              </a>
+              <a
+                href="https://github.com/jeondowon"
+                class="hov hov-contact"
+                style="
+                  display: flex;
+                  align-items: center;
+                  gap: 16px;
+                  background: #23241f;
+                  border: 2px solid #3a3a30;
+                  padding: 18px 20px;
+                "
+              >
+                <span
+                  style="
+                    flex: none;
+                    font-family: &quot;Galmuri11&quot;, monospace;
+                    font-size: 11px;
+                    letter-spacing: 1px;
+                    color: #8f8975;
+                    width: 78px;
+                  "
+                  >GitHub</span
+                >
+                <span
+                  style="
+                    flex: 1;
+                    font-family: &quot;Galmuri14&quot;, monospace;
+                    font-size: 15px;
+                    color: #f6f1e4;
+                  "
+                  >@jeondowon</span
+                >
+                <span
+                  style="
+                    flex: none;
+                    font-family: &quot;Galmuri14&quot;, monospace;
+                    font-size: 16px;
+                    color: #e9c85b;
+                  "
+                  >↗</span
+                >
+              </a>
+              <a
+                href="https://instagram.com/jeondowon"
+                class="hov hov-contact"
+                style="
+                  display: flex;
+                  align-items: center;
+                  gap: 16px;
+                  background: #23241f;
+                  border: 2px solid #3a3a30;
+                  padding: 18px 20px;
+                "
+              >
+                <span
+                  style="
+                    flex: none;
+                    font-family: &quot;Galmuri11&quot;, monospace;
+                    font-size: 11px;
+                    letter-spacing: 1px;
+                    color: #8f8975;
+                    width: 78px;
+                  "
+                  >Instagram</span
+                >
+                <span
+                  style="
+                    flex: 1;
+                    font-family: &quot;Galmuri14&quot;, monospace;
+                    font-size: 15px;
+                    color: #f6f1e4;
+                  "
+                  >@jeondowon</span
+                >
+                <span
+                  style="
+                    flex: none;
+                    font-family: &quot;Galmuri14&quot;, monospace;
+                    font-size: 16px;
+                    color: #e9c85b;
+                  "
+                  >↗</span
+                >
+              </a>
             </div>
           </div>
-          <p style="margin-top:20px; font-size:14.5px; line-height:1.8; color:#3a362c;">표면에 활발한 흔적이 그대로 남은 돌. 망설임 없이 시작하고 변화에 빠르게 적응해요.</p>
-          <div style="margin-top:16px; font-family:'Galmuri11',monospace; font-size:12px; letter-spacing:1px; color:#514c3e;">즉흥 · 행동 · 현재</div>
-          <div style="margin-top:20px; padding-top:18px; border-top:2px dashed rgba(27,27,22,.35);">
-            <div style="font-family:'Galmuri11',monospace; font-size:10px; letter-spacing:1.5px; color:#6b6656; margin-bottom:12px;">EVOLVES INTO ▸</div>
-            <div style="display:flex; gap:12px;">
-              <div style="flex:1; background:#fffdf7; border:2px solid #1b1b16; box-shadow:3px 3px 0 rgba(0,0,0,.2); padding:10px 8px; text-align:center;">
-                <img src="assets/char/diamond_cut.gif" alt="브릴리언트 다이아" style="width:46px; height:46px; margin:0 auto; image-rendering:pixelated;">
-                <div style="margin-top:8px; font-family:'Galmuri11',monospace; font-size:10px; color:#1b1b16; line-height:1.3;">브릴리언트 다이아</div>
-                <div style="margin-top:2px; font-family:'Galmuri11',monospace; font-size:9px; color:#8a8474;">외향</div>
-              </div>
-              <div style="flex:1; background:#fffdf7; border:2px solid #1b1b16; box-shadow:3px 3px 0 rgba(0,0,0,.2); padding:10px 8px; text-align:center;">
-                <img src="assets/char/diamond_rough.gif" alt="원석 다이아" style="width:46px; height:46px; margin:0 auto; image-rendering:pixelated;">
-                <div style="margin-top:8px; font-family:'Galmuri11',monospace; font-size:10px; color:#1b1b16; line-height:1.3;">원석 다이아</div>
-                <div style="margin-top:2px; font-family:'Galmuri11',monospace; font-size:9px; color:#8a8474;">내향</div>
-              </div>
-            </div>
+
+          <div
+            style="
+              margin-top: clamp(56px, 7vw, 88px);
+              border-top: 2px solid #2f2f27;
+              padding: 26px 0 30px;
+              display: flex;
+              flex-wrap: wrap;
+              align-items: center;
+              gap: 14px;
+            "
+          >
+            <img
+              src="assets/favicon.png"
+              alt="Rockie"
+              style="width: 22px; height: 22px; image-rendering: pixelated"
+            />
+            <span
+              style="
+                font-family: &quot;Galmuri14&quot;, monospace;
+                font-size: 14px;
+                color: #f2ede1;
+                letter-spacing: 1px;
+              "
+              >ROCKIE</span
+            >
+            <span
+              style="
+                font-family: &quot;Galmuri11&quot;, monospace;
+                font-size: 11px;
+                color: #6b6656;
+              "
+              >데스크톱 애완돌 키우기 앱</span
+            >
+            <span
+              style="
+                margin-left: auto;
+                font-family: &quot;Galmuri11&quot;, monospace;
+                font-size: 11px;
+                color: #6b6656;
+              "
+              >© 2026 jeondowon · 도트 폰트 Galmuri (OFL 1.1)</span
+            >
           </div>
         </div>
-
-        <!-- 대리석 -->
-        <div style="background:#f3f0e9; border:3px solid #000; box-shadow:9px 9px 0 rgba(0,0,0,.5); padding:28px 28px 26px;">
-          <div style="display:flex; align-items:center; gap:20px;">
-            <div style="flex:none; width:96px; height:96px; background:rgba(255,255,255,.5); border:2px solid #1b1b16; display:flex; align-items:center; justify-content:center;">
-              <img src="assets/char/marble_smile.gif" alt="대리석" style="width:76px; height:76px; image-rendering:pixelated; animation:bob 2.8s ease-in-out infinite;">
-            </div>
-            <div>
-              <div style="font-family:'Galmuri11',monospace; font-size:11px; letter-spacing:2px; color:#5a5647;">MARBLE</div>
-              <h3 style="margin-top:5px; font-family:'Galmuri14',monospace; font-size:26px; color:#1b1b16;">대리석</h3>
-              <span style="display:inline-block; margin-top:8px; font-family:'Galmuri11',monospace; font-size:11px; color:#f2ede1; background:#c0a98f; padding:3px 9px;">NF · 외교관형</span>
-            </div>
-          </div>
-          <p style="margin-top:20px; font-size:14.5px; line-height:1.8; color:#3a362c;">부드럽고 매끄러운 결. 주변의 마음을 섬세하게 읽고 말과 분위기의 온도를 맞춰줘요.</p>
-          <div style="margin-top:16px; font-family:'Galmuri11',monospace; font-size:12px; letter-spacing:1px; color:#514c3e;">공감 · 감성 · 의미</div>
-          <div style="margin-top:20px; padding-top:18px; border-top:2px dashed rgba(27,27,22,.35);">
-            <div style="font-family:'Galmuri11',monospace; font-size:10px; letter-spacing:1.5px; color:#6b6656; margin-bottom:12px;">EVOLVES INTO ▸</div>
-            <div style="display:flex; gap:12px;">
-              <div style="flex:1; background:#fffdf7; border:2px solid #1b1b16; box-shadow:3px 3px 0 rgba(0,0,0,.2); padding:10px 8px; text-align:center;">
-                <img src="assets/char/corundum_e.gif" alt="파티 사파이어" style="width:46px; height:46px; margin:0 auto; image-rendering:pixelated;">
-                <div style="margin-top:8px; font-family:'Galmuri11',monospace; font-size:10px; color:#1b1b16; line-height:1.3;">파티 사파이어</div>
-                <div style="margin-top:2px; font-family:'Galmuri11',monospace; font-size:9px; color:#8a8474;">외향</div>
-              </div>
-              <div style="flex:1; background:#fffdf7; border:2px solid #1b1b16; box-shadow:3px 3px 0 rgba(0,0,0,.2); padding:10px 8px; text-align:center;">
-                <img src="assets/char/ruby_smile.gif" alt="루비" style="width:46px; height:46px; margin:0 auto; image-rendering:pixelated;">
-                <div style="margin-top:8px; font-family:'Galmuri11',monospace; font-size:10px; color:#1b1b16; line-height:1.3;">루비</div>
-                <div style="margin-top:2px; font-family:'Galmuri11',monospace; font-size:9px; color:#8a8474;">내향</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- 편마암 -->
-        <div style="background:#edeadb; border:3px solid #000; box-shadow:9px 9px 0 rgba(0,0,0,.5); padding:28px 28px 26px;">
-          <div style="display:flex; align-items:center; gap:20px;">
-            <div style="flex:none; width:96px; height:96px; background:rgba(255,255,255,.5); border:2px solid #1b1b16; display:flex; align-items:center; justify-content:center;">
-              <img src="assets/char/gneiss_smile.gif" alt="편마암" style="width:76px; height:76px; image-rendering:pixelated; animation:bob 2.8s ease-in-out infinite;">
-            </div>
-            <div>
-              <div style="font-family:'Galmuri11',monospace; font-size:11px; letter-spacing:2px; color:#5a5647;">GNEISS</div>
-              <h3 style="margin-top:5px; font-family:'Galmuri14',monospace; font-size:26px; color:#1b1b16;">편마암</h3>
-              <span style="display:inline-block; margin-top:8px; font-family:'Galmuri11',monospace; font-size:11px; color:#f2ede1; background:#8b8563; padding:3px 9px;">NT · 분석가형</span>
-            </div>
-          </div>
-          <p style="margin-top:20px; font-size:14.5px; line-height:1.8; color:#3a362c;">여러 층의 무늬가 또렷한 돌. 복잡한 문제를 쪼개어 핵심 흐름과 근거를 세워요.</p>
-          <div style="margin-top:16px; font-family:'Galmuri11',monospace; font-size:12px; letter-spacing:1px; color:#514c3e;">논리 · 전략 · 구조</div>
-          <div style="margin-top:20px; padding-top:18px; border-top:2px dashed rgba(27,27,22,.35);">
-            <div style="font-family:'Galmuri11',monospace; font-size:10px; letter-spacing:1.5px; color:#6b6656; margin-bottom:12px;">EVOLVES INTO ▸</div>
-            <div style="display:flex; gap:12px;">
-              <div style="flex:1; background:#fffdf7; border:2px solid #1b1b16; box-shadow:3px 3px 0 rgba(0,0,0,.2); padding:10px 8px; text-align:center;">
-                <img src="assets/char/labradorite.gif" alt="라브라도라이트" style="width:46px; height:46px; margin:0 auto; image-rendering:pixelated;">
-                <div style="margin-top:8px; font-family:'Galmuri11',monospace; font-size:10px; color:#1b1b16; line-height:1.3;">라브라도라이트</div>
-                <div style="margin-top:2px; font-family:'Galmuri11',monospace; font-size:9px; color:#8a8474;">외향</div>
-              </div>
-              <div style="flex:1; background:#fffdf7; border:2px solid #1b1b16; box-shadow:3px 3px 0 rgba(0,0,0,.2); padding:10px 8px; text-align:center;">
-                <img src="assets/char/moonstone.gif" alt="문스톤" style="width:46px; height:46px; margin:0 auto; image-rendering:pixelated;">
-                <div style="margin-top:8px; font-family:'Galmuri11',monospace; font-size:10px; color:#1b1b16; line-height:1.3;">문스톤</div>
-                <div style="margin-top:2px; font-family:'Galmuri11',monospace; font-size:9px; color:#8a8474;">내향</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-      </div>
+      </section>
     </div>
-  </section>
-
-  <!-- ============ DOWNLOAD ============ -->
-  <section id="download" style="padding:clamp(72px,10vw,128px) 0; background:#f2ede1;">
-    <div style="max-width:900px; margin:0 auto; padding:0 24px; text-align:center;">
-      <img src="assets/char/rockie_love.gif" alt="Rockie" style="width:96px; height:96px; margin:0 auto; image-rendering:pixelated; animation:bob 2.6s ease-in-out infinite;">
-      <span style="display:block; margin-top:22px; font-family:'Galmuri11',monospace; font-size:12px; letter-spacing:2px; color:#4f7a3f;">GET ROCKIE</span>
-      <h2 style="margin-top:14px; font-family:'Galmuri14',monospace; font-size:clamp(26px,3.6vw,42px); line-height:1.4; color:#1b1b16;">지금, 내 화면에 데려오기</h2>
-      <p style="margin-top:18px; font-size:16px; line-height:1.85; color:#514c3e;">설치하고 실행하면 바로 곁에 나타나요. 완전 무료, 오픈소스예요.</p>
-
-      <div style="margin-top:38px; display:flex; flex-wrap:wrap; gap:18px; justify-content:center;">
-        <a href="#" class="hov hov-dl" style="display:flex; align-items:center; gap:14px; text-align:left; background:#1b1b16; border:3px solid #000; box-shadow:6px 6px 0 rgba(27,27,22,.3); padding:16px 24px;">
-          <img src="assets/icon.png" alt="" style="width:26px; height:26px; image-rendering:pixelated; filter:invert(1) brightness(1.4);">
-          <span>
-            <span style="display:block; font-family:'Galmuri11',monospace; font-size:10px; color:#a8a292; letter-spacing:1px;">DOWNLOAD FOR</span>
-            <span style="display:block; font-family:'Galmuri14',monospace; font-size:16px; color:#f6f1e4; margin-top:3px;">macOS (Apple Silicon)</span>
-          </span>
-        </a>
-        <a href="#" class="hov hov-dl" style="display:flex; align-items:center; gap:14px; text-align:left; background:#4f7a3f; border:3px solid #000; box-shadow:6px 6px 0 rgba(27,27,22,.3); padding:16px 24px;">
-          <img src="assets/icon.png" alt="" style="width:26px; height:26px; image-rendering:pixelated; filter:invert(1) brightness(1.4);">
-          <span>
-            <span style="display:block; font-family:'Galmuri11',monospace; font-size:10px; color:#d7e6cf; letter-spacing:1px;">DOWNLOAD FOR</span>
-            <span style="display:block; font-family:'Galmuri14',monospace; font-size:16px; color:#f6f1e4; margin-top:3px;">Windows (.exe)</span>
-          </span>
-        </a>
-      </div>
-      <p style="margin-top:22px; font-family:'Galmuri11',monospace; font-size:11px; letter-spacing:.5px; color:#8a8474;">macOS 12+ · Windows 10+ — 첫 실행 시 화면 기록 권한을 허용하면 앱 인식 말풍선이 켜져요.</p>
-    </div>
-  </section>
-
-  <!-- ============ SUPPORT / DONATE ============ -->
-  <section id="support" style="padding:clamp(72px,10vw,128px) 0; background:#e7e1d2; border-top:3px solid #1b1b16;">
-    <div style="max-width:1180px; margin:0 auto; padding:0 24px;">
-      <div class="support-grid" style="display:grid; grid-template-columns:1fr 1.4fr; gap:clamp(32px,5vw,60px); align-items:center;">
-        <div>
-          <span style="font-family:'Galmuri11',monospace; font-size:12px; letter-spacing:2px; color:#a8432b;">SUPPORT ROCKIE</span>
-          <h2 style="margin-top:16px; font-family:'Galmuri14',monospace; font-size:clamp(26px,3.4vw,40px); line-height:1.4; color:#1b1b16;">후원하기</h2>
-          <p style="margin-top:18px; font-size:16px; line-height:1.9; color:#514c3e;">Rockie는 1인 개발 프로젝트예요. 작은 후원이 다음 돌, 다음 보석, 다음 기능을 만들어요. 편한 방법으로 응원해 주세요.</p>
-          <img src="assets/char/ruby_smile.gif" alt="" style="margin-top:26px; width:72px; height:72px; image-rendering:pixelated; animation:bobslow 3.4s ease-in-out infinite;">
-        </div>
-        <div style="display:flex; flex-direction:column; gap:16px;">
-          <a href="#" class="hov hov-donate" style="display:flex; align-items:center; gap:18px; background:#fffdf7; border:3px solid #1b1b16; box-shadow:6px 6px 0 rgba(27,27,22,.16); padding:20px 22px;">
-            <span style="flex:none; font-family:'Galmuri14',monospace; font-size:14px; color:#1b1b16; background:#e9c85b; border:2px solid #1b1b16; padding:8px 12px;">☕</span>
-            <span style="flex:1;">
-              <span style="display:block; font-family:'Galmuri14',monospace; font-size:16px; color:#1b1b16;">Buy Me a Coffee</span>
-              <span style="display:block; margin-top:5px; font-size:13.5px; line-height:1.6; color:#514c3e;">커피 한 잔으로 다음 업데이트를 응원해요.</span>
-            </span>
-            <span style="flex:none; font-family:'Galmuri14',monospace; font-size:18px; color:#4f7a3f;">→</span>
-          </a>
-          <a href="#" class="hov hov-donate" style="display:flex; align-items:center; gap:18px; background:#fffdf7; border:3px solid #1b1b16; box-shadow:6px 6px 0 rgba(27,27,22,.16); padding:20px 22px;">
-            <span style="flex:none; font-family:'Galmuri14',monospace; font-size:14px; color:#1b1b16; background:#e9c85b; border:2px solid #1b1b16; padding:8px 12px;">♡</span>
-            <span style="flex:1;">
-              <span style="display:block; font-family:'Galmuri14',monospace; font-size:16px; color:#1b1b16;">GitHub Sponsors</span>
-              <span style="display:block; margin-top:5px; font-size:13.5px; line-height:1.6; color:#514c3e;">매달 조금씩, 지속적인 개발을 함께해요.</span>
-            </span>
-            <span style="flex:none; font-family:'Galmuri14',monospace; font-size:18px; color:#4f7a3f;">→</span>
-          </a>
-          <a href="#" class="hov hov-donate" style="display:flex; align-items:center; gap:18px; background:#fffdf7; border:3px solid #1b1b16; box-shadow:6px 6px 0 rgba(27,27,22,.16); padding:20px 22px;">
-            <span style="flex:none; font-family:'Galmuri14',monospace; font-size:14px; color:#1b1b16; background:#e9c85b; border:2px solid #1b1b16; padding:8px 12px;">₩</span>
-            <span style="flex:1;">
-              <span style="display:block; font-family:'Galmuri14',monospace; font-size:16px; color:#1b1b16;">Toss · 카카오 송금</span>
-              <span style="display:block; margin-top:5px; font-size:13.5px; line-height:1.6; color:#514c3e;">국내 간편송금으로 부담 없이 톡 보내기.</span>
-            </span>
-            <span style="flex:none; font-family:'Galmuri14',monospace; font-size:18px; color:#4f7a3f;">→</span>
-          </a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============ CONTACT / FOOTER ============ -->
-  <section id="contact" style="background:#1b1b16; border-top:3px solid #000; padding:clamp(64px,8vw,104px) 0 0;">
-    <div style="max-width:1180px; margin:0 auto; padding:0 24px;">
-      <div class="contact-grid" style="display:grid; grid-template-columns:1fr 1fr; gap:clamp(32px,5vw,60px); align-items:start;">
-        <div>
-          <span style="font-family:'Galmuri11',monospace; font-size:12px; letter-spacing:2px; color:#e9c85b;">GET IN TOUCH</span>
-          <h2 style="margin-top:16px; font-family:'Galmuri14',monospace; font-size:clamp(24px,3.2vw,38px); line-height:1.4; color:#f6f1e4;">컨택</h2>
-          <p style="margin-top:18px; max-width:380px; font-size:15.5px; line-height:1.9; color:#b8b2a0;">버그 제보, 기능 제안, 협업 문의 모두 환영해요. 편한 채널로 편하게 연락 주세요.</p>
-        </div>
-        <div style="display:flex; flex-direction:column; gap:14px;">
-          <a href="mailto:dowon.9102@gmail.com" class="hov hov-contact" style="display:flex; align-items:center; gap:16px; background:#23241f; border:2px solid #3a3a30; padding:18px 20px;">
-            <span style="flex:none; font-family:'Galmuri11',monospace; font-size:11px; letter-spacing:1px; color:#8f8975; width:78px;">Email</span>
-            <span style="flex:1; font-family:'Galmuri14',monospace; font-size:15px; color:#f6f1e4;">dowon.9102@gmail.com</span>
-            <span style="flex:none; font-family:'Galmuri14',monospace; font-size:16px; color:#e9c85b;">↗</span>
-          </a>
-          <a href="https://github.com/jeondowon" class="hov hov-contact" style="display:flex; align-items:center; gap:16px; background:#23241f; border:2px solid #3a3a30; padding:18px 20px;">
-            <span style="flex:none; font-family:'Galmuri11',monospace; font-size:11px; letter-spacing:1px; color:#8f8975; width:78px;">GitHub</span>
-            <span style="flex:1; font-family:'Galmuri14',monospace; font-size:15px; color:#f6f1e4;">@jeondowon</span>
-            <span style="flex:none; font-family:'Galmuri14',monospace; font-size:16px; color:#e9c85b;">↗</span>
-          </a>
-          <a href="https://instagram.com/jeondowon" class="hov hov-contact" style="display:flex; align-items:center; gap:16px; background:#23241f; border:2px solid #3a3a30; padding:18px 20px;">
-            <span style="flex:none; font-family:'Galmuri11',monospace; font-size:11px; letter-spacing:1px; color:#8f8975; width:78px;">Instagram</span>
-            <span style="flex:1; font-family:'Galmuri14',monospace; font-size:15px; color:#f6f1e4;">@jeondowon</span>
-            <span style="flex:none; font-family:'Galmuri14',monospace; font-size:16px; color:#e9c85b;">↗</span>
-          </a>
-        </div>
-      </div>
-
-      <div style="margin-top:clamp(56px,7vw,88px); border-top:2px solid #2f2f27; padding:26px 0 30px; display:flex; flex-wrap:wrap; align-items:center; gap:14px;">
-        <img src="assets/icon.png" alt="Rockie" style="width:22px; height:22px; image-rendering:pixelated; filter:invert(1) brightness(1.4);">
-        <span style="font-family:'Galmuri14',monospace; font-size:14px; color:#f2ede1; letter-spacing:1px;">ROCKIE</span>
-        <span style="font-family:'Galmuri11',monospace; font-size:11px; color:#6b6656;">데스크톱 애완돌 키우기 앱</span>
-        <span style="margin-left:auto; font-family:'Galmuri11',monospace; font-size:11px; color:#6b6656;">© 2026 jeondowon · 도트 폰트 Galmuri (OFL 1.1)</span>
-      </div>
-    </div>
-  </section>
-
-</div>
-</body>
+  </body>
 </html>

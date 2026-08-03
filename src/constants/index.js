@@ -90,7 +90,7 @@ export const EXPERIENCE_DATA = {
     {
       date: "2026",
       title: "Google AI Agent Challenge",
-      subtitle: { en: "Advanced to Final Round", ko: "본선 진출" },
+      subtitle: { en: "Excellence Award", ko: "우수상 수상" },
       isActive: false,
     },
     {
@@ -200,7 +200,7 @@ export const PROJECTS = [
     },
     github: "https://github.com/jeondowon/Rockie",
     link: "/rockie/",
-    image: "/images/Rockie.png",
+    image: "/images/rockie.png",
     available: true,
   },
   /*{
