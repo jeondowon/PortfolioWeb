@@ -284,7 +284,7 @@ export default function LabPage() {
               const scale =
                 (isActive ? 1 : Math.max(0.6, 1 - ar * 0.05)) +
                 (isHover ? 0.03 : 0);
-              const lift = isHover ? -26 : 0;
+              const lift = isHover ? -100 : 0;
               const visible = ar <= 8;
 
               return (
