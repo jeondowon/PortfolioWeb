@@ -8,7 +8,7 @@
 
 ## English
 
-Personal portfolio website built with React and Vite, deployed via GitHub Pages.
+Personal portfolio website built with React and Vite, deployed via CloudFlare Pages.
 
 **Live:** [jeondowon.com](https://jeondowon.com)
 
@@ -59,7 +59,7 @@ Pushes to `main` trigger the GitHub Actions workflow (`.github/workflows/deploy.
 
 ## 한국어
 
-React와 Vite로 제작하고 GitHub Pages에 배포한 개인 포트폴리오 웹사이트입니다.
+React와 Vite로 제작하고 CloudFlare Pages로 배포한 개인 포트폴리오 웹사이트입니다.
 
 **라이브:** [jeondowon.com](https://jeondowon.com)
 
