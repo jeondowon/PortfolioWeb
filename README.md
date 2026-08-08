@@ -1,4 +1,4 @@
-<img width="2172" height="724" alt="PortfolioWeb" src="https://github.com/user-attachments/assets/1d8f7307-c8ed-45e3-a8a7-72df144dbaf8" />
+![PortfolioWeb](public/images/PortfolioWeb.png)
 
 # Portfolio Website
 
@@ -36,20 +36,29 @@ npm run preview  # Preview the production build locally
 ```
 src/
 ├── components/
-│   ├── sections/     # Page sections (Hero, Cover, About, Experiences, Skills, Contact)
+│   ├── sections/     # Main-page sections (Cover, Hero, About, Skills, Experiences, Contact) + Banner, a decorative marquee strip
 │   └── common/       # Shared UI (Navbar, ScrollButton)
 ├── pages/            # Route-level pages (ProjectsPage, LabPage)
 ├── contexts/         # React contexts (LangContext — KO/EN toggle)
-├── constants/        # Site data (projects, skills, experience, social links)
-├── hooks/            # Custom hooks
+├── constants/        # Site data (projects, skills, experience, lab items, social links)
+├── styles/           # global.css
 └── assets/           # Static assets (audio, etc.)
 
 public/               # Copied to dist/ verbatim, served at the matching path
+├── images/           # Project thumbnails, profile image, favicon
 ├── lab/              # Standalone experiments, served at /lab/<id>
 └── rockie/           # Rockie — desktop pet, served at /rockie
 ```
 
 Files under `public/` are served as-is. Cloudflare Pages resolves a real file first and only falls back to the SPA rule when none matches, so these standalone pages coexist with React Router.
+
+### Routes
+
+| Path | |
+| --- | --- |
+| `/` | Single-page main — Cover → Hero → About → Skills → Experiences → Contact |
+| `/projects` | Project listing |
+| `/lab` | Laboratory — index of the standalone experiments under `public/lab/` |
 
 ### Deployment
 
@@ -63,8 +72,10 @@ Pushing to `main` triggers a Cloudflare Pages build, which runs `npm run build` 
 ### Features
 
 - **KO / EN** language toggle (React Context)
-- Sections: Hero · About · Experiences · Projects · Skills · Contact
-- BGM player
+- Main page: Cover · Hero · About · Skills · Experiences · Contact
+- **Projects** (`/projects`) — project cards filtered by category tag, each linking to its GitHub repo or live page
+- **Laboratory** (`/lab`) — a horizontal carousel of experiments driven by wheel and swipe, each card opening its standalone page under `/lab/<id>`
+- BGM player, started from the Cover section
 - Responsive layout
 - Rain animation on the Projects nav link
 
@@ -96,20 +107,29 @@ npm run preview  # 프로덕션 빌드 로컬 미리보기
 ```
 src/
 ├── components/
-│   ├── sections/     # 페이지 섹션 (Hero, Cover, About, Experiences, Skills, Contact)
+│   ├── sections/     # 메인 페이지 섹션 (Cover, Hero, About, Skills, Experiences, Contact) + 장식용 마퀴 띠 Banner
 │   └── common/       # 공통 UI (Navbar, ScrollButton)
 ├── pages/            # 라우트 페이지 (ProjectsPage, LabPage)
 ├── contexts/         # React Context (LangContext — 한/영 전환)
-├── constants/        # 사이트 데이터 (프로젝트, 기술, 경력, 소셜 링크)
-├── hooks/            # 커스텀 훅
+├── constants/        # 사이트 데이터 (프로젝트, 기술, 경력, 실험 목록, 소셜 링크)
+├── styles/           # global.css
 └── assets/           # 정적 자산 (오디오 등)
 
 public/               # dist/로 그대로 복사되어 같은 경로에서 서비스
+├── images/           # 프로젝트 썸네일, 프로필 이미지, 파비콘
 ├── lab/              # 독립 실험 페이지, /lab/<id>에서 서비스
 └── rockie/           # Rockie — 데스크톱 애완돌, /rockie에서 서비스
 ```
 
 `public/` 아래의 파일은 그대로 서비스됩니다. Cloudflare Pages는 실제 파일을 먼저 찾고 없을 때만 SPA fallback을 적용하므로, 이 독립 페이지들은 React Router와 충돌하지 않습니다.
+
+### 라우트
+
+| 경로 | |
+| --- | --- |
+| `/` | 단일 페이지 메인 — Cover → Hero → About → Skills → Experiences → Contact |
+| `/projects` | 프로젝트 목록 |
+| `/lab` | Laboratory — `public/lab/` 아래 독립 실험 페이지 목록 |
 
 ### 배포
 
@@ -123,7 +143,9 @@ public/               # dist/로 그대로 복사되어 같은 경로에서 서�
 ### 주요 기능
 
 - **한 / 영** 언어 전환 (React Context)
-- 섹션 구성: Hero · About · Experiences · Projects · Skills · Contact
-- BGM 플레이어
+- 메인 페이지 구성: Cover · Hero · About · Skills · Experiences · Contact
+- **Projects** (`/projects`) — 카테고리 태그로 필터링되는 프로젝트 카드, 각 카드에서 GitHub 저장소나 실제 페이지로 이동
+- **Laboratory** (`/lab`) — 휠·스와이프로 넘기는 가로 캐러셀, 카드마다 `/lab/<id>` 독립 페이지로 연결
+- Cover 섹션에서 시작되는 BGM 플레이어
 - 반응형 레이아웃
 - Projects 네비게이션 링크 비 하강 애니메이션
