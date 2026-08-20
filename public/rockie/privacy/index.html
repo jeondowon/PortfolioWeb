@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>개인정보처리방침 · Rockie</title>
+    <meta name="description" content="Rockie가 어떤 정보를 다루고 그 정보가 어디에 머무는지" />
+    <meta name="robots" content="index, follow" />
+    <link rel="icon" type="image/png" href="../assets/favicon.png" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/galmuri/dist/galmuri.css"
+    />
+    <style>
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      body {
+        font-family: "Pretendard", "Apple SD Gothic Neo", sans-serif;
+        background: #f2ede1;
+        color: #1b1b16;
+        line-height: 1.75;
+        -webkit-font-smoothing: antialiased;
+      }
+      a { color: #4f7a3f; }
+      a:hover { color: #a8432b; }
+      ::selection { background: #4f7a3f; color: #f2ede1; }
+
+      .top {
+        border-bottom: 2px solid #1b1b16;
+        background: #faf8f1;
+        position: sticky;
+        top: 0;
+        z-index: 2;
+      }
+      .top-inner {
+        max-width: 780px;
+        margin: 0 auto;
+        padding: 16px 22px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+      .home {
+        font-family: "Galmuri14", monospace;
+        font-size: 14px;
+        letter-spacing: 1px;
+        color: #1b1b16;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .home img { width: 20px; height: 20px; image-rendering: pixelated; }
+      .home:hover { color: #a8432b; }
+      .doc-nav {
+        margin-left: auto;
+        display: flex;
+        gap: 14px;
+        font-family: "Galmuri11", monospace;
+        font-size: 11px;
+      }
+      .doc-nav a { text-decoration: none; }
+      .doc-nav .here { color: #a8432b; }
+
+      main { max-width: 780px; margin: 0 auto; padding: 44px 22px 90px; }
+      h1 {
+        font-family: "Galmuri14", monospace;
+        font-size: clamp(22px, 4vw, 30px);
+        line-height: 1.4;
+        margin-bottom: 28px;
+        padding-bottom: 18px;
+        border-bottom: 2px solid #1b1b16;
+      }
+      h2 {
+        font-family: "Galmuri11", monospace;
+        font-size: 16px;
+        line-height: 1.6;
+        margin: 44px 0 14px;
+        color: #1b1b16;
+      }
+      h3 {
+        font-family: "Galmuri11", monospace;
+        font-size: 13px;
+        margin: 28px 0 10px;
+        color: #4f7a3f;
+      }
+      h4 { font-size: 14px; margin: 20px 0 8px; }
+      p { margin: 12px 0; }
+      ul, ol { margin: 12px 0 12px 22px; }
+      li { margin: 5px 0; }
+      hr { border: none; border-top: 2px solid #d9d2c0; margin: 38px 0; }
+      strong { font-weight: 700; }
+      code {
+        font-family: "Galmuri11", monospace;
+        font-size: 0.88em;
+        background: #e7e1d2;
+        padding: 1px 5px;
+      }
+      pre {
+        background: #faf8f1;
+        border: 2px solid #d9d2c0;
+        padding: 14px 16px;
+        overflow-x: auto;
+        margin: 14px 0;
+      }
+      pre code {
+        background: none;
+        padding: 0;
+        font-size: 11px;
+        line-height: 1.6;
+        white-space: pre;
+      }
+      .table-wrap { overflow-x: auto; margin: 16px 0; }
+      table { border-collapse: collapse; width: 100%; font-size: 14px; }
+      th, td {
+        border: 1px solid #d9d2c0;
+        padding: 8px 11px;
+        text-align: left;
+        vertical-align: top;
+      }
+      th { background: #e7e1d2; font-weight: 700; white-space: nowrap; }
+
+      footer {
+        border-top: 2px solid #1b1b16;
+        background: #1b1b16;
+        color: #6b6656;
+        font-family: "Galmuri11", monospace;
+        font-size: 11px;
+      }
+      .foot-inner {
+        max-width: 780px;
+        margin: 0 auto;
+        padding: 24px 22px;
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+      .foot-inner a { color: #6b6656; text-decoration: none; }
+      .foot-inner a:hover { color: #e9c85b; }
+    </style>
+  </head>
+  <body>
+    <header class="top">
+      <div class="top-inner">
+        <a class="home" href="../">
+          <img src="../assets/favicon.png" alt="" />
+          ROCKIE
+        </a>
+        <nav class="doc-nav"><span class="here">개인정보처리방침</span><a href="../terms/">이용약관</a><a href="../licenses/">오픈소스 라이선스</a></nav>
+      </div>
+    </header>
+    <main>
+<h1>Rockie 개인정보처리방침</h1>
+<p>최종 수정일: 2026-08-21<br />적용 버전: Rockie 1.0.1 이상</p>
+<p>Rockie(이하 &quot;앱&quot;)는 개인 개발자 jeondowon이 무료로 제공하는 macOS 데스크톱 앱입니다. 이 방침은 앱이 어떤 정보를 다루고, 그 정보가 어디에 머무는지 설명합니다.</p>
+<hr />
+<h2>1. 핵심 요약</h2>
+<ul><li><strong>앱은 개인정보를 수집하지 않으며, 이용자의 정보를 담은 서버를 운영하지 않습니다.</strong></li><li>앱이 다루는 모든 정보는 이용자의 Mac 안에서만 처리되고 저장됩니다.</li><li>광고 SDK, 분석 SDK, 이용 통계 수집 도구를 일절 사용하지 않습니다.</li><li>외부로 나가는 통신은 <strong>자동 업데이트 확인 한 가지</strong>뿐이며, 그 내용은 5항에 적었습니다.</li></ul>
+<hr />
+<h2>2. 기기 안에 저장되는 정보</h2>
+<p>아래 정보는 이용자의 Mac에 있는 다음 파일 한 곳에만 저장됩니다.</p>
+<pre><code>~/Library/Application Support/Rockie/petdata.json</code></pre>
+<div class="table-wrap"><table><thead><tr><th>항목</th><th>사용 목적</th></tr></thead><tbody><tr><td>이용자가 입력한 이름</td><td>말풍선 메시지 개인화</td></tr><tr><td>애완돌 이름</td><td>화면 표시, 호감도 보상</td></tr><tr><td>성향 질문 답변</td><td>돌 종류 판정과 진화 단계 결정</td></tr><tr><td>진화 단계·호감도·스킨 상태</td><td>앱 상태 유지</td></tr><tr><td>앱 설정 (자동 실행, 효과음, 펫 위치·크기, 집중/쪽잠 시간, 표시 언어 등)</td><td>설정 유지</td></tr><tr><td>최초 설치 시각, 온보딩 완료 여부</td><td>첫 실행 안내 표시 여부 판단</td></tr></tbody></table></div>
+<p>이 파일은 이용자 본인의 계정 폴더에 있는 일반 파일이며, 앱이 외부로 보내지 않습니다.</p>
+<hr />
+<h2>3. 저장하지 않고 그 순간에만 읽는 정보</h2>
+<p>아래 정보는 화면에 반응을 표시하기 위해 실행 중에만 읽고, <strong>파일에 기록하거나 전송하지 않습니다.</strong> 앱을 끄면 사라집니다.</p>
+<div class="table-wrap"><table><thead><tr><th>항목</th><th>사용 목적</th></tr></thead><tbody><tr><td>현재 활성화된 앱의 이름과 창 제목</td><td>사용 중인 앱에 맞는 말풍선 표시</td></tr><tr><td>마지막 입력 이후 경과 시간(idle time)</td><td>자리를 비웠을 때의 반응</td></tr><tr><td>현재 시각</td><td>시간대별 반응</td></tr><tr><td>CPU·메모리·디스크·배터리·네트워크 사용량</td><td>트레이의 시스템 모니터 화면 표시</td></tr><tr><td>Dock의 위치와 크기</td><td>애완돌이 Dock을 피해 다니도록 계산</td></tr><tr><td>화면 기록 권한 허용 여부</td><td>기능 사용 가능 여부 안내</td></tr></tbody></table></div>
+<p><strong>창 제목에 대한 추가 설명</strong></p>
+<p>활성 창 제목에는 문서 이름이나 웹페이지 제목처럼 사적인 내용이 담길 수 있습니다. 이에 대해 앱은 다음과 같이 동작합니다.</p>
+<p><strong>창 제목은 화면에 표시되지 않습니다.</strong> 앱은 창 제목을 미리 정해둔 조건과 대조해 어떤 말풍선을 띄울지 고르는 데에만 사용합니다. 말풍선에 나오는 문구는 앱에 내장된 고정 문장이며, 읽어들인 창 제목이 그대로 화면에 나타나는 경로는 없습니다.</p>
+<p><strong>아래 영역에서는 말풍선을 아예 띄우지 않습니다.</strong></p>
+<ul><li>카카오톡, 메일 앱</li><li>은행, 카드, 증권, 가상자산 거래소</li><li>병원, 정부·민원 서비스</li><li>비밀번호 관리자, 인증 앱, 로그인·인증 화면</li></ul>
+<p>다만 Slack·Discord·Microsoft Teams 등 업무용 협업 도구에서는 &quot;누가 불렀나 봐요&quot; 수준의 일반적인 말풍선이 표시될 수 있습니다. 이 경우에도 대화 내용이나 창 제목은 표시되지 않습니다.</p>
+<hr />
+<h2>4. 시스템 권한</h2>
+<p>앱은 macOS 권한 세 가지를 사용할 수 있습니다. 모두 <strong>허용하지 않아도 기본 기능은 그대로 동작합니다.</strong></p>
+<div class="table-wrap"><table><thead><tr><th>권한</th><th>쓰이는 곳</th><th>허용하지 않으면</th></tr></thead><tbody><tr><td>화면 기록</td><td>활성 앱 이름과 창 제목 읽기</td><td>앱별 말풍선만 표시되지 않습니다</td></tr><tr><td>자동화 (System Events)</td><td>Dock의 위치·크기 읽기</td><td>애완돌이 Dock을 피하지 못할 수 있습니다</td></tr><tr><td>손쉬운 사용</td><td>쪽잠·청소 모드의 키보드 잠금</td><td>해당 모드에서 키보드가 잠기지 않습니다</td></tr></tbody></table></div>
+<p>macOS의 &quot;화면 기록&quot; 권한은 이름과 달리 <strong>화면을 촬영하거나 녹화하기 위한 것이 아닙니다.</strong> 다른 앱의 창 제목을 읽으려면 macOS가 이 권한을 요구하기 때문에 사용합니다. 앱은 화면을 캡처하지 않습니다.</p>
+<hr />
+<h2>5. 외부로 나가는 통신 — 자동 업데이트</h2>
+<p>앱은 새 버전이 있는지 확인하기 위해 <strong>GitHub Releases</strong>(github.com)에 접속합니다.</p>
+<ul><li>접속 시점: 앱 시작 1분 후, 이후 6시간마다</li><li>보내는 내용: 새 버전 정보 파일을 요청하는 일반적인 웹 요청입니다. 앱은 이용자의 이름, 애완돌 정보, 사용 기록 등 어떤 개인정보도 이 요청에 담지 않습니다.</li><li>다만 인터넷 통신의 성격상 <strong>GitHub 서버에는 이용자의 IP 주소, 접속 시각, 요청한 파일 정보가 남을 수 있습니다.</strong> 이는 GitHub의 개인정보처리방침에 따라 처리되며, 개발자는 이 기록에 접근할 수 없습니다.</li><li>GitHub 개인정보처리방침: <a href="https://docs.github.com/site-policy/privacy-policies/github-privacy-statement">https://docs.github.com/site-policy/privacy-policies/github-privacy-statement</a></li></ul>
+<p>이 통신을 원하지 않으시면 macOS 방화벽에서 앱의 외부 접속을 차단하셔도 됩니다. 업데이트 확인만 실패하고 나머지 기능은 정상 동작합니다.</p>
+<p>이 외에 설정 화면의 링크 버튼을 누르면 기본 웹 브라우저로 해당 페이지가 열립니다. 이는 이용자가 직접 누른 경우에만 발생합니다.</p>
+<hr />
+<h2>6. 제3자 제공</h2>
+<p>앱은 이용자의 정보를 제3자에게 제공하거나 판매하지 않습니다. 애초에 개발자에게 전달되는 정보 자체가 없습니다.</p>
+<hr />
+<h2>7. 정보의 보관과 삭제</h2>
+<p>앱이 저장하는 정보는 이용자의 Mac에만 있으므로, 삭제 권한도 전적으로 이용자에게 있습니다.</p>
+<p><strong>앱 안에서 지우기</strong><br />트레이 → 설정 → &quot;처음부터 다시 키우기&quot;를 누르면 저장된 진행도·성향·호감도·설정이 모두 지워지고 초기 상태로 돌아갑니다.</p>
+<p><strong>완전히 지우기</strong><br />앱을 삭제하신 뒤 아래 폴더를 함께 지우시면 남는 데이터가 없습니다.</p>
+<pre><code>~/Library/Application Support/Rockie/</code></pre>
+<p>시스템 설정 → 개인정보 보호 및 보안에서 Rockie에 부여한 권한도 함께 해제하실 수 있습니다.</p>
+<hr />
+<h2>8. 아동의 개인정보</h2>
+<p>앱은 이용자로부터 개인정보를 수집하지 않으므로 연령을 확인하지 않으며, 아동의 개인정보를 수집하지 않습니다.</p>
+<hr />
+<h2>9. 방침의 변경</h2>
+<p>기능이 추가되어 다루는 정보가 달라지면 이 방침을 수정하고, 문서 상단의 최종 수정일을 갱신합니다. 중요한 변경이 있을 경우 앱의 릴리스 노트에 함께 안내합니다.</p>
+<hr />
+<h2>10. 문의</h2>
+<p>앱과 개인정보 처리에 관한 문의는 아래로 보내주시기 바랍니다.</p>
+<ul><li>이메일: dowon.9102@gmail.com</li><li>GitHub Issues: <a href="https://github.com/jeondowon/rockie/issues">https://github.com/jeondowon/rockie/issues</a></li></ul>
+    </main>
+    <footer>
+      <div class="foot-inner">
+        <span>© 2026 jeondowon</span>
+        <span style="margin-left: auto">
+          <a href="mailto:dowon.9102@gmail.com">dowon.9102@gmail.com</a>
+        </span>
+      </div>
+    </footer>
+  </body>
+</html>
