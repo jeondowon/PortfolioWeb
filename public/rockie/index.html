@@ -1888,8 +1888,10 @@
               justify-content: center;
             "
           >
+            <!-- 릴리스마다 파일명에 버전이 들어간다. 새 버전을 내면 이 URL도 바꿀 것
+                 (deskPet의 scripts/release.sh가 마지막에 새 URL을 찍어준다). -->
             <a
-              href="#"
+              href="https://github.com/jeondowon/rockie/releases/download/v1.0.0/Rockie-1.0.0-arm64.dmg"
               class="hov hov-dl"
               style="
                 display: flex;
@@ -1930,24 +1932,31 @@
                 >
               </span>
             </a>
-            <a
-              href="#"
-              class="hov hov-dl"
+            <!-- Windows 버전은 아직 배포 파일이 없다(deskPet docs/release.md 6.3).
+                 빌드가 나오면 다시 <a href="...">로 바꾸고 색을 macOS 버튼과 맞춘다. -->
+            <div
+              aria-disabled="true"
               style="
                 display: flex;
                 align-items: center;
                 gap: 14px;
                 text-align: left;
-                background: #4f7a3f;
-                border: 3px solid #000;
-                box-shadow: 6px 6px 0 rgba(27, 27, 22, 0.3);
+                background: #ddd7c7;
+                border: 3px solid #b3ad9c;
                 padding: 16px 24px;
+                cursor: default;
               "
             >
               <img
                 src="assets/favicon.png"
                 alt=""
-                style="width: 26px; height: 26px; image-rendering: pixelated"
+                style="
+                  width: 26px;
+                  height: 26px;
+                  image-rendering: pixelated;
+                  filter: grayscale(1);
+                  opacity: 0.55;
+                "
               />
               <span>
                 <span
@@ -1955,23 +1964,23 @@
                     display: block;
                     font-family: &quot;Galmuri11&quot;, monospace;
                     font-size: 10px;
-                    color: #d7e6cf;
+                    color: #8a8474;
                     letter-spacing: 1px;
                   "
-                  >DOWNLOAD FOR</span
+                  >준비 중</span
                 >
                 <span
                   style="
                     display: block;
                     font-family: &quot;Galmuri14&quot;, monospace;
                     font-size: 16px;
-                    color: #f6f1e4;
+                    color: #6b6659;
                     margin-top: 3px;
                   "
                   >Windows (.exe)</span
                 >
               </span>
-            </a>
+            </div>
           </div>
           <p
             style="
