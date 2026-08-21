@@ -1,0 +1,106 @@
+{
+  "_": [
+    "Rockie 홈페이지 영문판 번역 표. 키는 public/rockie/index.html의 한국어 문구를",
+    "공백을 하나로 줄인 형태다. scripts/rockie-home.mjs가 이 표로 en/index.html을 만든다.",
+    "한국어 문구를 고치면 여기 키도 함께 고쳐야 한다 — 안 고치면 생성기가 멈춘다.",
+    "줄바꿈(<br />)으로 끊긴 문장은 조각마다 따로 들어 있다. 영어 어순에 맞게",
+    "조각별 내용이 한국어와 1:1로 대응하지 않을 수 있다(히어로 제목·진화 설명)."
+  ],
+
+  "소개": "About",
+  "캐릭터": "Characters",
+  "후원": "Support",
+  "컨택": "Contact",
+  "다운로드": "Download",
+
+  "데스크톱 애완돌": "DESKTOP PET ROCK",
+  "화면 위에 사는": "A stone that lives",
+  "작은 돌,": "on your screen,",
+  "마우스를 따라다니고, 쓰다듬으면 반응하고, 나에게 말을 거는 데스크톱 펫.": "A desktop pet that follows your mouse, reacts when you pet it, and speaks up now and then.",
+  "매일 질문에 답하면 성향에 맞게 여러가지 돌 중 하나로 자라나요.": "Answer a question each day and it grows into the stone that matches you.",
+  "무료 다운로드": "Free download",
+  "캐릭터 보기": "See the characters",
+  "무료 · 오픈소스": "Free · open source",
+  "방해 없는 클릭 통과": "Clicks pass right through",
+  "안녕하세요, 주인님!": "Hello there!",
+
+  "부담 없이 곁에 두는": "An easy little",
+  "데스크톱 친구": "desktop companion",
+  "Rockie는 컴퓨터 안에서 하루를 함께 보내는 작은 애완돌이에요.": "Rockie is a small pet rock that spends the day inside your computer.",
+  "나를 닮은 돌이 자라는 과정을 지켜보세요.": "Watch a stone that mirrors you grow up.",
+
+  "커서를 따라다녀요": "It follows your cursor",
+  "화면 아래를 거닐며 마우스를 살랑살랑 쫓아와요.": "It strolls along the bottom of your screen, trailing after your mouse.",
+  "마우스를 따라오지 않게 설정도 가능해요.": "You can also tell it to stay put.",
+  "쓰다듬으면 반응해요": "It reacts when you pet it",
+  "클릭해서 애완돌에게 말을 걸 수 있어요.": "Click to strike up a conversation.",
+  "배터리가 없으면 알려주기도, 가끔 먼저 말을 걸기도 해요.": "It warns you when the battery runs low, and sometimes speaks first.",
+  "여러가지 기능을 지원해요": "It does more than sit there",
+  "키보드 청소 모드, 집중 모드, 쪽잠 모드 등을 지원해요.": "Keyboard cleaning mode, focus mode, nap mode, and more.",
+  "시스템 모니터링으로 나의 컴퓨터 상태까지 확인할 수 있어요.": "A system monitor shows how your computer is doing.",
+  "답할수록 성향이 자라나요": "It grows as you answer",
+  "매일 건네는 성향 질문에 답하면, 조약돌이": "Answer the personality question it asks each day, and your pebble",
+  "나를 닮은 네 가지 돌 중 하나로 진화해요.": "evolves into one of four stones that mirror you.",
+
+  "나를 닮은 네 가지 돌": "Four stones, one of them you",
+  "매일의 성향 질문에 답하면 조약돌이 네 원석 중 하나로 확정돼요.": "Answer the daily personality questions and your pebble settles into one of the four.",
+  "이후 성향에 따라 변성체를 거쳐": "From there it passes through a metamorphic form and becomes a",
+  "보석": "gem",
+  "으로 진화해요.": ".",
+
+  "화강암": "Granite",
+  "SJ · 관리자형": "SJ · The Steady",
+  "오랜 시간 천천히 다져진 단단함. 맡은 일을 끝까지 해내고 상황을 차분하게 정리해요.": "Hardness pressed together slowly over a long time. Sees things through and calmly puts them in order.",
+  "원칙 · 안정 · 책임": "Principle · Stability · Responsibility",
+  "토파즈": "Topaz",
+  "아쿠아마린": "Aquamarine",
+
+  "현무암": "Basalt",
+  "SP · 탐험가형": "SP · The Explorer",
+  "표면에 활발한 흔적이 그대로 남은 돌. 망설임 없이 시작하고 변화에 빠르게 적응해요.": "A stone still marked by everything it has been through. Starts without hesitating and adapts fast.",
+  "즉흥 · 행동 · 현재": "Spontaneity · Action · The present",
+  "브릴리언트 다이아": "Brilliant Diamond",
+  "원석 다이아": "Rough Diamond",
+
+  "대리석": "Marble",
+  "NF · 외교관형": "NF · The Diplomat",
+  "부드럽고 매끄러운 결. 주변의 마음을 섬세하게 읽고 말과 분위기의 온도를 맞춰줘요.": "A soft, smooth grain. Reads the room closely and matches the warmth of the moment.",
+  "공감 · 감성 · 의미": "Empathy · Feeling · Meaning",
+  "파티 사파이어": "Party Sapphire",
+  "루비": "Ruby",
+
+  "편마암": "Gneiss",
+  "NT · 분석가형": "NT · The Analyst",
+  "여러 층의 무늬가 또렷한 돌. 복잡한 문제를 쪼개어 핵심 흐름과 근거를 세워요.": "A stone of clearly banded layers. Breaks hard problems apart and builds the reasoning back up.",
+  "논리 · 전략 · 구조": "Logic · Strategy · Structure",
+  "라브라도라이트": "Labradorite",
+  "문스톤": "Moonstone",
+
+  "외향": "Extrovert",
+  "내향": "Introvert",
+
+  "지금, 내 화면에 데려오기": "Bring one to your screen",
+  "설치하고 실행하면 바로 곁에 나타나요. 완전 무료, 오픈소스예요.": "Install it, open it, and it is right there beside you. Completely free and open source.",
+  "준비 중": "Coming soon",
+  "macOS 12+ · Windows 10+ — Rockie는 Dock이 아니라 화면 상단 메뉴 막대에 나타나요. Rockie 아이콘을 눌러 시작해 주세요.": "macOS 12+ · Windows 10+ — Rockie lives in the menu bar, not the Dock. Click the Rockie icon to get started.",
+
+  "후원하기": "Buy me a coffee",
+  "Rockie는 1인 개발 프로젝트예요. 여러분의 응원이 다음 돌, 다음 보석,": "Rockie is a one-person project. Your support becomes the next stone, the next gem,",
+  "다음 기능을 만들어요. 작은 후원으로 Rockie를 자라게 해주세요.": "the next feature. A small donation helps Rockie grow.",
+  "크티(CTEE)": "CTEE",
+  "커피 한 잔으로 다음 업데이트를 응원해요.": "Cheer on the next update with a cup of coffee.",
+
+  "버그 제보, 기능 제안, 협업 문의 모두 환영해요.": "Bug reports, feature ideas, and collaboration are all welcome.",
+  "편한 채널로 편하게 연락 주세요.": "Reach out on whichever channel suits you.",
+
+  "설치 안내 자세히 보기 ▶": "Read the install guide ▶",
+  "설치 안내": "Install Guide",
+  "데스크톱 애완돌 키우기 앱": "Desktop pet rock app",
+  "개인정보처리방침": "Privacy Policy",
+  "이용약관": "Terms of Use",
+  "오픈소스 라이선스": "Open Source",
+  "© 2026 jeondowon · 도트 폰트 Galmuri (OFL 1.1)": "© 2026 jeondowon · Pixel font Galmuri (OFL 1.1)",
+
+  "Rockie · 데스크톱 애완돌 키우기": "Rockie · Desktop Pet Rock",
+  "나만의 애완돌을 데스크톱에서 키워보세요": "Raise your own pet rock right on your desktop"
+}

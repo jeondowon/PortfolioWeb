@@ -8,7 +8,8 @@
     "build": "vite build",
     "preview": "vite preview",
     "rockie:downloads": "node scripts/rockie-downloads.mjs",
-    "rockie:docs": "node scripts/rockie-docs.mjs"
+    "rockie:docs": "node scripts/rockie-docs.mjs",
+    "rockie:home": "node scripts/rockie-home.mjs"
   },
   "dependencies": {
     "react": "^18.2.0",

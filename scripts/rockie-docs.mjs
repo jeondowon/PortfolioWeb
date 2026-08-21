@@ -11,33 +11,55 @@
 
 import { writeFile, mkdir } from "node:fs/promises";
 
-const RAW = "https://raw.githubusercontent.com/jeondowon/rockie/main";
+// 푸시 전 미리보기용으로 ROCKIE_DOCS_SRC에 로컬 서버 주소를 넣을 수 있다.
+const RAW =
+  process.env.ROCKIE_DOCS_SRC ??
+  "https://raw.githubusercontent.com/jeondowon/rockie/main";
 
+// 한국어는 /rockie/<slug>/, 영어는 /rockie/en/<slug>/ 에 놓는다.
+// 라이선스 고지는 본문이 영문 라이선스 전문이고 머리말만 이중 언어라 한 벌만 만들고
+// 양쪽 언어가 같은 페이지를 가리킨다.
 const PAGES = [
   {
     slug: "privacy",
-    src: `${RAW}/docs/privacy-policy.md`,
-    title: "개인정보처리방침",
-    desc: "Rockie가 어떤 정보를 다루고 그 정보가 어디에 머무는지",
+    ko: { src: `${RAW}/docs/privacy-policy.md`, title: "개인정보처리방침",
+          desc: "Rockie가 어떤 정보를 다루고 그 정보가 어디에 머무는지" },
+    en: { src: `${RAW}/docs/privacy-policy.en.md`, title: "Privacy Policy",
+          desc: "What Rockie handles, and where that information stays" },
   },
   {
     slug: "terms",
-    src: `${RAW}/docs/terms.md`,
-    title: "이용약관",
-    desc: "Rockie의 이용 조건",
+    ko: { src: `${RAW}/docs/terms.md`, title: "이용약관",
+          desc: "Rockie의 이용 조건" },
+    en: { src: `${RAW}/docs/terms.en.md`, title: "Terms of Use",
+          desc: "The conditions for using Rockie" },
+  },
+  {
+    slug: "install",
+    ko: { src: `${RAW}/docs/install.md`, title: "설치 안내",
+          desc: "Rockie 설치·권한·업데이트·삭제 안내" },
+    en: { src: `${RAW}/docs/install.en.md`, title: "Install Guide",
+          desc: "Installing Rockie, permissions, updates, and removal" },
   },
   {
     slug: "licenses",
-    src: `${RAW}/assets/licenses/THIRD-PARTY-NOTICES.md`,
-    title: "오픈소스 라이선스",
-    desc: "Rockie에 포함된 오픈소스 소프트웨어의 저작권 고지",
+    shared: true, // 언어별 사본을 만들지 않는다
+    ko: { src: `${RAW}/assets/licenses/THIRD-PARTY-NOTICES.md`,
+          title: "오픈소스 라이선스",
+          desc: "Rockie에 포함된 오픈소스 소프트웨어의 저작권 고지" },
+    en: { title: "Open Source" },
   },
 ];
 
+const NAV_SWITCH = { ko: "English", en: "한국어" };
+
 // 문서끼리 거는 상대경로는 저장소 안에서만 맞는 주소다. 웹에서는 페이지 주소로 바꾼다.
+// 한국어판과 영문판이 같은 깊이에 있어 상대 주소가 동일하다.
 const DOC_LINKS = {
   "./privacy-policy.md": "../privacy/",
   "./terms.md": "../terms/",
+  "./privacy-policy.en.md": "../privacy/",
+  "./terms.en.md": "../terms/",
 };
 
 const esc = (s) =>
@@ -123,6 +145,16 @@ function toHtml(md) {
       continue;
     }
 
+    // 인용문. 문서에서 "참고"성 문단에 쓴다.
+    if (line.startsWith(">")) {
+      const body = [];
+      while (i < lines.length && lines[i].startsWith(">")) {
+        body.push(lines[i++].replace(/^>\s?/, ""));
+      }
+      out.push(`<blockquote>${inline(body.join("\n")).replace(/\n/g, "<br />")}</blockquote>`);
+      continue;
+    }
+
     if (/^\s*[-*]\s+/.test(line)) {
       const items = [];
       while (i < lines.length && /^\s*[-*]\s+/.test(lines[i])) {
@@ -156,6 +188,7 @@ function toHtml(md) {
       lines[i].trim() !== "" &&
       !lines[i].startsWith("```") &&
       !lines[i].startsWith("|") &&
+      !lines[i].startsWith(">") &&
       !/^#{1,4}\s/.test(lines[i]) &&
       !/^---+$/.test(lines[i]) &&
       !/^\s*([-*]|\d+\.)\s+/.test(lines[i])
@@ -168,22 +201,39 @@ function toHtml(md) {
   return out.join("\n");
 }
 
-function page({ slug, title, desc }, bodyHtml) {
-  const nav = PAGES.map((p) =>
-    p.slug === slug
-      ? `<span class="here">${p.title}</span>`
-      : `<a href="../${p.slug}/">${p.title}</a>`,
-  ).join("");
+// locale에 따라 페이지가 놓이는 깊이가 다르다.
+//   ko: /rockie/<slug>/      → /rockie 로 올라가려면 ".."
+//   en: /rockie/en/<slug>/   → "../.."
+function page({ slug, title, desc, locale }, bodyHtml) {
+  const rockie = locale === "en" ? "../.." : "..";
+  // 같은 언어의 다른 문서는 형제 폴더다. 단 공용 페이지(licenses)는 한국어 자리에만 있다.
+  const linkTo = (target) =>
+    target.shared ? `${rockie}/${target.slug}/` : `../${target.slug}/`;
+
+  const nav = PAGES.map((t) => {
+    const label = (t[locale] ?? t.ko).title;
+    return t.slug === slug
+      ? `<span class="here">${label}</span>`
+      : `<a href="${linkTo(t)}">${label}</a>`;
+  }).join("");
+
+  // 같은 문서의 반대 언어판. 공용 페이지는 한 벌뿐이라 전환 링크를 두지 않는다.
+  const shared = PAGES.find((t) => t.slug === slug)?.shared;
+  const switchLink = shared
+    ? ""
+    : `<a class="lang" href="${
+        locale === "en" ? `${rockie}/${slug}/` : `../en/${slug}/`
+      }">${NAV_SWITCH[locale]}</a>`;
 
   return `<!doctype html>
-<html lang="ko">
+<html lang="${locale}">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>${title} · Rockie</title>
     <meta name="description" content="${desc}" />
     <meta name="robots" content="index, follow" />
-    <link rel="icon" type="image/png" href="../assets/favicon.png" />
+    <link rel="icon" type="image/png" href="${rockie}/assets/favicon.png" />
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css"
@@ -242,6 +292,7 @@ function page({ slug, title, desc }, bodyHtml) {
       }
       .doc-nav a { text-decoration: none; }
       .doc-nav .here { color: #a8432b; }
+      .doc-nav .lang { color: #1b1b16; border-bottom: 1px solid #1b1b16; }
 
       main { max-width: 780px; margin: 0 auto; padding: 44px 22px 90px; }
       h1 {
@@ -291,6 +342,12 @@ function page({ slug, title, desc }, bodyHtml) {
         line-height: 1.6;
         white-space: pre;
       }
+      blockquote {
+        margin: 16px 0;
+        padding: 12px 16px;
+        border-left: 4px solid #4f7a3f;
+        background: #e9e3d4;
+      }
       .table-wrap { overflow-x: auto; margin: 16px 0; }
       table { border-collapse: collapse; width: 100%; font-size: 14px; }
       th, td {
@@ -323,11 +380,11 @@ function page({ slug, title, desc }, bodyHtml) {
   <body>
     <header class="top">
       <div class="top-inner">
-        <a class="home" href="../">
-          <img src="../assets/favicon.png" alt="" />
+        <a class="home" href="${rockie}/">
+          <img src="${rockie}/assets/favicon.png" alt="" />
           ROCKIE
         </a>
-        <nav class="doc-nav">${nav}</nav>
+        <nav class="doc-nav">${nav}${switchLink}</nav>
       </div>
     </header>
     <main>
@@ -347,13 +404,17 @@ ${bodyHtml}
 }
 
 for (const p of PAGES) {
-  const res = await fetch(p.src);
-  if (!res.ok) {
-    console.error(`✗ ${p.src} — ${res.status} ${res.statusText}`);
-    process.exit(1);
+  for (const locale of p.shared ? ["ko"] : ["ko", "en"]) {
+    const meta = p[locale];
+    const res = await fetch(meta.src);
+    if (!res.ok) {
+      console.error(`✗ ${meta.src} — ${res.status} ${res.statusText}`);
+      process.exit(1);
+    }
+    const dir = locale === "en" ? `public/rockie/en/${p.slug}` : `public/rockie/${p.slug}`;
+    const html = page({ ...meta, slug: p.slug, locale }, toHtml(await res.text()));
+    await mkdir(dir, { recursive: true });
+    await writeFile(`${dir}/index.html`, html);
+    console.log(`✓ ${dir}/index.html  (${(html.length / 1024).toFixed(0)}KB)`);
   }
-  const html = page(p, toHtml(await res.text()));
-  await mkdir(`public/rockie/${p.slug}`, { recursive: true });
-  await writeFile(`public/rockie/${p.slug}/index.html`, html);
-  console.log(`✓ public/rockie/${p.slug}/index.html  (${(html.length / 1024).toFixed(0)}KB)`);
 }

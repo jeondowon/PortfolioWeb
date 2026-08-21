@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Install Guide · Rockie</title>
+    <meta name="description" content="Installing Rockie, permissions, updates, and removal" />
+    <meta name="robots" content="index, follow" />
+    <link rel="icon" type="image/png" href="../../assets/favicon.png" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/galmuri/dist/galmuri.css"
+    />
+    <style>
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      body {
+        font-family: "Pretendard", "Apple SD Gothic Neo", sans-serif;
+        background: #f2ede1;
+        color: #1b1b16;
+        line-height: 1.75;
+        -webkit-font-smoothing: antialiased;
+      }
+      a { color: #4f7a3f; }
+      a:hover { color: #a8432b; }
+      ::selection { background: #4f7a3f; color: #f2ede1; }
+
+      .top {
+        border-bottom: 2px solid #1b1b16;
+        background: #faf8f1;
+        position: sticky;
+        top: 0;
+        z-index: 2;
+      }
+      .top-inner {
+        max-width: 780px;
+        margin: 0 auto;
+        padding: 16px 22px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+      .home {
+        font-family: "Galmuri14", monospace;
+        font-size: 14px;
+        letter-spacing: 1px;
+        color: #1b1b16;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .home img { width: 20px; height: 20px; image-rendering: pixelated; }
+      .home:hover { color: #a8432b; }
+      .doc-nav {
+        margin-left: auto;
+        display: flex;
+        gap: 14px;
+        font-family: "Galmuri11", monospace;
+        font-size: 11px;
+      }
+      .doc-nav a { text-decoration: none; }
+      .doc-nav .here { color: #a8432b; }
+      .doc-nav .lang { color: #1b1b16; border-bottom: 1px solid #1b1b16; }
+
+      main { max-width: 780px; margin: 0 auto; padding: 44px 22px 90px; }
+      h1 {
+        font-family: "Galmuri14", monospace;
+        font-size: clamp(22px, 4vw, 30px);
+        line-height: 1.4;
+        margin-bottom: 28px;
+        padding-bottom: 18px;
+        border-bottom: 2px solid #1b1b16;
+      }
+      h2 {
+        font-family: "Galmuri11", monospace;
+        font-size: 16px;
+        line-height: 1.6;
+        margin: 44px 0 14px;
+        color: #1b1b16;
+      }
+      h3 {
+        font-family: "Galmuri11", monospace;
+        font-size: 13px;
+        margin: 28px 0 10px;
+        color: #4f7a3f;
+      }
+      h4 { font-size: 14px; margin: 20px 0 8px; }
+      p { margin: 12px 0; }
+      ul, ol { margin: 12px 0 12px 22px; }
+      li { margin: 5px 0; }
+      hr { border: none; border-top: 2px solid #d9d2c0; margin: 38px 0; }
+      strong { font-weight: 700; }
+      code {
+        font-family: "Galmuri11", monospace;
+        font-size: 0.88em;
+        background: #e7e1d2;
+        padding: 1px 5px;
+      }
+      pre {
+        background: #faf8f1;
+        border: 2px solid #d9d2c0;
+        padding: 14px 16px;
+        overflow-x: auto;
+        margin: 14px 0;
+      }
+      pre code {
+        background: none;
+        padding: 0;
+        font-size: 11px;
+        line-height: 1.6;
+        white-space: pre;
+      }
+      blockquote {
+        margin: 16px 0;
+        padding: 12px 16px;
+        border-left: 4px solid #4f7a3f;
+        background: #e9e3d4;
+      }
+      .table-wrap { overflow-x: auto; margin: 16px 0; }
+      table { border-collapse: collapse; width: 100%; font-size: 14px; }
+      th, td {
+        border: 1px solid #d9d2c0;
+        padding: 8px 11px;
+        text-align: left;
+        vertical-align: top;
+      }
+      th { background: #e7e1d2; font-weight: 700; white-space: nowrap; }
+
+      footer {
+        border-top: 2px solid #1b1b16;
+        background: #1b1b16;
+        color: #6b6656;
+        font-family: "Galmuri11", monospace;
+        font-size: 11px;
+      }
+      .foot-inner {
+        max-width: 780px;
+        margin: 0 auto;
+        padding: 24px 22px;
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+      .foot-inner a { color: #6b6656; text-decoration: none; }
+      .foot-inner a:hover { color: #e9c85b; }
+    </style>
+  </head>
+  <body>
+    <header class="top">
+      <div class="top-inner">
+        <a class="home" href="../../">
+          <img src="../../assets/favicon.png" alt="" />
+          ROCKIE
+        </a>
+        <nav class="doc-nav"><a href="../privacy/">Privacy Policy</a><a href="../terms/">Terms of Use</a><span class="here">Install Guide</span><a href="../../licenses/">Open Source</a><a class="lang" href="../../install/">한국어</a></nav>
+      </div>
+    </header>
+    <main>
+<h1>Installing Rockie</h1>
+<p>Last updated: 2026-08-22<br />Requires: macOS 12 (Monterey) or later · Apple Silicon (M1 or newer)</p>
+<hr />
+<h2>1. Installing</h2>
+<ol><li>Download <code>Rockie-x.x.x-arm64.dmg</code> from the <a href="https://jeondowon.com/rockie">download page</a>.</li><li>Double-click the downloaded file.</li><li>In the window that appears, <strong>drag Rockie into your <code>Applications</code> folder.</strong></li><li>Open Rockie from <code>Applications</code>.</li></ol>
+<p>Rockie is signed and notarized with a registered Apple Developer ID, so macOS will not show a security warning when you open it.</p>
+<blockquote><strong>Intel Macs are not supported yet.</strong> The current build is Apple Silicon only.</blockquote>
+<hr />
+<h2>2. There is no Dock icon</h2>
+<p>Rockie <strong>lives in the menu bar only.</strong> No icon appears in the Dock, and it does not show up in <code>Cmd+Tab</code>. This is intentional, not a bug.</p>
+<ul><li>Everything is reached through the <strong>stone icon in the menu bar</strong> (top right of your screen).</li><li>The pet itself floats on your screen; double-click it to open the mode picker.</li><li>Rockie does appear in Launchpad, so you can launch it from there.</li></ul>
+<p>The reason is that the pet needs to stay visible <strong>on top of full-screen apps.</strong> macOS does not let an app do both, so the Dock icon was the thing to give up.</p>
+<hr />
+<h2>3. Permissions</h2>
+<p>Rockie uses three macOS permissions. <strong>Your pet works normally whether or not you grant them</strong> — each one is tied to a single feature.</p>
+<div class="table-wrap"><table><thead><tr><th>Permission</th><th>When it is requested</th><th>Used for</th><th>If you decline</th></tr></thead><tbody><tr><td>Screen Recording</td><td>During first-run setup</td><td>Noticing which app you are using, so the pet can react to it</td><td>Only the app-aware speech bubbles stop appearing</td></tr><tr><td>Automation</td><td>During first-run setup (optional)</td><td>Reading the Dock's position so the pet steps around it</td><td>The pet may overlap the Dock</td></tr><tr><td>Accessibility</td><td>The first time you start nap or cleaning mode</td><td>Locking the keyboard</td><td>The keyboard is not locked in those modes (the alarm still rings)</td></tr></tbody></table></div>
+<h3>If &quot;Screen Recording&quot; gives you pause</h3>
+<p>macOS bundles <strong>reading other apps' window titles</strong> and <strong>capturing your screen</strong> into the same permission. Rockie needs only the former, which is why it asks — it <strong>does not capture or save your screen.</strong></p>
+<p>Window titles are used solely to pick which speech bubble to show. They are never displayed and never recorded, and no bubble appears at all in messaging, financial, or authentication screens. See the <a href="https://jeondowon.com/rockie/en/privacy">Privacy Policy</a> for details.</p>
+<h3>If you granted a permission and nothing changed</h3>
+<p><strong>Quit the app completely and open it again.</strong> macOS does not apply a newly granted permission to an already-running app. Use the menu bar icon → <strong>Quit</strong>, then launch Rockie again.</p>
+<h3>Changing permissions later</h3>
+<p>Menu bar icon → <strong>Settings → Permissions</strong> shows the current state and can open System Settings for you.</p>
+<p>You can also change them directly in macOS <strong>System Settings → Privacy &amp; Security</strong>. Under Accessibility, the entry appears as <strong><code>KeyBlocker</code></strong>, not <code>Rockie</code> — the keyboard-locking feature is a separate small program.</p>
+<hr />
+<h2>4. Updates</h2>
+<p>Rockie <strong>checks for and downloads new versions automatically.</strong> When a download finishes, you get one notification and an <strong>&quot;Install update and restart&quot;</strong> item appears in the menu bar menu.</p>
+<ul><li>Choosing that item swaps in the new version and reopens the app immediately.</li><li>If you ignore it, the update applies the next time you quit and reopen the app.</li><li>With no internet connection, the check fails quietly and is retried later.</li></ul>
+<p>Your current version is shown at the bottom of the Settings screen.</p>
+<hr />
+<h2>5. Uninstalling</h2>
+<ol><li>Menu bar icon → <strong>Quit</strong>.</li><li>Move Rockie from <code>Applications</code> to the Trash.</li></ol>
+<p>To remove your saved pet data as well, delete this folder:</p>
+<pre><code>~/Library/Application Support/Rockie/</code></pre>
+<p>In Finder, press <code>Shift+Cmd+G</code> and paste the path to go straight there.</p>
+<p>For a clean removal, also delete the <code>Rockie</code> and <code>KeyBlocker</code> entries in System Settings → Privacy &amp; Security.</p>
+<blockquote>If you want to <strong>start over</strong> without uninstalling, use &quot;↻ Start over&quot; on the Settings screen.</blockquote>
+<hr />
+<h2>6. Troubleshooting</h2>
+<div class="table-wrap"><table><thead><tr><th>Symptom</th><th>What to check</th></tr></thead><tbody><tr><td>The pet is not visible</td><td>The menu bar's &quot;Hide / show pet&quot; may be set to hidden</td></tr><tr><td>App-aware bubbles never appear</td><td>Confirm you granted Screen Recording <strong>and restarted the app</strong></td></tr><tr><td>The pet overlaps the Dock</td><td>Grant Automation permission (Settings → Permissions)</td></tr><tr><td>The keyboard is not locked in nap mode</td><td>Enable <strong><code>KeyBlocker</code></strong> under Accessibility, then restart the app</td></tr><tr><td>There is no menu bar icon</td><td>Your menu bar may be full — try clearing out other icons</td></tr></tbody></table></div>
+<p>If none of this helps, reach out at <a href="mailto:dowon.9102@gmail.com">dowon.9102@gmail.com</a> or on <a href="https://github.com/jeondowon/rockie/issues">GitHub Issues</a>.</p>
+    </main>
+    <footer>
+      <div class="foot-inner">
+        <span>© 2026 jeondowon</span>
+        <span style="margin-left: auto">
+          <a href="mailto:dowon.9102@gmail.com">dowon.9102@gmail.com</a>
+        </span>
+      </div>
+    </footer>
+  </body>
+</html>
