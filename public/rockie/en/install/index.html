@@ -162,7 +162,7 @@
     </header>
     <main>
 <h1>Installing Rockie</h1>
-<p>Last updated: 2026-08-22<br />Requires: macOS 12 (Monterey) or later · Apple Silicon (M1 or newer)</p>
+<p>Last updated: 2026-08-23<br />Requires: macOS 12 (Monterey) or later · Apple Silicon (M1 or newer)</p>
 <hr />
 <h2>1. Installing</h2>
 <ol><li>Download <code>Rockie-x.x.x-arm64.dmg</code> from the <a href="https://jeondowon.com/rockie">download page</a>.</li><li>Double-click the downloaded file.</li><li>In the window that appears, <strong>drag Rockie into your <code>Applications</code> folder.</strong></li><li>Open Rockie from <code>Applications</code>.</li></ol>
@@ -175,16 +175,26 @@
 <p>The reason is that the pet needs to stay visible <strong>on top of full-screen apps.</strong> macOS does not let an app do both, so the Dock icon was the thing to give up.</p>
 <hr />
 <h2>3. Permissions</h2>
-<p>Rockie uses three macOS permissions. <strong>Your pet works normally whether or not you grant them</strong> — each one is tied to a single feature.</p>
-<div class="table-wrap"><table><thead><tr><th>Permission</th><th>When it is requested</th><th>Used for</th><th>If you decline</th></tr></thead><tbody><tr><td>Screen Recording</td><td>During first-run setup</td><td>Noticing which app you are using, so the pet can react to it</td><td>Only the app-aware speech bubbles stop appearing</td></tr><tr><td>Automation</td><td>During first-run setup (optional)</td><td>Reading the Dock's position so the pet steps around it</td><td>The pet may overlap the Dock</td></tr><tr><td>Accessibility</td><td>The first time you start nap or cleaning mode</td><td>Locking the keyboard</td><td>The keyboard is not locked in those modes (the alarm still rings)</td></tr></tbody></table></div>
+<p>Rockie uses three macOS permissions. <strong>Accessibility is required</strong> — the Start button stays locked during first-run setup until you grant it. <strong>The other two are optional; your pet works normally without them.</strong></p>
+<div class="table-wrap"><table><thead><tr><th>Permission</th><th>When it is requested</th><th>Used for</th><th>If you decline</th></tr></thead><tbody><tr><td>Accessibility <strong>(required)</strong></td><td>During first-run setup · the first time you start nap or cleaning mode</td><td>Reading the Dock's position · locking the keyboard</td><td>You cannot finish first-run setup. The keyboard is not locked in those modes either (the alarm still rings)</td></tr><tr><td>Automation <strong>(recommended)</strong></td><td>During first-run setup</td><td>Asking macOS where the Dock is</td><td>The pet may overlap the Dock</td></tr><tr><td>Screen Recording</td><td>During first-run setup</td><td>Reading the <strong>title</strong> of the window you are looking at</td><td>App names are still readable, so most bubbles keep appearing — only the ones that need the title drop out</td></tr></tbody></table></div>
+<p>The Automation and Accessibility prompts appear <strong>only when you tap those rows yourself during first-run setup</strong> (Screen Recording is the one asked automatically, once).</p>
+<p>Declining works differently per permission. <strong>Automation and Screen Recording are asked only once — decline, and macOS will not ask again.</strong> <strong>Accessibility keeps no record of a refusal, so tapping the row again brings the prompt back.</strong> That is what makes it safe to require: declining it by mistake does not lock you out. See &quot;Changing permissions later&quot; below if you change your mind.</p>
+<p>Accessibility is marked <strong>(required)</strong> because without it the Dock-reading command never runs at all, even with Automation granted — Dock avoidance stops working entirely. Automation is marked <strong>(recommended)</strong> because the app runs fine without it, but the pet visibly overlaps the Dock, which looks off. The two work as a pair: granting only one has no effect.</p>
+<h3>Why avoiding the Dock takes two permissions</h3>
+<p>Reading the Dock's position is a one-line command, but macOS splits it into two steps.</p>
+<ol><li>Rockie asks macOS's <code>System Events</code> to go look at where the Dock is → <strong>Automation</strong></li><li><code>System Events</code> actually reads the Dock's on-screen elements → <strong>Accessibility</strong></li></ol>
+<p>At step 2 macOS checks the permission of <strong>Rockie, the app that asked</strong> — not of <code>System Events</code>, the app doing the errand. That is deliberate: it stops apps from using a shared tool as a shield. So granting only Automation clears step 1 and gets blocked at step 2.</p>
+<p>Declining Automation alone is fine — your pet still works, it just becomes less precise at stepping around the Dock.</p>
 <h3>If &quot;Screen Recording&quot; gives you pause</h3>
 <p>macOS bundles <strong>reading other apps' window titles</strong> and <strong>capturing your screen</strong> into the same permission. Rockie needs only the former, which is why it asks — it <strong>does not capture or save your screen.</strong></p>
 <p>Window titles are used solely to pick which speech bubble to show. They are never displayed and never recorded, and no bubble appears at all in messaging, financial, or authentication screens. See the <a href="https://jeondowon.com/rockie/en/privacy">Privacy Policy</a> for details.</p>
 <h3>If you granted a permission and nothing changed</h3>
 <p><strong>Quit the app completely and open it again.</strong> macOS does not apply a newly granted permission to an already-running app. Use the menu bar icon → <strong>Quit</strong>, then launch Rockie again.</p>
 <h3>Changing permissions later</h3>
-<p>Menu bar icon → <strong>Settings → Permissions</strong> shows the current state and can open System Settings for you.</p>
-<p>You can also change them directly in macOS <strong>System Settings → Privacy &amp; Security</strong>. Under Accessibility, the entry appears as <strong><code>KeyBlocker</code></strong>, not <code>Rockie</code> — the keyboard-locking feature is a separate small program.</p>
+<p>Menu bar icon → <strong>Settings → Permissions</strong> shows the current state and can open System Settings for you. Tapping a row you have not granted yet shows the permission prompt once, then opens System Settings.</p>
+<p>You can also change them directly in macOS <strong>System Settings → Privacy &amp; Security</strong>.</p>
+<p>Under Accessibility you will find <strong>two</strong> entries. They do different jobs, so macOS lists them separately.</p>
+<ul><li><strong><code>Rockie</code></strong> — reads the Dock's position. Turn it off and the pet may overlap the Dock.</li><li><strong><code>KeyBlocker</code></strong> — locks the keyboard in nap and cleaning modes. The keyboard-locking feature is split out into a separate small program.</li></ul>
 <hr />
 <h2>4. Updates</h2>
 <p>Rockie <strong>checks for and downloads new versions automatically.</strong> When a download finishes, you get one notification and an <strong>&quot;Install update and restart&quot;</strong> item appears in the menu bar menu.</p>
@@ -200,7 +210,7 @@
 <blockquote>If you want to <strong>start over</strong> without uninstalling, use &quot;↻ Start over&quot; on the Settings screen.</blockquote>
 <hr />
 <h2>6. Troubleshooting</h2>
-<div class="table-wrap"><table><thead><tr><th>Symptom</th><th>What to check</th></tr></thead><tbody><tr><td>The pet is not visible</td><td>The menu bar's &quot;Hide / show pet&quot; may be set to hidden</td></tr><tr><td>App-aware bubbles never appear</td><td>Confirm you granted Screen Recording <strong>and restarted the app</strong></td></tr><tr><td>The pet overlaps the Dock</td><td>Grant Automation permission (Settings → Permissions)</td></tr><tr><td>The keyboard is not locked in nap mode</td><td>Enable <strong><code>KeyBlocker</code></strong> under Accessibility, then restart the app</td></tr><tr><td>You cannot find the icon in the menu bar</td><td>With many items it can be pushed off screen — clear out other icons, or check with a tool like Bartender</td></tr></tbody></table></div>
+<div class="table-wrap"><table><thead><tr><th>Symptom</th><th>What to check</th></tr></thead><tbody><tr><td>The pet is not visible</td><td>The menu bar's &quot;Hide / show pet&quot; may be set to hidden</td></tr><tr><td>Bubbles that react to window titles never appear</td><td>Confirm you granted Screen Recording <strong>and restarted the app</strong> (bubbles that only look at the app name work without it)</td></tr><tr><td>No bubbles appear at all</td><td>Check the three switches under Settings → Speech bubbles</td></tr><tr><td>The pet overlaps the Dock</td><td>Grant <strong>both</strong> Automation and Accessibility (Settings → Permissions). Accessibility takes effect only after you restart the app</td></tr><tr><td>The keyboard is not locked in nap mode</td><td>Enable <strong><code>KeyBlocker</code></strong> under Accessibility, then restart the app</td></tr><tr><td>You cannot find the icon in the menu bar</td><td>With many items it can be pushed off screen — clear out other icons, or check with a tool like Bartender</td></tr></tbody></table></div>
 <p>If none of this helps, reach out at <a href="mailto:dowon.9102@gmail.com">dowon.9102@gmail.com</a> or on <a href="https://github.com/jeondowon/rockie/issues">GitHub Issues</a>.</p>
     </main>
     <footer>

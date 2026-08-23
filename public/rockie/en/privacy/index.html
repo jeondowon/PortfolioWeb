@@ -162,7 +162,7 @@
     </header>
     <main>
 <h1>Rockie Privacy Policy</h1>
-<p>Last updated: 2026-08-22<br />Applies to: Rockie 1.0.1 and later</p>
+<p>Last updated: 2026-08-24<br />Applies to: Rockie 1.0.1 and later</p>
 <p>Rockie (&quot;the app&quot;) is a free macOS desktop app made by an individual developer, jeondowon. This policy explains what information the app handles and where that information stays.</p>
 <hr />
 <h2>1. Summary</h2>
@@ -179,14 +179,16 @@
 <div class="table-wrap"><table><thead><tr><th>Item</th><th>Purpose</th></tr></thead><tbody><tr><td>Name and window title of the frontmost app</td><td>Choosing a speech bubble that fits what you are doing</td></tr><tr><td>Time since your last input (idle time)</td><td>Reacting when you step away</td></tr><tr><td>Current time of day</td><td>Time-of-day reactions</td></tr><tr><td>CPU, memory, disk, battery, and network usage</td><td>The system monitor screen</td></tr><tr><td>Position and size of the Dock</td><td>Keeping your pet from covering the Dock</td></tr><tr><td>Whether screen recording permission is granted</td><td>Telling you which features are available</td></tr></tbody></table></div>
 <p><strong>About window titles</strong></p>
 <p>A window title can contain private details, such as a document name or a web page title. Here is how the app treats them.</p>
+<p><strong>Without Screen Recording permission, window titles are not read at all.</strong> In that case the app picks bubbles from the app name alone, and the window title arrives empty.</p>
 <p><strong>Window titles are never displayed.</strong> The app matches the title against a fixed set of built-in conditions to decide which speech bubble to show. Every line your pet says is written into the app in advance; there is no path by which a window title you have open appears on screen.</p>
 <p><strong>In the following areas, no speech bubble is shown at all.</strong></p>
 <ul><li>KakaoTalk and mail apps</li><li>Banks, credit cards, brokerages, cryptocurrency exchanges</li><li>Hospitals, government and civil service sites</li><li>Password managers, authenticator apps, sign-in and verification screens</li></ul>
 <p>In work chat tools such as Slack, Discord, and Microsoft Teams, a generic bubble along the lines of &quot;Someone's pinging you&quot; may appear. Even then, no message content and no window title is shown.</p>
 <hr />
 <h2>4. System permissions</h2>
-<p>The app can use three macOS permissions. <strong>The core features work whether or not you grant any of them.</strong></p>
-<div class="table-wrap"><table><thead><tr><th>Permission</th><th>Used for</th><th>If you decline</th></tr></thead><tbody><tr><td>Screen Recording</td><td>Reading the name and title of the frontmost window</td><td>Only the app-aware speech bubbles stop appearing</td></tr><tr><td>Automation (System Events)</td><td>Reading the Dock's position and size</td><td>Your pet may overlap the Dock</td></tr><tr><td>Accessibility</td><td>Locking the keyboard in nap and cleaning modes</td><td>The keyboard is not locked in those modes</td></tr></tbody></table></div>
+<p>The app can use three macOS permissions. <strong>Accessibility (<code>Rockie</code>) is needed to finish first-run setup</strong>; <strong>the rest are optional and the core features work without them.</strong> None of these permissions is used to send personal data anywhere.</p>
+<div class="table-wrap"><table><thead><tr><th>Permission</th><th>Used for</th><th>If you decline</th></tr></thead><tbody><tr><td>Screen Recording</td><td>Reading the title of the frontmost window</td><td>App names are still readable, so most bubbles keep appearing — only the ones that need the title stop</td></tr><tr><td>Automation (System Events)</td><td>Reading the Dock's position and size</td><td>Your pet may overlap the Dock</td></tr><tr><td>Accessibility (<code>Rockie</code>)</td><td>Reading the Dock's position and size</td><td>You cannot finish first-run setup, and your pet overlaps the Dock</td></tr><tr><td>Accessibility (<code>KeyBlocker</code>)</td><td>Locking the keyboard in nap and cleaning modes</td><td>The keyboard is not locked in those modes</td></tr></tbody></table></div>
+<p>Reading the Dock's position needs Automation and Accessibility <strong>together</strong>: macOS splits it into asking <code>System Events</code> to look (Automation) and <code>System Events</code> actually reading the on-screen elements (Accessibility). Two entries appear under Accessibility because the keyboard-locking feature is split out into a separate program named <code>KeyBlocker</code>.</p>
 <p>Despite its name, macOS &quot;Screen Recording&quot; permission is <strong>not used here to capture or record your screen.</strong> macOS requires it in order to read other apps' window titles, which is why the app asks for it. The app does not capture your screen.</p>
 <hr />
 <h2>5. The one outbound connection: automatic updates</h2>
