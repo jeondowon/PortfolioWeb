@@ -44,7 +44,20 @@ export const ABOUT = {
 };
 
 export const EXPERIENCE_DATA = {
-  work: [],
+  work: [
+    {
+      date: "2024.03 — 2025.11",
+      title: {
+        en: "Republic of Korea Navy 2nd Fleet C4I Battalion",
+        ko: "대한민국 해군 제2함대 지휘통신대대",
+      },
+      subtitle: {
+        en: "Mandatory Military Service — Computer/Network Administrator",
+        ko: "전산병 복무 (병장 만기 전역)",
+      },
+      isActive: false,
+    },
+  ],
   teams: [
     {
       date: "2023.09 — Present",
@@ -54,18 +67,6 @@ export const EXPERIENCE_DATA = {
         ko: "한동대학교 전산 동아리",
       },
       isActive: true,
-    },
-    {
-      date: "2024.03 — 2025.11",
-      title: {
-        en: "Republic of Korea Navy 2nd Fleet C4I Battalion",
-        ko: "대한민국 해군 제2함대 지휘통신대대",
-      },
-      subtitle: {
-        en: "Served as Computer/Network Administrator",
-        ko: "전산병 복무 (병장 만기 전역)",
-      },
-      isActive: false,
     },
     {
       date: "2023.03 — 2023.08",

@@ -10,7 +10,7 @@ const TABS = [
 ];
 
 const Experiences = forwardRef(function Experiences({ lang = "en", onScrollDown }, ref) {
-  const [activeTab, setActiveTab] = useState("teams");
+  const [activeTab, setActiveTab] = useState("work");
   const items = EXPERIENCE_DATA[activeTab];
   const t = (field) => (typeof field === "string" ? field : field[lang]);
 
