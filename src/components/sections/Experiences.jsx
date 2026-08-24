@@ -50,6 +50,11 @@ const Experiences = forwardRef(function Experiences({ lang = "en", onScrollDown 
                   <span className="experiences-item-subtitle">
                     {t(item.subtitle)}
                   </span>
+                  {item.role && (
+                    <span className="experiences-item-subtitle">
+                      {t(item.role)}
+                    </span>
+                  )}
                 </div>
               </div>
             ))}

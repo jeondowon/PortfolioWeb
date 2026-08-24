@@ -66,6 +66,10 @@ export const EXPERIENCE_DATA = {
         en: "Handong Global University Computer Science Club",
         ko: "한동대학교 전산 동아리",
       },
+      role: {
+        en: "Executive Board · General Affairs Officer (Fall 2026)",
+        ko: "임원 · 총무 (2026-2학기)",
+      },
       isActive: true,
     },
     {
