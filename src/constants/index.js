@@ -387,10 +387,8 @@ export const LAB_ITEMS = [
 export const RESUME_AVAILABLE = false;
 
 export const SOCIAL = {
-  email: "dowon.9102@gmail.com",
-  phone: "010-5956-0629",
-  phoneDisplay: "+82 10-5956-0629",
-  instagram: "https://www.instagram.com/jeondowon/",
+  email: "jeondowon.dev@gmail.com",
+  instagram: "https://www.instagram.com/jeondowon.dev/",
   linkedin: "https://www.linkedin.com/in/jeondowon/",
   github: "https://github.com/jeondowon",
 };

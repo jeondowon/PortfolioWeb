@@ -394,7 +394,7 @@ ${bodyHtml}
       <div class="foot-inner">
         <span>© 2026 jeondowon</span>
         <span style="margin-left: auto">
-          <a href="mailto:dowon.9102@gmail.com">dowon.9102@gmail.com</a>
+          <a href="mailto:jeondowon.dev@gmail.com">jeondowon.dev@gmail.com</a>
         </span>
       </div>
     </footer>

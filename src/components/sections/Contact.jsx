@@ -1,7 +1,6 @@
 import { forwardRef } from "react";
 import {
   FaEnvelope,
-  FaPhone,
   FaGithub,
   FaLinkedin,
   FaInstagram,
@@ -15,12 +14,6 @@ const LINKS = [
     label: "EMAIL",
     display: SOCIAL.email,
     href: `mailto:${SOCIAL.email}`,
-  },
-  {
-    icon: FaPhone,
-    label: "PHONE",
-    display: SOCIAL.phoneDisplay,
-    href: `tel:${SOCIAL.phone}`,
   },
   {
     icon: FaGithub,
@@ -37,7 +30,7 @@ const LINKS = [
   {
     icon: FaInstagram,
     label: "INSTAGRAM",
-    display: "@jeondowon",
+    display: "@jeondowon.dev",
     href: SOCIAL.instagram,
   },
 ];
