@@ -65,7 +65,7 @@ const rewrites = [
   ],
   // 언어 전환 링크: 한국어판으로 되돌아간다
   ['href="en/"', 'href="../"'],
-  [">English</a", ">한국어</a"],
+  [">EN</a", ">KO</a"],
 ];
 for (const [from, to] of rewrites) {
   if (!html.includes(from)) {
@@ -90,10 +90,8 @@ if (missing.size) {
 
 // 마지막 확인: 번역이 끝난 페이지에 한국어가 남아 있으면 안 된다.
 // HTML 주석은 개발자용이고 화면에 안 나오므로 한국어로 둔다.
-// 언어 전환 링크의 "한국어"는 영문판에서도 그대로 있어야 하니 함께 빼고 본다.
 const leftover = html
   .replace(/<!--[\s\S]*?-->/g, "")
-  .replace(">한국어</a", ">LANG</a")
   .match(/[가-힣][^<>"]*/g);
 if (leftover) {
   console.error(`✗ 한국어가 ${leftover.length}곳 남았습니다:`);

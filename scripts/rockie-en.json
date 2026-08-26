@@ -82,7 +82,7 @@
   "지금, 내 화면에 데려오기": "Bring one to your screen",
   "설치하고 실행하면 바로 곁에 나타나요. 완전 무료, 오픈소스예요.": "Install it, open it, and it is right there beside you. Completely free and open source.",
   "준비 중": "Coming soon",
-  "macOS 12+ · Windows 10+ — Rockie는 Dock이 아니라 화면 상단 메뉴 막대에 나타나요. Rockie 아이콘을 눌러 시작해 주세요.": "macOS 12+ · Windows 10+ — Rockie lives in the menu bar, not the Dock. Click the Rockie icon to get started.",
+  "*Rockie는 Dock이 아니라 화면 상단 메뉴 막대에 나타나요. Rockie 아이콘을 눌러 시작해 주세요.": "*Rockie lives in the menu bar, not the Dock. Click the Rockie icon to get started.",
 
   "후원하기": "Buy me a coffee",
   "Rockie는 1인 개발 프로젝트예요. 여러분의 응원이 다음 돌, 다음 보석,": "Rockie is a one-person project. Your support becomes the next stone, the next gem,",
@@ -92,6 +92,11 @@
 
   "버그 제보, 기능 제안, 협업 문의 모두 환영해요.": "Bug reports, feature ideas, and collaboration are all welcome.",
   "편한 채널로 편하게 연락 주세요.": "Reach out on whichever channel suits you.",
+
+  "제품": "Product",
+  "지원": "Help",
+  "약관": "Legal",
+  "언어": "Language",
 
   "설치 안내 자세히 보기 ▶": "Read the install guide ▶",
   "설치 안내": "Install Guide",

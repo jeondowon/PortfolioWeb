@@ -121,6 +121,25 @@
         border-color: #e9c85b;
       }
 
+      .footer-col h3 {
+        font-family: "Galmuri14", monospace;
+        font-size: 13px;
+        letter-spacing: 1px;
+        color: #f2ede1;
+        margin-bottom: 18px;
+      }
+      .footer-col a {
+        display: block;
+        padding: 7px 0;
+        font-family: "Galmuri11", monospace;
+        font-size: 12px;
+        line-height: 1.2;
+        color: #8f8975;
+      }
+      .footer-col a:hover {
+        color: #e9c85b;
+      }
+
       @media (max-width: 820px) {
         .hero-grid,
         .support-grid,
@@ -131,7 +150,10 @@
         .stone-grid {
           grid-template-columns: 1fr !important;
         }
-        .nav-links a:not(.nav-dl) {
+        .footer-cols {
+          grid-template-columns: 1fr 1fr !important;
+        }
+        .nav-links a:not(.nav-dl):not(.lang-switch) {
           display: none !important;
         }
       }
@@ -297,7 +319,7 @@
                 color: #e9c85b;
                 border-bottom: 1px solid #e9c85b;
               "
-              >한국어</a
+              >KO</a
             >
             <a
               href="#download"
@@ -474,7 +496,7 @@
                 <svg width="9" height="9" style="flex: none">
                   <use href="#i-diamond" />
                 </svg>
-                macOS · Windows
+                macOS
               </span>
               <span style="display: inline-flex; align-items: center; gap: 7px">
                 <svg width="9" height="9" style="flex: none">
@@ -1997,7 +2019,7 @@
               color: #8a8474;
             "
           >
-            macOS 12+ · Windows 10+ — Rockie lives in the menu bar, not the Dock. Click the Rockie icon to get started.
+            *Rockie lives in the menu bar, not the Dock. Click the Rockie icon to get started.
           </p>
           <!-- 설치·권한·삭제 안내. 영문판은 en/install/ 이라 상대 주소가 같다. -->
           <a
@@ -2261,7 +2283,7 @@
                     font-size: 15px;
                     color: #f6f1e4;
                   "
-                  >@jeondowon.dev</span
+                  >@jeondowon</span
                 >
                 <svg width="15" height="15" style="flex: none; color: #e9c85b">
                   <use href="#i-arrow-ne" />
@@ -2306,9 +2328,49 @@
             </div>
           </div>
 
+          <!-- 링크 그리드. 한 줄에 몰려 있던 링크를 갈래별 컬럼으로 나눴다. -->
           <div
+            class="footer-cols"
             style="
               margin-top: clamp(56px, 7vw, 88px);
+              border-top: 2px solid #2f2f27;
+              padding-top: clamp(40px, 5vw, 60px);
+              display: grid;
+              grid-template-columns: repeat(4, 1fr);
+              gap: 36px 24px;
+            "
+          >
+            <div class="footer-col">
+              <h3>Product</h3>
+              <a href="#intro">About</a>
+              <a href="#character">Characters</a>
+              <a href="#download">Download</a>
+              <a href="install/">Install Guide</a>
+            </div>
+            <div class="footer-col">
+              <h3>Help</h3>
+              <a href="#contact">Contact</a>
+              <a href="#support">Support</a>
+              <a href="https://github.com/jeondowon">GitHub</a>
+              <a href="https://instagram.com/jeondowon.dev">Instagram</a>
+            </div>
+            <div class="footer-col">
+              <h3>Legal</h3>
+              <a href="privacy/">Privacy Policy</a>
+              <a href="terms/">Terms of Use</a>
+              <a href="../licenses/">Open Source</a>
+            </div>
+            <div class="footer-col">
+              <h3>Language</h3>
+              <!-- 언어 전환. scripts/rockie-home.mjs가 영문판에서 이 href와 글자를 바꾼다.
+                   class="lang-switch"가 표식이므로 지우지 말 것. -->
+              <a href="../" class="lang-switch">KO</a>
+            </div>
+          </div>
+
+          <div
+            style="
+              margin-top: clamp(48px, 6vw, 72px);
               border-top: 2px solid #2f2f27;
               padding: 26px 0 30px;
               display: flex;
@@ -2339,19 +2401,6 @@
               "
               >Desktop pet rock app</span
             >
-            <span
-              style="
-                display: flex;
-                gap: 12px;
-                font-family: &quot;Galmuri11&quot;, monospace;
-                font-size: 11px;
-              "
-            >
-              <a href="install/" style="color: #6b6656">Install Guide</a>
-              <a href="privacy/" style="color: #6b6656">Privacy Policy</a>
-              <a href="terms/" style="color: #6b6656">Terms of Use</a>
-              <a href="../licenses/" style="color: #6b6656">Open Source</a>
-            </span>
             <span
               style="
                 margin-left: auto;
