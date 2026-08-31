@@ -6,6 +6,7 @@ import "./LabPage.css";
 
 const DX = 46;
 const DY = 40;
+const LAST_OPENED_KEY = "lab:lastOpened";
 
 function useMobile() {
   const [isMobile, setIsMobile] = useState(
@@ -24,9 +25,11 @@ function useMobile() {
 
 export default function LabPage() {
   const { lang, setLang } = useLang();
-  const [active, setActiveState] = useState(() =>
-    Math.floor(LAB_ITEMS.length / 2),
-  );
+  const [active, setActiveState] = useState(() => {
+    const saved = sessionStorage.getItem(LAST_OPENED_KEY);
+    const i = saved ? LAB_ITEMS.findIndex((item) => item.id === saved) : -1;
+    return i >= 0 ? i : Math.floor(LAB_ITEMS.length / 2);
+  });
   const [hover, setHover] = useState(-1);
   const [cardX, setCardX] = useState(0);
   const [cardTransition, setCardTransition] = useState(false);
@@ -44,6 +47,7 @@ export default function LabPage() {
   }, [active]);
 
   useEffect(() => {
+    sessionStorage.removeItem(LAST_OPENED_KEY);
     window.scrollTo(0, 0);
     document.documentElement.style.backgroundColor = "#0a0a0a";
     return () => {
@@ -239,8 +243,9 @@ export default function LabPage() {
                     </div>
                     <a
                       href={ap.url}
-                      target="_blank"
-                      rel="noreferrer"
+                      onClick={() =>
+                        sessionStorage.setItem(LAST_OPENED_KEY, ap.id)
+                      }
                       className="lab-detail-open"
                     >
                       <span>Open experiment</span>
@@ -359,8 +364,7 @@ export default function LabPage() {
                 </div>
                 <a
                   href={ap.url}
-                  target="_blank"
-                  rel="noreferrer"
+                  onClick={() => sessionStorage.setItem(LAST_OPENED_KEY, ap.id)}
                   className="lab-detail-open"
                 >
                   <span>Open experiment</span>
