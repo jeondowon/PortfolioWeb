@@ -382,6 +382,17 @@ export const LAB_ITEMS = [
     blurb:
       "The hour, minute and second told as three concentric rings sweeping silently around a shared center.",
   },
+  {
+    id: "exp14",
+    exp: "EXP-014",
+    url: "/lab/014/",
+    title: "Pick Two",
+    date: "2026.09",
+    tags: ["interaction", "ui"],
+    thumbnail: "/lab/thumbnails/exp014.svg",
+    blurb:
+      "Money, looks, personality. Pick any two — turning on the third switches off your oldest choice.",
+  },
 ];
 
 export const RESUME_AVAILABLE = false;

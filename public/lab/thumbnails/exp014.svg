@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="920" height="580" viewBox="0 0 920 580">
+  <rect width="920" height="580" fill="#111111"/>
+  <g font-family="Arial, sans-serif">
+    <text x="66" y="70" fill="#c0d9a0" font-size="15" letter-spacing="3">EXP-014 / PICK TWO.</text>
+    <text x="220" y="156" fill="#f2f0e9" font-size="42" font-weight="600" letter-spacing="-2">You can’t have it all.</text>
+    <g stroke="#33332f"><path d="M220 196H700M220 298H700M220 400H700M220 502H700"/></g>
+    <g font-size="26" font-weight="500" letter-spacing="2">
+      <text x="220" y="258" fill="#c0d9a0">MONEY</text>
+      <text x="220" y="360" fill="#e8b6b0">LOOKS</text>
+      <text x="220" y="462" fill="#81817c">PERSONALITY</text>
+    </g>
+    <rect x="590" y="220" width="110" height="56" rx="28" fill="#c0d9a0"/>
+    <rect x="590" y="322" width="110" height="56" rx="28" fill="#e8b6b0"/>
+    <rect x="590" y="424" width="110" height="56" rx="28" fill="#343431"/>
+    <g fill="#fffef9"><circle cx="672" cy="248" r="22"/><circle cx="672" cy="350" r="22"/></g>
+    <circle cx="618" cy="452" r="22" fill="#a0a09a"/>
+    <g fill="none" stroke="#343431" stroke-width="2.5"><path d="m665 248 5 5 9-10M665 350l5 5 9-10M612 452h12"/></g>
+  </g>
+</svg>

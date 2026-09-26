@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#111111" />
+    <meta name="description" content="돈, 외모, 성격. 세 가지 중 두 가지만 고를 수 있는 작은 선택 실험." />
+    <title>Pick Two — EXP-014</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        min-height: 100svh;
+        background: #111111;
+        color: #f2f0e9;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        -webkit-font-smoothing: antialiased;
+      }
+      header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 28px 36px;
+      }
+      .back,
+      .experiment,
+      .eyebrow,
+      .counter,
+      .english,
+      footer {
+        font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+        font-size: 11px;
+        letter-spacing: 0.12em;
+      }
+      .back {
+        color: #aaa9a4;
+        text-decoration: none;
+        padding: 12px 0;
+      }
+      .back:hover {
+        color: #f2f0e9;
+      }
+      .experiment {
+        color: #777773;
+      }
+      main {
+        width: min(100% - 48px, 460px);
+        margin: 0 auto;
+        padding: clamp(32px, 8vh, 100px) 0 40px;
+      }
+      .eyebrow {
+        color: #c0d9a0;
+        margin: 0 0 22px;
+      }
+      h1 {
+        font-size: clamp(29px, 7vw, 40px);
+        letter-spacing: -0.065em;
+        margin: 0;
+        font-weight: 650;
+      }
+      .description {
+        color: #93938e;
+        font-size: 14px;
+        line-height: 1.8;
+        margin: 16px 0 42px;
+        word-break: keep-all;
+      }
+      .selection-heading {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding-bottom: 16px;
+      }
+      .selection-heading h2 {
+        margin: 0;
+        font-size: 12px;
+        font-weight: 400;
+        color: #93938e;
+      }
+      .counter {
+        color: #93938e;
+      }
+      .counter strong {
+        color: #f2f0e9;
+        font-size: 16px;
+        font-weight: 500;
+      }
+      .options {
+        border-top: 1px solid #33332f;
+      }
+      .option {
+        --accent: #c0d9a0;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        padding: 25px 0;
+        border: 0;
+        border-bottom: 1px solid #33332f;
+        background: transparent;
+        color: inherit;
+        font: inherit;
+        text-align: left;
+        cursor: pointer;
+        -webkit-tap-highlight-color: transparent;
+        touch-action: manipulation;
+      }
+      .option[data-id="looks"] {
+        --accent: #e8b6b0;
+      }
+      .option[data-id="personality"] {
+        --accent: #c1bae8;
+      }
+      .label {
+        display: flex;
+        align-items: baseline;
+        gap: 16px;
+      }
+      .korean {
+        font-size: 27px;
+        font-weight: 550;
+        letter-spacing: -0.045em;
+        transition: color 0.2s;
+      }
+      .english {
+        font-size: 10px;
+        color: #81817c;
+      }
+      .track {
+        width: 94px;
+        height: 52px;
+        flex-shrink: 0;
+        padding: 6px;
+        border-radius: 30px;
+        background: #343431;
+        box-shadow: inset 0 0 0 1px #ffffff08;
+        transition: background 0.25s ease;
+      }
+      .thumb {
+        display: grid;
+        place-items: center;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: #a0a09a;
+        color: #343431;
+        box-shadow: 0 2px 5px #0003;
+        transition:
+          transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1),
+          background 0.25s;
+      }
+      .thumb::after {
+        content: "";
+        width: 10px;
+        height: 2px;
+        background: currentColor;
+      }
+      .option[aria-checked="true"] .track {
+        background: var(--accent);
+      }
+      .option[aria-checked="true"] .thumb {
+        transform: translateX(42px);
+        background: #fffef9;
+      }
+      .option[aria-checked="true"] .thumb::after {
+        width: 10px;
+        height: 6px;
+        border-left: 2px solid;
+        border-bottom: 2px solid;
+        background: none;
+        transform: translateY(-1px) rotate(-45deg);
+      }
+      .option[aria-checked="true"] .korean {
+        color: var(--accent);
+      }
+      .option:hover .korean {
+        color: var(--accent);
+      }
+      :focus-visible {
+        outline: 2px solid #f2f0e9;
+        outline-offset: 6px;
+        border-radius: 4px;
+      }
+      .status {
+        min-height: 44px;
+        margin: 22px 0 0;
+        font-size: 12px;
+        line-height: 1.8;
+        color: #aaa9a4;
+        word-break: keep-all;
+      }
+      footer {
+        text-align: center;
+        padding: 16px 24px 28px;
+        font-size: 10px;
+        color: #777773;
+      }
+      @media (max-width: 480px) {
+        header {
+          padding: 16px 24px;
+        }
+        .label {
+          flex-direction: column;
+          gap: 6px;
+        }
+        .option {
+          padding: 22px 0;
+        }
+        .description {
+          margin-bottom: 34px;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          transition: none !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <a class="back" href="/lab">← LABORATORY</a>
+      <span class="experiment">EXP-014</span>
+    </header>
+    <main>
+      <p class="eyebrow">PICK TWO.</p>
+      <h1>다 가질 순 없으니까.</h1>
+      <div class="selection-heading">
+        <h2 id="selection-label">당신의 선택은?</h2>
+        <span class="counter" aria-hidden="true"><strong id="count">0</strong> / 2</span>
+      </div>
+      <div class="options" role="group" aria-labelledby="selection-label" aria-describedby="rule">
+        <button class="option" type="button" role="switch" aria-checked="false" aria-label="돈" data-id="money">
+          <span class="label" aria-hidden="true"><span class="korean">돈</span><span class="english">MONEY</span></span>
+          <span class="track" aria-hidden="true"><span class="thumb"></span></span>
+        </button>
+        <button class="option" type="button" role="switch" aria-checked="false" aria-label="외모" data-id="looks">
+          <span class="label" aria-hidden="true"
+            ><span class="korean">외모</span><span class="english">LOOKS</span></span
+          >
+          <span class="track" aria-hidden="true"><span class="thumb"></span></span>
+        </button>
+        <button class="option" type="button" role="switch" aria-checked="false" aria-label="성격" data-id="personality">
+          <span class="label" aria-hidden="true"
+            ><span class="korean">성격</span><span class="english">PERSONALITY</span></span
+          >
+          <span class="track" aria-hidden="true"><span class="thumb"></span></span>
+        </button>
+      </div>
+      <p class="status" role="status" aria-live="polite" aria-atomic="true">마음이 가는 쪽으로 켜보세요.</p>
+    </main>
+    <footer>THREE WISHES. TWO SWITCHES.</footer>
+    <script>
+      "use strict";
+
+      const options = [...document.querySelectorAll(".option")];
+      const count = document.getElementById("count");
+      const status = document.querySelector(".status");
+      const names = { money: "돈", looks: "외모", personality: "성격" };
+      // Keep activation order so the oldest choice yields to the new one.
+      let selected = [];
+
+      for (const option of options) {
+        option.addEventListener("click", () => {
+          const id = option.dataset.id;
+          let removed;
+          if (selected.includes(id)) {
+            selected = selected.filter((item) => item !== id);
+          } else {
+            if (selected.length === 2) removed = selected.shift();
+            selected.push(id);
+          }
+
+          // Clear the outgoing switch before turning on the incoming switch.
+          for (const button of options) {
+            if (!selected.includes(button.dataset.id)) button.setAttribute("aria-checked", "false");
+          }
+          for (const button of options) {
+            if (selected.includes(button.dataset.id)) button.setAttribute("aria-checked", "true");
+          }
+          count.textContent = selected.length;
+          status.textContent = removed
+            ? `${names[id]} ON · 먼저 켠 ${names[removed]} OFF. 두 가지만 남겼어요.`
+            : selected.length === 2
+              ? "두 가지를 골랐어요. 다른 하나를 켜면 선택이 바뀌어요."
+              : selected.length === 1
+                ? "하나 더 골라도 괜찮아요."
+                : "마음이 가는 쪽으로 켜보세요.";
+        });
+      }
+    </script>
+  </body>
+</html>
