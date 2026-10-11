@@ -210,6 +210,21 @@ export const PROJECTS = [
     available: true,
   },
 
+
+  {
+    id: 9,
+    title: "Lee Sanghyeop Portfolio",
+    category: ["Web"],
+    description: {
+      en: "A portfolio website commissioned by designer Sanghyeop Lee. Built with HTML, CSS, and JavaScript to showcase illustration and design work, with responsive galleries and image magnification.",
+      ko: "디자이너 이상협님의 의뢰로 제작한 개인 포트폴리오 웹사이트입니다. HTML, CSS, JavaScript로 일러스트와 디자인 작품을 소개하는 반응형 갤러리와 이미지 확대 기능을 구현했습니다.",
+    },
+    github: "https://github.com/jeondowon/sanghyeop",
+    link: "https://sanghyeop.vercel.app/stages/11-style-revision-04/",
+    image: "/images/Sanghyeop.png",
+    available: true,
+  },
+
   /*{
     id: 10,
     title: "",
