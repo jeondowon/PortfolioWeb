@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="600" viewBox="0 0 960 600">
+  <defs><linearGradient id="face" x2="1" y2="1"><stop stop-color="#c3c8b0" stop-opacity=".45"/><stop offset="1" stop-color="#5b6d5c" stop-opacity=".15"/></linearGradient><linearGradient id="trail"><stop stop-color="#d5dec4" stop-opacity="0"/><stop offset="1" stop-color="#d5dec4" stop-opacity=".65"/></linearGradient></defs>
+  <rect width="960" height="600" fill="#080b09"/>
+  <g stroke="#7e8d74" stroke-width="1" fill="none" opacity=".6"><path d="M190 230 410 125 785 215 577 345Z M190 230V425L577 535 785 400V215 M577 345V535 M410 125V310L190 425 M410 310 785 400"/></g>
+  <path d="M280 205 660 310 660 498 280 391Z" fill="url(#face)" stroke="#b3c1a3" stroke-opacity=".4"/>
+  <g fill="url(#trail)"><path d="m340 236 135 35 195-87-135-32Z"/><path d="m280 340 110 32 220-120-110-26Z"/><path d="m440 376 76 23 200-129-76-17Z"/></g>
+  <g fill="#d1d8c5" opacity=".55"><ellipse cx="335" cy="260" rx="8" ry="20"/><ellipse cx="480" cy="349" rx="10" ry="24"/><ellipse cx="593" cy="377" rx="7" ry="19"/></g>
+  <text x="44" y="54" font-family="Roboto, sans-serif" font-size="12" letter-spacing="3" fill="#c7dcad">EXP–015 / TIME STUDY</text>
+  <text x="44" y="559" font-family="Roboto, sans-serif" font-size="28" font-weight="300" fill="#e1e8d8">Time Volume</text>
+</svg>

@@ -191,7 +191,7 @@
 <p>Dock의 위치를 읽는 데에는 자동화와 손쉬운 사용이 <strong>함께</strong> 필요합니다. macOS가 <code>System Events</code>에게 조회를 부탁하는 단계(자동화)와 <code>System Events</code>가 화면 요소를 실제로 읽는 단계(손쉬운 사용)를 나누어 두었기 때문입니다. 손쉬운 사용 목록에 항목이 두 개 나타나는 것은 키보드를 잠그는 기능만 <code>KeyBlocker</code>라는 별도 프로그램으로 분리해 두었기 때문입니다.</p>
 <p>macOS의 &quot;화면 기록&quot; 권한은 이름과 달리 <strong>화면을 촬영하거나 녹화하기 위한 것이 아닙니다.</strong> 다른 앱의 창 제목을 읽으려면 macOS가 이 권한을 요구하기 때문에 사용합니다. 앱은 화면을 캡처하지 않습니다.</p>
 <hr />
-<h2>5. 외부로 나가는 통신 — 자동 업데이트</h2>
+<h2>5. 자동 업데이트를 위한 외부 통신</h2>
 <p>앱은 새 버전이 있는지 확인하기 위해 <strong>GitHub Releases</strong>(github.com)에 접속합니다.</p>
 <ul><li>접속 시점: 앱 시작 1분 후, 이후 6시간마다</li><li>보내는 내용: 새 버전 정보 파일을 요청하는 일반적인 웹 요청입니다. 앱은 이용자의 이름, 애완돌 정보, 사용 기록 등 어떤 개인정보도 이 요청에 담지 않습니다.</li><li>다만 인터넷 통신의 성격상 <strong>GitHub 서버에는 이용자의 IP 주소, 접속 시각, 요청한 파일 정보가 남을 수 있습니다.</strong> 이는 GitHub의 개인정보처리방침에 따라 처리되며, 개발자는 이 기록에 접근할 수 없습니다.</li><li>GitHub 개인정보처리방침: <a href="https://docs.github.com/site-policy/privacy-policies/github-privacy-statement">https://docs.github.com/site-policy/privacy-policies/github-privacy-statement</a></li></ul>
 <p>이 통신을 원하지 않으시면 macOS 방화벽에서 앱의 외부 접속을 차단하셔도 됩니다. 업데이트 확인만 실패하고 나머지 기능은 정상 동작합니다.</p>

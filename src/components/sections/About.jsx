@@ -11,9 +11,9 @@ const ABBR = {
 const ABBR_TOOLTIP = {
   en: (
     <>
-      <strong>CSEE</strong> — Computer Science &amp; Electrical Engineering
+      <strong>CSEE</strong>: Computer Science &amp; Electrical Engineering
       <br />
-      <strong>ABEEK</strong> — Accreditation Board for Engineering Education of
+      <strong>ABEEK</strong>: Accreditation Board for Engineering Education of
       Korea
       <br />
       <span className="abbr-tooltip-sub">

@@ -38,7 +38,7 @@ const LINKS = [
 const TEXT = {
   en: {
     subheading: ["Let's Develop,", "Build together."],
-    sub: "Always open to new ideas, collaborations, and conversations.\nDrop a line — I'll get back to you.",
+    sub: "Always open to new ideas, collaborations, and conversations.\nDrop me a line and I'll get back to you.",
     btn: "Download Resume ↗︎",
   },
   ko: {

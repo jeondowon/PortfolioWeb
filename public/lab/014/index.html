@@ -3,9 +3,11 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#111111" />
+    <meta name="theme-color" content="#000000" />
     <meta name="description" content="돈, 외모, 성격. 세 가지 중 두 가지만 고를 수 있는 작은 선택 실험." />
-    <title>Pick Two — EXP-014</title>
+    <title>Pick Two · EXP-014</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet" />
     <style>
       * {
         box-sizing: border-box;
@@ -13,85 +15,51 @@
       body {
         margin: 0;
         min-height: 100svh;
-        background: #111111;
-        color: #f2f0e9;
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        display: flex;
+        flex-direction: column;
+        background: #000;
+        color: rgba(255, 255, 255, 0.9);
+        font-family: "Roboto", sans-serif;
         -webkit-font-smoothing: antialiased;
       }
       header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 28px 36px;
+        position: relative;
+        min-height: 64px;
+        flex-shrink: 0;
       }
-      .back,
-      .experiment,
-      .eyebrow,
-      .counter,
-      .english,
-      footer {
-        font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+      #back {
+        position: absolute;
+        top: 20px;
+        left: 20px;
         font-size: 11px;
-        letter-spacing: 0.12em;
-      }
-      .back {
-        color: #aaa9a4;
+        letter-spacing: 0.1em;
+        color: rgba(255, 255, 255, 0.3);
         text-decoration: none;
-        padding: 12px 0;
+        transition: color 0.2s;
       }
-      .back:hover {
-        color: #f2f0e9;
-      }
-      .experiment {
-        color: #777773;
+      #back:hover { color: rgba(255, 255, 255, 0.75); }
+      #title {
+        position: absolute;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        margin: 0;
+        font-size: 11px;
+        font-weight: 400;
+        letter-spacing: 0.22em;
+        color: rgba(255, 255, 255, 0.35);
+        white-space: nowrap;
       }
       main {
-        width: min(100% - 48px, 460px);
-        margin: 0 auto;
-        padding: clamp(32px, 8vh, 100px) 0 40px;
-      }
-      .eyebrow {
-        color: #c0d9a0;
-        margin: 0 0 22px;
-      }
-      h1 {
-        font-size: clamp(29px, 7vw, 40px);
-        letter-spacing: -0.065em;
-        margin: 0;
-        font-weight: 650;
-      }
-      .description {
-        color: #93938e;
-        font-size: 14px;
-        line-height: 1.8;
-        margin: 16px 0 42px;
-        word-break: keep-all;
-      }
-      .selection-heading {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding-bottom: 16px;
-      }
-      .selection-heading h2 {
-        margin: 0;
-        font-size: 12px;
-        font-weight: 400;
-        color: #93938e;
-      }
-      .counter {
-        color: #93938e;
-      }
-      .counter strong {
-        color: #f2f0e9;
-        font-size: 16px;
-        font-weight: 500;
+        width: min(100% - 48px, 380px);
+        margin: auto;
+        padding: 40px 0;
       }
       .options {
-        border-top: 1px solid #33332f;
+        border-top: 1px solid rgba(255, 255, 255, 0.12);
       }
       .option {
-        --accent: #c0d9a0;
+        --accent: #fff;
         width: 100%;
         display: flex;
         align-items: center;
@@ -99,54 +67,57 @@
         gap: 20px;
         padding: 25px 0;
         border: 0;
-        border-bottom: 1px solid #33332f;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.12);
         background: transparent;
         color: inherit;
         font: inherit;
         text-align: left;
-        cursor: pointer;
         -webkit-tap-highlight-color: transparent;
         touch-action: manipulation;
       }
-      .option[data-id="looks"] {
-        --accent: #e8b6b0;
-      }
-      .option[data-id="personality"] {
-        --accent: #c1bae8;
-      }
-      .label {
-        display: flex;
-        align-items: baseline;
-        gap: 16px;
-      }
-      .korean {
-        font-size: 27px;
-        font-weight: 550;
+      .label-input {
+        flex: 1;
+        min-width: 0;
+        width: 100%;
+        padding: 4px 0;
+        border: 0;
+        border-radius: 0;
+        background: transparent;
+        color: inherit;
+        font: inherit;
+        font-size: 24px;
+        font-weight: 400;
         letter-spacing: -0.045em;
-        transition: color 0.2s;
       }
-      .english {
-        font-size: 10px;
-        color: #81817c;
+      .toggle {
+        flex-shrink: 0;
+        display: grid;
+        place-items: center;
+        min-height: 44px;
+        padding: 0;
+        border: 0;
+        background: transparent;
+        cursor: pointer;
+        touch-action: manipulation;
       }
       .track {
-        width: 94px;
-        height: 52px;
+        width: 76px;
+        height: 42px;
         flex-shrink: 0;
-        padding: 6px;
+        padding: 5px;
         border-radius: 30px;
-        background: #343431;
+        background: #222;
         box-shadow: inset 0 0 0 1px #ffffff08;
         transition: background 0.25s ease;
       }
       .thumb {
         display: grid;
         place-items: center;
-        width: 40px;
-        height: 40px;
+        width: 32px;
+        height: 32px;
         border-radius: 50%;
-        background: #a0a09a;
-        color: #343431;
+        background: #777;
+        color: #222;
         box-shadow: 0 2px 5px #0003;
         transition:
           transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1),
@@ -158,14 +129,15 @@
         height: 2px;
         background: currentColor;
       }
-      .option[aria-checked="true"] .track {
+      .toggle[aria-checked="true"] .track {
         background: var(--accent);
       }
-      .option[aria-checked="true"] .thumb {
-        transform: translateX(42px);
-        background: #fffef9;
+      .toggle[aria-checked="true"] .thumb {
+        transform: translateX(34px);
+        background: #000;
+        color: #fff;
       }
-      .option[aria-checked="true"] .thumb::after {
+      .toggle[aria-checked="true"] .thumb::after {
         width: 10px;
         height: 6px;
         border-left: 2px solid;
@@ -173,44 +145,31 @@
         background: none;
         transform: translateY(-1px) rotate(-45deg);
       }
-      .option[aria-checked="true"] .korean {
-        color: var(--accent);
-      }
-      .option:hover .korean {
-        color: var(--accent);
-      }
       :focus-visible {
-        outline: 2px solid #f2f0e9;
+        outline: 2px solid #fff;
         outline-offset: 6px;
         border-radius: 4px;
       }
-      .status {
-        min-height: 44px;
-        margin: 22px 0 0;
-        font-size: 12px;
-        line-height: 1.8;
-        color: #aaa9a4;
-        word-break: keep-all;
-      }
-      footer {
-        text-align: center;
-        padding: 16px 24px 28px;
-        font-size: 10px;
-        color: #777773;
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip-path: inset(50%);
+        white-space: nowrap;
+        border: 0;
       }
       @media (max-width: 480px) {
-        header {
-          padding: 16px 24px;
-        }
-        .label {
-          flex-direction: column;
-          gap: 6px;
+        #title {
+          left: auto;
+          right: 20px;
+          transform: none;
+          letter-spacing: 0.14em;
         }
         .option {
           padding: 22px 0;
-        }
-        .description {
-          margin-bottom: 34px;
         }
       }
       @media (prefers-reduced-motion: reduce) {
@@ -224,48 +183,55 @@
   </head>
   <body>
     <header>
-      <a class="back" href="/lab">← LABORATORY</a>
-      <span class="experiment">EXP-014</span>
+      <a id="back" href="/lab">← LAB</a>
+      <h1 id="title">PICK TWO · EXP-014</h1>
     </header>
     <main>
-      <p class="eyebrow">PICK TWO.</p>
-      <h1>다 가질 순 없으니까.</h1>
-      <div class="selection-heading">
-        <h2 id="selection-label">당신의 선택은?</h2>
-        <span class="counter" aria-hidden="true"><strong id="count">0</strong> / 2</span>
+      <div class="options" role="group" aria-labelledby="title">
+        <div class="option">
+          <input class="label-input" id="money-label" type="text" value="MONEY" aria-label="MONEY 항목 이름" autocomplete="off" spellcheck="false" />
+          <button class="toggle" type="button" role="switch" aria-checked="false" aria-label="MONEY" data-id="money">
+            <span class="track" aria-hidden="true"><span class="thumb"></span></span>
+          </button>
+        </div>
+        <div class="option">
+          <input class="label-input" id="looks-label" type="text" value="LOOKS" aria-label="LOOKS 항목 이름" autocomplete="off" spellcheck="false" />
+          <button class="toggle" type="button" role="switch" aria-checked="false" aria-label="LOOKS" data-id="looks">
+            <span class="track" aria-hidden="true"><span class="thumb"></span></span>
+          </button>
+        </div>
+        <div class="option">
+          <input class="label-input" id="personality-label" type="text" value="PERSONALITY" aria-label="PERSONALITY 항목 이름" autocomplete="off" spellcheck="false" />
+          <button class="toggle" type="button" role="switch" aria-checked="false" aria-label="PERSONALITY" data-id="personality">
+            <span class="track" aria-hidden="true"><span class="thumb"></span></span>
+          </button>
+        </div>
       </div>
-      <div class="options" role="group" aria-labelledby="selection-label" aria-describedby="rule">
-        <button class="option" type="button" role="switch" aria-checked="false" aria-label="돈" data-id="money">
-          <span class="label" aria-hidden="true"><span class="korean">돈</span><span class="english">MONEY</span></span>
-          <span class="track" aria-hidden="true"><span class="thumb"></span></span>
-        </button>
-        <button class="option" type="button" role="switch" aria-checked="false" aria-label="외모" data-id="looks">
-          <span class="label" aria-hidden="true"
-            ><span class="korean">외모</span><span class="english">LOOKS</span></span
-          >
-          <span class="track" aria-hidden="true"><span class="thumb"></span></span>
-        </button>
-        <button class="option" type="button" role="switch" aria-checked="false" aria-label="성격" data-id="personality">
-          <span class="label" aria-hidden="true"
-            ><span class="korean">성격</span><span class="english">PERSONALITY</span></span
-          >
-          <span class="track" aria-hidden="true"><span class="thumb"></span></span>
-        </button>
-      </div>
-      <p class="status" role="status" aria-live="polite" aria-atomic="true">마음이 가는 쪽으로 켜보세요.</p>
+      <p class="status sr-only" role="status" aria-live="polite" aria-atomic="true"></p>
     </main>
-    <footer>THREE WISHES. TWO SWITCHES.</footer>
     <script>
       "use strict";
 
-      const options = [...document.querySelectorAll(".option")];
-      const count = document.getElementById("count");
+      const options = [...document.querySelectorAll(".toggle")];
       const status = document.querySelector(".status");
-      const names = { money: "돈", looks: "외모", personality: "성격" };
+      const names = { money: "MONEY", looks: "LOOKS", personality: "PERSONALITY" };
       // Keep activation order so the oldest choice yields to the new one.
       let selected = [];
 
       for (const option of options) {
+        const input = document.getElementById(`${option.dataset.id}-label`);
+        const defaultName = input.defaultValue;
+        input.addEventListener("input", () => {
+          const name = input.value.trim() || defaultName;
+          names[option.dataset.id] = name;
+          option.setAttribute("aria-label", name);
+        });
+        input.addEventListener("blur", () => {
+          if (!input.value.trim()) input.value = defaultName;
+        });
+        input.addEventListener("keydown", (event) => {
+          if (event.key === "Enter" && !event.isComposing) input.blur();
+        });
         option.addEventListener("click", () => {
           const id = option.dataset.id;
           let removed;
@@ -283,14 +249,7 @@
           for (const button of options) {
             if (selected.includes(button.dataset.id)) button.setAttribute("aria-checked", "true");
           }
-          count.textContent = selected.length;
-          status.textContent = removed
-            ? `${names[id]} ON · 먼저 켠 ${names[removed]} OFF. 두 가지만 남겼어요.`
-            : selected.length === 2
-              ? "두 가지를 골랐어요. 다른 하나를 켜면 선택이 바뀌어요."
-              : selected.length === 1
-                ? "하나 더 골라도 괜찮아요."
-                : "마음이 가는 쪽으로 켜보세요.";
+          status.textContent = removed ? `${names[removed]} 선택 해제` : "";
         });
       }
     </script>

@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <title>Time Volume · EXP-015</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" />
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <main aria-labelledby="title">
+      <div id="stage">
+        <canvas id="volume" tabindex="0" aria-label="Time volume. Drag or use arrow keys to rotate. Scroll or use plus and minus keys to zoom."></canvas>
+      </div>
+      <h1 id="title">TIME VOLUME · EXP-015</h1>
+      <p id="hint">DRAG TO ORBIT · SCROLL TO ZOOM</p>
+      <p id="status" role="status" aria-live="polite"></p>
+      <section id="controls" aria-label="Volume controls">
+        <div class="ctrl-row">
+          <label class="ctrl-label" for="time">TIME</label>
+          <input class="ctrl-slider" id="time" type="range" min="0" max="1" step="0.001" value="0" />
+          <output class="ctrl-val" id="time-value" for="time">0.00 s</output>
+        </div>
+        <div class="ctrl-row">
+          <label class="ctrl-label" for="density">TRAIL</label>
+          <input class="ctrl-slider" id="density" type="range" min="0" max="1" step="0.01" value="0.30" />
+          <output class="ctrl-val" id="density-value" for="density">30%</output>
+        </div>
+        <div class="ctrl-row">
+          <label class="ctrl-label" for="depth">DEPTH</label>
+          <input class="ctrl-slider" id="depth" type="range" min="0.3" max="2.5" step="0.05" value="1.4" />
+          <output class="ctrl-val" id="depth-value" for="depth">1.40</output>
+        </div>
+        <div class="actions">
+          <button id="play" type="button" aria-pressed="false">PLAY</button>
+          <button id="reset" type="button" aria-label="Reset view">RESET</button>
+          <details id="source-menu">
+            <summary>SOURCE</summary>
+            <div class="source-panel">
+              <p id="source">MOTION SAMPLE</p>
+              <div class="source-actions">
+                <button id="default" type="button">CROSSWALK</button>
+                <button id="sample" type="button">SAMPLE</button>
+                <button id="upload" type="button">OPEN VIDEO ↗</button>
+              </div>
+              <p class="note">Processed on your device. First 8 seconds.<br />A fixed camera works best.</p>
+              <a class="credit" href="https://www.pexels.com/video/vibrant-shibuya-crossing-in-tokyo-28783675/" target="_blank" rel="noreferrer">FOOTAGE: NIGHTINGALE / PEXELS ↗</a>
+            </div>
+          </details>
+        </div>
+        <input id="file" type="file" accept="video/*,.mov,.mp4,.webm" hidden />
+      </section>
+    </main>
+    <a href="/lab" id="back">← LAB</a>
+    <script type="module" src="./volume.js"></script>
+  </body>
+</html>

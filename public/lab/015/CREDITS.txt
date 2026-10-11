@@ -1,0 +1,19 @@
+Time Volume / EXP-015
+
+Default footage: Vibrant Shibuya Crossing in Tokyo
+Creator: Nightingale
+Source: https://www.pexels.com/video/vibrant-shibuya-crossing-in-tokyo-28783675/
+License: Pexels License, https://www.pexels.com/license/
+Retrieved: 2026-10-11
+
+The Pexels License permits free use and modification, including use on websites.
+The demo uses seconds 49–53, after most of the crowd has crossed.
+The 1920x1080, 30fps source is cropped to 720x404 at (1050, 580),
+without upscaling. Motion-compensated interpolation produces a 60fps
+delivery clip (240 frames over 4 seconds); this is not native 60fps footage.
+Encoded with H.264 CRF 17, yuv420p, faststart, and no audio.
+
+Reproduction from the original downloaded MP4:
+ffmpeg -ss 48.9 -i source.mp4 -t 4.2 -vf "crop=720:404:1050:580,minterpolate=fps=60:mi_mode=mci:mc_mode=aobmc:me_mode=bidir:vsbmc=1,trim=start=0.1:duration=4,setpts=PTS-STARTPTS" -an -c:v libx264 -preset slow -crf 17 -pix_fmt yuv420p -movflags +faststart -map_metadata -1 crosswalk.mp4
+
+The footage remains subject to the Pexels License, not the project's code license.

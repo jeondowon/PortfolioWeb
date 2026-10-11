@@ -4,9 +4,9 @@ export const ABOUT = {
   en: {
     bio: {
       desktop:
-        "I'm a developer who believes every great software always starts from abstract imaginations. \nI explore broadly — web, app, and beyond — chasing ideas worth building and turning them into real things. \nKeep dreaming. Develop imaginations, and make it real. That's DJ, drops masterpieces.",
+        "I'm a developer who believes every great software always starts from abstract imaginations. \nI explore web, app development, and beyond, chasing ideas worth building and turning them into real things. \nKeep dreaming. Develop imaginations, and make it real. That's DJ, drops masterpieces.",
       mobile:
-        "I'm a developer who believes every great software always starts from abstract imaginations. \nI explore broadly — web, app, and beyond — chasing ideas worth building and turning them into real things. \nKeep dreaming. Develop imaginations, and make it real. \nThat's DJ, drops masterpieces.",
+        "I'm a developer who believes every great software always starts from abstract imaginations. \nI explore web, app development, and beyond, chasing ideas worth building and turning them into real things. \nKeep dreaming. Develop imaginations, and make it real. \nThat's DJ, drops masterpieces.",
     },
     education: [
       {
@@ -46,13 +46,13 @@ export const ABOUT = {
 export const EXPERIENCE_DATA = {
   work: [
     {
-      date: "2024.03 — 2025.11",
+      date: "2024.03 ~ 2025.11",
       title: {
         en: "Republic of Korea Navy 2nd Fleet C4I Battalion",
         ko: "대한민국 해군 제2함대 지휘통신대대",
       },
       subtitle: {
-        en: "Mandatory Military Service — Computer/Network Administrator",
+        en: "Mandatory Military Service (Computer/Network Administrator)",
         ko: "전산병 복무 (병장 만기 전역)",
       },
       isActive: false,
@@ -60,7 +60,7 @@ export const EXPERIENCE_DATA = {
   ],
   teams: [
     {
-      date: "2023.09 — Present",
+      date: "2023.09 ~ Present",
       title: "CRA (Computer Research Association)",
       subtitle: {
         en: "Handong Global University Computer Science Club",
@@ -73,7 +73,7 @@ export const EXPERIENCE_DATA = {
       isActive: true,
     },
     {
-      date: "2023.03 — 2023.08",
+      date: "2023.03 ~ 2023.08",
       title: "CHERK",
       subtitle: {
         en: "Handong Global University Academic Film Society",
@@ -82,7 +82,7 @@ export const EXPERIENCE_DATA = {
       isActive: false,
     },
     {
-      date: "2023.09 — Present",
+      date: "2023.09 ~ Present",
       title: "sk8erz",
       subtitle: {
         en: "Handong Global University Skateboard Crew",
@@ -154,8 +154,8 @@ export const PROJECTS = [
     title: "Candle",
     category: ["App", "Web", "Fintech"],
     description: {
-      en: "A stock prediction challenge app for investors — go on a winning streak, earn points, and compete for prizes. The only cost to play is watching an ad. Available on both Web and Mobile.",
-      ko: "투자자를 위한 주가 예측 챌린지 앱 — 포인트를 쌓거나 연승을 유지하여 상품을 노리세요. 참여 비용은 광고 시청 하나뿐입니다. 웹과 모바일 서비스를 모두 지원합니다.",
+      en: "A stock prediction challenge app for investors. Go on a winning streak, earn points, and compete for prizes. The only cost to play is watching an ad. Available on both Web and Mobile.",
+      ko: "투자자를 위한 주가 예측 챌린지 앱입니다. 포인트를 쌓거나 연승을 유지하여 상품을 노리세요. 참여 비용은 광고 시청 하나뿐입니다. 웹과 모바일 서비스를 모두 지원합니다.",
     },
     github: null,
     image: "/images/Candle.png",
@@ -178,8 +178,8 @@ export const PROJECTS = [
     title: "FA Alumni Network Web",
     category: ["Web"],
     description: {
-      en: "An alumni networking platform for Faith Academy Manila — connect with graduates worldwide, ask for a coffee chat, seek advice, and stay in touch with your community.",
-      ko: "Faith Academy Manila 동문 네트워킹 플랫폼 — 전 세계로 뻗어나간 34개국 이상의 졸업생들과 연결하고, 조언을 구하며, 당신의 소중한 커뮤니티와 소통하세요. 오늘, 커피챗 할까요?",
+      en: "An alumni networking platform for Faith Academy Manila. Connect with graduates worldwide, ask for a coffee chat, seek advice, and stay in touch with your community.",
+      ko: "Faith Academy Manila 동문을 위한 네트워킹 플랫폼입니다. 전 세계로 뻗어나간 34개국 이상의 졸업생들과 연결하고, 조언을 구하며, 당신의 소중한 커뮤니티와 소통하세요. 오늘, 커피챗 할까요?",
     },
     github: "https://github.com/jeondowon/FAReunion",
     image: "/images/FAReunion.png",
@@ -190,8 +190,8 @@ export const PROJECTS = [
     title: "Vinyl Room",
     category: ["Web"],
     description: {
-      en: "A 3D vinyl turntable experience built with Three.js — search and play music via YouTube, watch the record spin, and enjoy your playlist in a virtual vinyl room.",
-      ko: "Three.js로 만든 3D 바이닐 턴테이블 웹사이트. YouTube로 음악을 검색하고 재생하며, 레코드가 돌아가는 것을 감상할 수 있습니다. 아늑한 당신만의 공간 — 가상의 바이닐 룸에서 당신만의 플레이리스트를 즐기세요.",
+      en: "A 3D vinyl turntable experience built with Three.js. Search and play music via YouTube, watch the record spin, and enjoy your playlist in a virtual vinyl room.",
+      ko: "Three.js로 만든 3D 바이닐 턴테이블 웹사이트. YouTube로 음악을 검색하고 재생하며, 레코드가 돌아가는 것을 감상할 수 있습니다. 나만의 아늑한 가상 바이닐 룸에서 좋아하는 플레이리스트를 즐기세요.",
     },
     github: "https://github.com/jeondowon/LP-Player-Web",
     image: "/images/VinylRoom.png",
@@ -202,7 +202,7 @@ export const PROJECTS = [
     title: "CRA Website",
     category: ["Web"],
     description: {
-      en: "Maintained and enhanced the official CRA website — redesigned and improved key pages. Check out the wide range of projects built by CRA.",
+      en: "Maintained the official CRA website, redesigning and improving key pages. Check out the wide range of projects built by CRA.",
       ko: "한동대학교 전산 동아리 CRA의 공식 웹사이트를 유지보수하고, 주요 페이지의 리디자인과 개선작업을 진행했습니다. CRA가 만든 다양한 프로젝트를 확인해보세요.",
     },
     github: "https://github.com/jeondowon/cra-web-frontend",
@@ -226,7 +226,7 @@ export const SKILLS = [
     id: "languages",
     title: "Languages",
     description: {
-      en: "From low-level C/C++ to scripting in Python — I pick the right language for the problem and dig in until I really understand and solve it.",
+      en: "I work with low-level C/C++ and write scripts in Python, choosing the right language for each problem. I dig in until I understand it and find a solution.",
       ko: "C/C++부터 Python 스크립팅까지 문제에 맞는 언어를 선택하고 깊이 파고듭니다.",
     },
     items: ["C/C++", "Java", "JavaScript", "Python"],
@@ -235,8 +235,8 @@ export const SKILLS = [
     id: "frameworks",
     title: "Frameworks & Libraries",
     description: {
-      en: "Comfortable across the stack — React on the web, React Native & Flutter on mobile, Spring Boot on the server. I focus on shipping things end-to-end.",
-      ko: "풀스택에 익숙합니다 — 웹은 React, 모바일은 React Native & Flutter, 서버는 Spring Boot. 처음부터 끝까지 완성하는 것에 집중합니다.",
+      en: "I work across the stack with React on the web, React Native & Flutter on mobile, and Spring Boot on the server. I focus on shipping things end-to-end.",
+      ko: "웹은 React, 모바일은 React Native & Flutter, 서버는 Spring Boot로 개발합니다. 처음부터 끝까지 완성하는 것에 집중합니다.",
     },
     items: ["React", "React Native", "Flutter", "Spring Boot"],
   },
@@ -244,7 +244,7 @@ export const SKILLS = [
     id: "tools",
     title: "Tools",
     description: {
-      en: "Tools I work with daily — version control for clean history, a fast dev loop for tight iteration, and a design surface where I bring abstract ideas into form.",
+      en: "My daily tools help me keep a clean version history, iterate quickly, and turn abstract ideas into designs.",
       ko: "버전 컨트롤로 이력을 명확하게 관리하고, 신속한 개발 환경 속에서 반복 작업을 효율화하며, 디자인 툴을 사용하여 추상적 아이디어를 구체화합니다.",
     },
     items: ["Git", "Vite", "Figma"],
@@ -281,7 +281,7 @@ export const LAB_ITEMS = [
     tags: ["canvas", "typography"],
     thumbnail: "/lab/thumbnails/exp002.png",
     blurb:
-      "Type any word, pick a shape — watch your text flow endlessly along its edge in a tilted 3D ribbon.",
+      "Type any word and pick a shape to watch your text flow endlessly along its edge in a tilted 3D ribbon.",
   },
   {
     id: "exp03",
@@ -391,7 +391,18 @@ export const LAB_ITEMS = [
     tags: ["interaction", "ui"],
     thumbnail: "/lab/thumbnails/exp014.svg",
     blurb:
-      "Money, looks, personality. Pick any two — turning on the third switches off your oldest choice.",
+      "Money, looks, personality. Pick any two. Turning on the third switches off your oldest choice.",
+  },
+  {
+    id: "exp15",
+    exp: "EXP-015",
+    url: "/lab/015/",
+    title: "Time Volume",
+    date: "2026.10",
+    tags: ["video", "webgl", "time"],
+    thumbnail: "/lab/thumbnails/exp015.svg",
+    blurb:
+      "A moving image, given depth. Stack moments into a volume, orbit around time, and reveal a single frame within it.",
   },
 ];
 

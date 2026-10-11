@@ -153,7 +153,6 @@ export default function ProjectsPage() {
                         <h3 className="project-name">{project.title}</h3>
                         <p className="project-desc">{project.description[lang]}</p>
                         <div className="project-footer">
-                          <span className="project-dash">—</span>
                           <span className="project-in-progress">
                             IN PROGRESS
                           </span>
