@@ -378,13 +378,13 @@ export const LAB_ITEMS = [
   {
     id: "exp12",
     exp: "EXP-012",
-    url: "/lab/012",
-    title: "Brick Breaker",
+    url: "/lab/012/index.html",
+    title: "Falling Sand",
     date: "2026.04",
-    tags: ["game", "canvas"],
-    thumbnail: "/lab/thumbnails/exp012.png",
+    tags: ["physics", "sandbox"],
+    thumbnail: "/lab/thumbnails/exp012.svg",
     blurb:
-      "One paddle, one ball, an endless wall of bricks. A study in the smallest possible action loop.",
+      "Draw sand, pour water, and build walls. A small world shaped by gravity and your hands.",
   },
   {
     id: "exp13",
