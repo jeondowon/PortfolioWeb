@@ -15,6 +15,7 @@ const TAGS = getAllTags();
 
 export default function ProjectsPage() {
   const { lang, setLang } = useLang();
+  const t = (field) => (typeof field === "string" ? field : field[lang]);
   const [activeTag, setActiveTag] = useState("All");
   const [onContact, setOnContact] = useState(false);
   const contactRef = useRef(null);
@@ -119,7 +120,7 @@ export default function ProjectsPage() {
                         {project.image ? (
                           <img
                             src={project.image}
-                            alt={project.title}
+                            alt={t(project.title)}
                             className="project-img"
                           />
                         ) : (
@@ -139,7 +140,7 @@ export default function ProjectsPage() {
                     {project.available ? (
                       <>
                         <div className="project-title-row">
-                          <h3 className="project-name">{project.title}</h3>
+                          <h3 className="project-name">{t(project.title)}</h3>
                           {project.category.map((cat) => (
                             <span key={cat} className="project-category-tag">
                               {cat.toUpperCase()}
@@ -150,7 +151,7 @@ export default function ProjectsPage() {
                       </>
                     ) : (
                       <>
-                        <h3 className="project-name">{project.title}</h3>
+                        <h3 className="project-name">{t(project.title)}</h3>
                         <p className="project-desc">{project.description[lang]}</p>
                         <div className="project-footer">
                           <span className="project-in-progress">

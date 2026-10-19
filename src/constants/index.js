@@ -94,6 +94,18 @@ export const EXPERIENCE_DATA = {
   achievements: [
     {
       date: "2026",
+      title: {
+        en: "2026 Gyeongbuk Startup AI Content Marketing Hackathon",
+        ko: "2026 경북 스타트업 AI 콘텐츠 마케팅 해커톤",
+      },
+      subtitle: {
+        en: "Completed as Team Lead · Client project deployed in store",
+        ko: "팀 대표 수료 · 클라이언트 프로젝트 실매장 도입",
+      },
+      isActive: false,
+    },
+    {
+      date: "2026",
       title: "Google AI Agent Challenge",
       subtitle: { en: "Excellence Award", ko: "우수상 수상" },
       isActive: false,
@@ -113,7 +125,10 @@ export const EXPERIENCE_DATA = {
 export const PROJECTS = [
   {
     id: 1,
-    title: "Rockie - 데스크톱 애완돌 키우기",
+    title: {
+      en: "Rockie - Desktop Pet Rock",
+      ko: "Rockie - 데스크톱 애완돌 키우기",
+    },
     category: ["DeskTop App"],
     description: {
       en: "A desktop pet raising app built with Electron. Your pet rock follows your mouse around and even strikes up a conversation. Answer a daily question and watch how it grows into one of various rocks that mirrors you.",
@@ -222,6 +237,22 @@ export const PROJECTS = [
     github: "https://github.com/jeondowon/sanghyeop",
     link: "https://sanghyeop.vercel.app/stages/11-style-revision-04/",
     image: "/images/Sanghyeop.png",
+    available: true,
+  },
+  {
+    id: 10,
+    title: {
+      en: "Eoreun Moongbangu In-Store Games",
+      ko: "어른뭉방구 매장 게임",
+    },
+    category: ["Web"],
+    description: {
+      en: "In-store mini games commissioned by Eoreun Moongbangu, a card shop in Pohang, and now running in the store. Led the team as team lead at the 2026 Gyeongbuk Startup AI Content Marketing Hackathon, from planning to delivery, and built the 3D card pack opening and coin flip games with Three.js and TypeScript.",
+      ko: "포항 어른뭉방구의 의뢰로 제작해 실제 매장에서 운영 중인 게임입니다. 2026 경북 스타트업 AI 콘텐츠 마케팅 해커톤에서 팀 대표로 기획부터 납품까지 전 과정을 이끌었고, 3D 카드팩 뽑기와 코인 플립 게임을 Three.js와 TypeScript로 개발했습니다.",
+    },
+    github: "https://github.com/jeondowon/moonbangoo",
+    link: "https://jeondowon.github.io/moonbangoo/",
+    image: "/images/Moonbangoo-flip.png",
     available: true,
   },
 
