@@ -95,6 +95,33 @@ export const EXPERIENCE_DATA = {
     {
       date: "2026",
       title: {
+        en: "2026 Handong AI SW Festival",
+        ko: "2026 한동 AI SW 페스티벌",
+      },
+      subtitle: { en: "Excellence Award · SW Major Division", ko: "SW전공 부문 우수상" },
+      isActive: false,
+    },
+    {
+      date: "2026",
+      title: {
+        en: "2026 Handong AI SW Festival",
+        ko: "2026 한동 AI SW 페스티벌",
+      },
+      subtitle: { en: "Encouragement Award · Game Division", ko: "게임 부문 장려상" },
+      isActive: false,
+    },
+    {
+      date: "2026.10 ~ Present",
+      title: {
+        en: "Startups for All (Cohort 2)",
+        ko: "모두의 창업 2기",
+      },
+      subtitle: { en: "Advanced to Round 1", ko: "1라운드 진출" },
+      isActive: true,
+    },
+    {
+      date: "2026",
+      title: {
         en: "2026 Gyeongbuk Startup AI Content Marketing Hackathon",
         ko: "2026 경북 스타트업 AI 콘텐츠 마케팅 해커톤",
       },
